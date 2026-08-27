@@ -30,7 +30,11 @@ physically prevented from citing material beyond the student's current week.
   beating `all-MiniLM-L6-v2` and tying `e5-small-v2` while indexing faster.
 - **Curriculum gate:** 0/26 leaks when retrieval is restricted to one week before the
   answer's tutorial — the metadata filter, not the prompt, is what actually prevents
-  spoilers.
+  spoilers. A second **pre-LLM scope check** (`check_scope()`) probes the question against
+  the full index: if it matches future material better than in-scope material, the app
+  refuses deterministically before the LLM runs — 7/7 leak probes caught, 0/30 false
+  refusals on the golden set. This closes the "LLM answers from its own knowledge" hole
+  that prompt instructions alone cannot (small models refused 0–3 of 3 in the benchmark).
 - **Local LLMs (5 compared):** `llama3.2:3b` wins for a 4 GB VRAM laptop GPU — tied-best
   term coverage (0.92), the only 3B model with perfect 3/3 curriculum refusal, TTFT 1.6 s,
   81 tok/s. `phi4-mini` is the runner-up; `gemma3:4b` and `mistral:latest` refused nothing.

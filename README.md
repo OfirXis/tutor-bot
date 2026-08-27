@@ -2,7 +2,8 @@
 
 A local-first tutoring bot for an algorithms course. It answers **only from the course
 material**, **only up to the week the student has reached**, with a professional chat UI,
-streaming answers, source citations, and a Socratic homework mode.
+live "thinking" status while it retrieves, streaming answers, source citations, and a
+Socratic homework mode.
 
 Everything runs free: local embeddings, local reranker, local LLM via Ollama — and the
 LLM is **swappable** (GitHub Models, OpenAI, or any OpenAI-compatible server) by changing
@@ -20,7 +21,7 @@ enforces the curriculum at the *retrieval* layer, not just by prompt-begging:
 |---|---|
 | No retrieval at question time | Every question retrieves top-k passages from the index |
 | 8 separate Chroma DBs | **One collection**, each chunk tagged `tutorial: N` |
-| Curriculum enforced only by prompt | **Metadata filter `tutorial <= week`** — future material is physically unreachable (0/26 leaks in the benchmark) |
+| Curriculum enforced only by prompt | **Two deterministic gates**: retrieval filter `tutorial <= week` (future chunks unreachable, 0/26 leaks) **+ pre-LLM scope check** — if the question matches *future* material better than in-scope material, the app refuses before the LLM is called (7/7 leak probes caught, 0/30 false refusals) |
 | 1000-char blind chunks of PDF text | **Header-aware markdown chunks** with breadcrumbs (`Tutorial 4 › Worked Examples › Rod Cutting`) |
 | all-MiniLM-L6-v2 embeddings | **bge-small-en-v1.5** (benchmark winner), BM25 + cross-encoder rerank available |
 | No evaluation | Golden QA set + benchmark scripts + pytest suite |
@@ -115,7 +116,6 @@ db/index/                Chroma collection      db/chunks.jsonl  BM25 corpus
 db/metadata.json         week topic whitelists  db/homework.json Socratic homework data
 material/english/        course notes (markdown, source of truth)
 tools/                   one-shot data-prep scripts (PDF → material/, homework extraction)
-legacy/                  previous implementation (reference only)
 SUMMARY.md               project summary — what changed, why, and the benchmark results
 ```
 
