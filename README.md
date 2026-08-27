@@ -57,7 +57,11 @@ material/english/tutorial_*.txt  (clean markdown course notes)
 
 ## Quickstart
 
+Prerequisites: Python 3.11+, [Ollama](https://ollama.com) (for the free local default).
+
 ```powershell
+git clone https://github.com/steinergad/tutor-bot.git; cd tutor-bot
+
 # 1. deps (once)
 python -m venv .venv; .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -65,10 +69,13 @@ pip install -r requirements.txt
 # 2. local model (free)
 ollama pull llama3.2:3b
 
-# 3. build the index (once, ~15 s)
+# 3. optional: copy .env.example → .env to customize provider/model (defaults work as-is)
+copy .env.example .env
+
+# 4. build the index (once, ~15 s)
 python build_index.py
 
-# 4. run
+# 5. run
 streamlit run app.py
 ```
 
