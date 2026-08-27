@@ -1,5 +1,9 @@
 """
-benchmark_llm.py — Compare local Ollama models as the tutor LLM.
+benchmark_llm.py — Compare tutor LLMs: local Ollama models vs cheap cloud models.
+
+Model spec syntax:
+    llama3.2:3b            → local Ollama model
+    github:gpt-4o-mini     → GitHub Models (free tier, needs GITHUB_TOKEN in .env)
 
 For each model:
   • Answer quality proxies on 6 in-scope questions with retrieved context:
@@ -9,21 +13,25 @@ For each model:
     about later material): the model must refuse per the system prompt.
 
 Usage:
-    python benchmark_llm.py --models llama3.2:3b qwen2.5:3b mistral:latest
+    python benchmark_llm.py --models llama3.2:3b qwen2.5:3b mistral:latest ^
+                                     github:gpt-4o-mini github:gpt-4.1-mini
 """
 from __future__ import annotations
 
 import argparse
-import json
+import os
 import re
 import statistics
 import time
 from pathlib import Path
 
+from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_ollama import ChatOllama
 
 from rag_engine import HybridRetriever, format_context, load_meta, tutor_system_prompt
+
+load_dotenv()
 
 HERE = Path(__file__).parent
 
@@ -54,8 +62,20 @@ def count_tokens(text: str) -> int:
     return max(1, len(text) // 4)  # rough estimate; fine for relative comparison
 
 
+def make_llm(spec: str):
+    """'github:<model>' → GitHub Models (cloud); anything else → local Ollama."""
+    if spec.startswith("github:"):
+        from langchain_openai import ChatOpenAI
+        token = os.getenv("GITHUB_TOKEN", "")
+        if not token:
+            raise RuntimeError("GITHUB_TOKEN missing from .env")
+        return ChatOpenAI(model=spec.split(":", 1)[1], api_key=token,
+                          base_url="https://models.github.ai/inference", temperature=0.2)
+    return ChatOllama(model=spec, base_url="http://localhost:11434", temperature=0.2, num_ctx=8192)
+
+
 def run_model(model: str, retriever: HybridRetriever, meta: dict) -> dict:
-    llm = ChatOllama(model=model, base_url="http://localhost:11434", temperature=0.2, num_ctx=8192)
+    llm = make_llm(model)
     ttfts, totals, tps, coverage = [], [], [], []
 
     for q, week, terms in IN_SCOPE:
@@ -90,6 +110,7 @@ def run_model(model: str, retriever: HybridRetriever, meta: dict) -> dict:
 
     return {
         "model": model,
+        "type": "cloud" if model.startswith("github:") else "local",
         "term_coverage": statistics.mean(coverage),
         "refusal_rate": refused / len(OUT_OF_SCOPE),
         "ttft_s": statistics.mean(ttfts),
@@ -109,26 +130,35 @@ def main() -> None:
     rows = []
     for m in args.models:
         print(f"\n=== {m} ===")
-        rows.append(run_model(m, retriever, meta))
+        try:
+            rows.append(run_model(m, retriever, meta))
+        except Exception as e:  # skip unavailable models, keep the run alive
+            print(f"    [{m}] SKIPPED: {e}")
 
     lines = [
-        "# Benchmark — Local LLMs as Tutor (Ollama)",
+        "# Benchmark — Tutor LLMs: Local (Ollama) vs Cheap Cloud (GitHub Models)",
         "",
         f"*{len(IN_SCOPE)} in-scope questions (with retrieved context) + "
         f"{len(OUT_OF_SCOPE)} out-of-scope questions (week-1 student asking future material). "
         "Term coverage = fraction of expected course key-terms present in the answer. "
         "Refusal rate = fraction of out-of-scope questions correctly refused. "
-        "Hardware: RTX 5070 Laptop 4 GB VRAM.*",
+        "Local hardware: RTX 5070 Laptop 4 GB VRAM. Cloud latency includes network; "
+        "GitHub Models free tier is rate-limited but $0.*",
         "",
-        "| Model | Term coverage | Curriculum refusal | TTFT (s) | Total (s) | tok/s |",
-        "|---|---|---|---|---|---|",
+        "| Model | Type | Term coverage | Curriculum refusal | TTFT (s) | Total (s) | tok/s |",
+        "|---|---|---|---|---|---|---|",
     ]
     best = max(rows, key=lambda x: (x["refusal_rate"], x["term_coverage"], x["tok_per_s"]))
+    best_local = max((x for x in rows if x["type"] == "local"), default=None,
+                     key=lambda x: (x["refusal_rate"], x["term_coverage"], x["tok_per_s"]))
     for x in rows:
         mark = " **⭐**" if x is best else ""
-        lines.append(f"| {x['model']}{mark} | {x['term_coverage']:.2f} | {x['refusal_rate']:.2f} "
+        lines.append(f"| {x['model']}{mark} | {x['type']} | {x['term_coverage']:.2f} "
+                     f"| {x['refusal_rate']:.2f} "
                      f"| {x['ttft_s']:.1f} | {x['total_s']:.1f} | {x['tok_per_s']:.0f} |")
-    lines += ["", f"**Recommended default:** `{best['model']}`."]
+    lines += ["", f"**Best overall:** `{best['model']}`."]
+    if best_local and best_local is not best:
+        lines += [f"**Best local (fully offline/free):** `{best_local['model']}`."]
     Path(args.out).write_text("\n".join(lines), encoding="utf-8")
     print(f"\nWrote {args.out}")
 

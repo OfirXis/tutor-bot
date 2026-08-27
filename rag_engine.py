@@ -343,9 +343,9 @@ def get_llm(streaming: bool = True):
     from langchain_openai import ChatOpenAI
     if provider == "github":
         return ChatOpenAI(
-            model=os.getenv("GITHUB_MODEL", "gpt-4o-mini"),
+            model=os.getenv("GITHUB_MODEL", "openai/gpt-4o-mini"),
             api_key=os.getenv("GITHUB_TOKEN", ""),
-            base_url="https://models.inference.ai.azure.com",
+            base_url="https://models.github.ai/inference",
             temperature=temperature, streaming=streaming,
         )
     if provider == "compatible":
@@ -365,7 +365,7 @@ def llm_label() -> str:
     provider = os.getenv("LLM_PROVIDER", "ollama").lower()
     return {
         "ollama": f"Ollama · {os.getenv('OLLAMA_LLM_MODEL', 'llama3.2:3b')}",
-        "github": f"GitHub Models · {os.getenv('GITHUB_MODEL', 'gpt-4o-mini')}",
+        "github": f"GitHub Models · {os.getenv('GITHUB_MODEL', 'openai/gpt-4o-mini')}",
         "openai": f"OpenAI · {os.getenv('OPENAI_MODEL', 'gpt-4o-mini')}",
         "compatible": f"Custom · {os.getenv('LLM_MODEL', '?')}",
     }.get(provider, provider)

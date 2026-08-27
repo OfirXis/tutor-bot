@@ -31,11 +31,17 @@ physically prevented from citing material beyond the student's current week.
 - **Curriculum gate:** 0/26 leaks when retrieval is restricted to one week before the
   answer's tutorial — the metadata filter, not the prompt, is what actually prevents
   spoilers.
-- **Local LLMs:** `llama3.2:3b` is the best fit for a 4 GB VRAM laptop GPU — best term
-  coverage (0.92) and refusal behavior (0.67) among the 3 models tested, and ~3× faster
-  than `mistral:latest`. Notably, **no small local model reliably self-refused
-  out-of-scope questions**, which is exactly why the retrieval-level gate exists as the
-  real safety mechanism rather than relying on prompt instructions.
+- **Local LLMs (5 compared):** `llama3.2:3b` wins for a 4 GB VRAM laptop GPU — tied-best
+  term coverage (0.92), the only 3B model with perfect 3/3 curriculum refusal, TTFT 1.6 s,
+  81 tok/s. `phi4-mini` is the runner-up; `gemma3:4b` and `mistral:latest` refused nothing.
+  The 0.00–1.00 refusal spread shows prompt-level curriculum enforcement is model-dependent
+  and unreliable — which is exactly why the retrieval-level gate exists as the real safety
+  mechanism rather than relying on prompt instructions.
+- **Cheap cloud models:** attempted via GitHub Models (`openai/gpt-4o-mini` etc.) with a
+  valid token, but the platform returned HTTP 410 `github_models_retirement_brownout` —
+  GitHub is retiring the free Models API. The benchmark keeps `github:<model>` support for
+  non-brownout windows; `LLM_PROVIDER=openai` remains the cheap-cloud path (~$0.15/M input
+  tokens for gpt-4o-mini).
 
 ## Architecture
 

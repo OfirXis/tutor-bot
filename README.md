@@ -80,19 +80,20 @@ Set in `.env` (or the sidebar):
 | Provider | `.env` | Cost |
 |---|---|---|
 | **Ollama** (default) | `LLM_PROVIDER=ollama`, `OLLAMA_LLM_MODEL=llama3.2:3b` | free, local |
-| **GitHub Models** | `LLM_PROVIDER=github`, `GITHUB_TOKEN=…` | free tier |
-| **OpenAI** | `LLM_PROVIDER=openai`, `OPENAI_API_KEY=…` | paid |
+| **GitHub Models** | `LLM_PROVIDER=github`, `GITHUB_TOKEN=…` | free tier — **being retired by GitHub (410 brownouts)** |
+| **OpenAI** | `LLM_PROVIDER=openai`, `OPENAI_API_KEY=…` | paid (gpt-4o-mini ≈ $0.15/M in) |
 | **Anything OpenAI-compatible** (LM Studio, vLLM, Groq, OpenRouter) | `LLM_PROVIDER=compatible`, `LLM_BASE_URL=…`, `LLM_MODEL=…` | varies |
 
 Local model guidance for this machine (RTX 5070 Laptop, 4 GB VRAM): 3B models
-(`llama3.2:3b`, `qwen2.5:3b`) fit fully in VRAM and stream fast; 7B (`mistral`) partially
-offloads to RAM and is noticeably slower. See [BENCHMARK_LLM.md](BENCHMARK_LLM.md).
+(`llama3.2:3b`, `qwen2.5:3b`, `phi4-mini`) fit fully in VRAM and stream fast; 7B (`mistral`)
+partially offloads to RAM and is noticeably slower. See [BENCHMARK_LLM.md](BENCHMARK_LLM.md)
+for the full 5-model local comparison (+ cloud status).
 
 ## Benchmarks & tests
 
 ```powershell
 python benchmark_embeddings.py        # embedding models × retrieval modes → BENCHMARK_RESULTS.md
-python benchmark_llm.py --models llama3.2:3b qwen2.5:3b   # tutor quality/speed → BENCHMARK_LLM.md
+python benchmark_llm.py --models llama3.2:3b phi4-mini github:openai/gpt-4o-mini   # tutor quality/speed → BENCHMARK_LLM.md
 pytest tests\ -v                      # 14 tests: chunker, RRF, prompts, curriculum gate
 python rag_engine.py "why does dijkstra fail with negative weights" --week 8   # CLI retrieval debug
 ```
