@@ -1,0 +1,147 @@
+# Tutorial 7 — Minimum Spanning Trees (MST)
+
+## Core Concepts
+
+### Definitions
+- **Minimum Spanning Tree (MST)**: Given a connected graph \( G = (V, E) \) with a weight function \( w: E \to \mathbb{R} \), a minimum spanning tree \( T \) is a spanning tree of \( G \) such that the sum of the weights of the edges in \( T \) is minimized.
+
+### Properties
+1. **Cut Property**: For any cut in the graph, the cheapest edge crossing the cut is part of some minimum spanning tree.
+2. **Cycle Property**: For any cycle in the graph, the most expensive edge in the cycle is not part of any minimum spanning tree.
+
+## Algorithms & Complexity
+
+### Kruskal's Algorithm
+Kruskal's algorithm builds the MST by sorting the edges and adding them one by one, ensuring no cycles are formed.
+
+**Pseudocode**:
+```plaintext
+Kruskal(G):
+    T = ∅
+    Sort edges E by weight
+    Initialize Union-Find structure
+    for each edge (u, v) in E:
+        if Find(u) ≠ Find(v):
+            T = T ∪ {(u, v)}
+            Union(u, v)
+    return T
+```
+
+**Complexity**: 
+- Sorting edges: \( O(E \log E) \)
+- Union-Find operations: Amortized \( O(\alpha(n)) \) per operation, where \( \alpha \) is the inverse Ackermann function.
+- Overall: \( O(E \log E) \)
+
+### Prim's Algorithm
+Prim's algorithm grows the MST from an initial vertex, using a priority queue to select the minimum weight edge.
+
+**Pseudocode**:
+```plaintext
+Prim(G, start):
+    T = ∅
+    Initialize min-heap Q
+    for each vertex v in G:
+        key[v] = ∞
+        parent[v] = null
+    key[start] = 0
+    Q.insert(start, key[start])
+    
+    while Q is not empty:
+        u = Q.extract-min()
+        T = T ∪ {parent[u], u}
+        for each neighbor v of u:
+            if v in Q and weight(u, v) < key[v]:
+                key[v] = weight(u, v)
+                parent[v] = u
+                Q.decrease-key(v, key[v])
+    return T
+```
+
+**Complexity**: 
+- Using a binary heap: \( O(E \log V) \)
+
+### Union-Find Data Structure
+Union-Find supports efficient union and find operations, crucial for Kruskal's algorithm.
+
+**Pseudocode**:
+```plaintext
+MakeSet(x):
+    parent[x] = x
+    rank[x] = 0
+
+Find(x):
+    if parent[x] ≠ x:
+        parent[x] = Find(parent[x])  // Path compression
+    return parent[x]
+
+Union(x, y):
+    rootX = Find(x)
+    rootY = Find(y)
+    if rootX ≠ rootY:
+        if rank[rootX] > rank[rootY]:
+            parent[rootY] = rootX
+        else if rank[rootX] < rank[rootY]:
+            parent[rootX] = rootY
+        else:
+            parent[rootY] = rootX
+            rank[rootX] += 1
+```
+
+**Complexity**: Amortized \( O(\alpha(n)) \) per operation.
+
+## Theorems & Proofs
+
+### Theorem 1: Cut Property
+For any cut in a connected graph, the minimum weight edge crossing the cut is part of some minimum spanning tree.
+
+### Theorem 2: Cycle Property
+For any cycle in a connected graph, the maximum weight edge in the cycle cannot be part of any minimum spanning tree.
+
+## Worked Examples
+
+### Example 1: Constructing an MST
+Given a graph with vertices \( V = \{a, b, c, d\} \) and edges with weights:
+- \( (a, b, 1) \)
+- \( (a, c, 3) \)
+- \( (b, c, 2) \)
+- \( (b, d, 4) \)
+- \( (c, d, 5) \)
+
+**Using Kruskal's Algorithm**:
+1. Sort edges: \( (a, b, 1), (b, c, 2), (a, c, 3), (b, d, 4), (c, d, 5) \)
+2. Add \( (a, b) \) to MST.
+3. Add \( (b, c) \) to MST.
+4. Add \( (a, c) \) would form a cycle, skip it.
+5. Add \( (b, d) \) to MST.
+
+**Resulting MST**: \( \{(a, b), (b, c), (b, d)\} \) with total weight \( 1 + 2 + 4 = 7 \).
+
+## Practice Problems (with solutions)
+
+### Problem 1
+Given a graph with edges and weights:
+- \( (1, 2, 4) \)
+- \( (1, 3, 1) \)
+- \( (2, 3, 2) \)
+- \( (2, 4, 5) \)
+- \( (3, 4, 3) \)
+
+**Question**: Find the MST using Prim's algorithm starting from vertex 1.
+
+**Solution**:
+1. Start with vertex 1, add edge \( (1, 3) \) (weight 1).
+2. Add edge \( (3, 2) \) (weight 2).
+3. Add edge \( (2, 4) \) (weight 5).
+
+**MST**: \( \{(1, 3), (3, 2), (2, 4)\} \) with total weight \( 1 + 2 + 5 = 8 \).
+
+### Problem 2
+Prove that the cycle property holds for a graph with edges of distinct weights.
+
+**Solution**:
+Assume a cycle exists with the heaviest edge \( e \). If \( e \) is included in the MST, removing it would split the tree into two components. The lightest edge connecting these components must be lighter than \( e \), contradicting the assumption that \( e \) is the heaviest. Thus, \( e \) cannot be in the MST.
+
+## Common Mistakes to Avoid
+- Confusing the cut and cycle properties; remember that the cut property applies to edges crossing a cut, while the cycle property applies to edges within a cycle.
+- Forgetting to check for cycles when adding edges in Kruskal's algorithm.
+- Misapplying the Union-Find structure; ensure path compression and union by rank are implemented correctly for efficiency.

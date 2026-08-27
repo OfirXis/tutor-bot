@@ -1,0 +1,124 @@
+# Tutorial 6 — Dynamic Programming: Subsets, Partition, Counting
+
+## Core Concepts
+Dynamic Programming (DP) is a method for solving complex problems by breaking them down into simpler subproblems. It is particularly useful for optimization problems and problems involving combinatorial structures. In this tutorial, we focus on subset problems, partitioning sets into equal subsets, counting subsets, and grid path problems.
+
+### Key Concepts:
+1. **Subset Sum Problem**: Given a set of integers, determine if there is a subset whose sum equals a given target.
+2. **Partition Problem**: Determine if a set can be partitioned into two subsets with equal sum.
+3. **Counting Subsets**: Count the number of subsets that sum to a specific value.
+4. **Grid Paths**: Count the number of ways to reach a cell in a grid from the top-left corner to the bottom-right corner.
+
+## Algorithms & Complexity
+
+### 1. Subset Sum
+**Recurrence Relation**:
+- Let `dp[i][s]` be true if a subset of the first `i` elements can sum to `s`.
+- The recurrence is:
+  \[
+  dp[i][s] = dp[i-1][s] \text{ OR } dp[i-1][s - A[i]] \quad \text{(if } s \geq A[i]\text{)}
+  \]
+
+**Complexity**:
+- Time: \(O(nS)\), where \(n\) is the number of elements and \(S\) is the target sum.
+- Space: \(O(nS)\).
+
+### 2. Partition into Equal Subsets
+**Steps**:
+1. Check if the total sum of the set is even. If not, return false.
+2. Reduce the problem to a subset sum problem with target \( \text{sum}/2 \).
+
+**Complexity**:
+- Time: \(O(nS)\)
+- Space: \(O(nS)\)
+
+### 3. Count Subsets
+**Recurrence Relation**:
+- Let `dp[i][s]` be the number of ways to form the sum `s` using the first `i` elements.
+- The recurrence is:
+  \[
+  dp[i][s] = dp[i-1][s] + dp[i-1][s - A[i]] \quad \text{(if } s \geq A[i]\text{)}
+  \]
+
+**Complexity**:
+- Time: \(O(nS)\)
+- Space: \(O(nS)\)
+
+### 4. Grid Paths
+**Recurrence Relation**:
+- Let `dp[i][j]` be the number of ways to reach cell `(i, j)`.
+- The recurrence is:
+  \[
+  dp[i][j] = dp[i-1][j] + dp[i][j-1]
+  \]
+- Base cases: `dp[0][j] = 1` and `dp[i][0] = 1` for all valid `i` and `j`.
+
+**Complexity**:
+- Time: \(O(nm)\) for an \(n \times m\) grid.
+- Space: \(O(nm)\).
+
+## Theorems & Proofs
+1. **Subset Sum Theorem**: If a subset exists that sums to a target, it can be found using the above DP approach.
+2. **Partition Theorem**: A set can be partitioned into two equal subsets if and only if the total sum is even and a subset with sum equal to half the total exists.
+
+## Worked Examples
+### Example 1: Subset Sum
+**Problem**: Given the set \(A = \{3, 34, 4, 12, 5, 2\}\) and target sum \(9\), determine if a subset exists that sums to \(9\).
+
+**Solution**:
+1. Initialize `dp` array of size \((n+1) \times (S+1)\).
+2. Fill the `dp` table using the recurrence relation.
+3. Check `dp[n][9]`.
+
+### Example 2: Count Subsets
+**Problem**: Count the number of subsets of \(A = \{1, 2, 3\}\) that sum to \(4\).
+
+**Solution**:
+1. Initialize `dp` array.
+2. Use the counting recurrence relation.
+3. The answer will be found in `dp[n][4]`.
+
+## Practice Problems (with solutions)
+### Problem 1: Subset Sum
+**Given**: Set \(A = \{1, 2, 3, 7\}\), target \(6\).  
+**Find**: Does a subset exist that sums to \(6\)?
+
+**Solution**:
+1. Total sum = \(1 + 2 + 3 + 7 = 13\) (even).
+2. Use DP to fill the table.
+3. Result: `dp[4][6]` is true.
+
+### Problem 2: Partition Problem
+**Given**: Set \(A = \{1, 5, 11, 5\}\).  
+**Find**: Can it be partitioned into two subsets with equal sum?
+
+**Solution**:
+1. Total sum = \(22\) (even).
+2. Target = \(11\).
+3. Use subset sum DP to check for target \(11\).
+
+### Problem 3: Count Subsets
+**Given**: Set \(A = \{2, 3, 5, 6\}\), target \(8\).  
+**Find**: Count the number of subsets that sum to \(8\).
+
+**Solution**:
+1. Initialize `dp` array.
+2. Fill using counting recurrence.
+3. Result: `dp[n][8]` gives the count.
+
+### Problem 4: Grid Paths
+**Given**: A \(3 \times 3\) grid.  
+**Find**: Number of unique paths from top-left to bottom-right.
+
+**Solution**:
+1. Initialize `dp` array.
+2. Fill using grid path recurrence.
+3. Result: `dp[3][3]` gives the number of paths.
+
+## Common Mistakes to Avoid
+1. **Ignoring Base Cases**: Always initialize base cases correctly in DP.
+2. **Incorrect Recurrence Relations**: Ensure the recurrence accurately reflects the problem.
+3. **Space Complexity**: Be mindful of space usage; consider optimizing to \(O(S)\) if possible.
+4. **Off-by-One Errors**: Pay attention to array indexing, especially in DP tables.
+
+These notes provide a comprehensive overview of the concepts, algorithms, and problem-solving techniques related to dynamic programming in the context of subsets, partitions, and counting.

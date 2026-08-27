@@ -1,0 +1,159 @@
+# Tutorial 8 — Shortest Paths
+
+## Core Concepts
+In this tutorial, we will explore various algorithms for finding the shortest paths in graphs. The focus will be on understanding the principles of relaxation, the limitations of certain algorithms, and the handling of negative weights and cycles.
+
+### Key Definitions
+- **Graph**: A collection of vertices (nodes) and edges (connections between nodes).
+- **Weight**: A numerical value assigned to an edge, representing cost, distance, or time.
+- **Relaxation**: The process of updating the shortest path estimate for a vertex based on the shortest path to a neighboring vertex.
+
+## Algorithms & Complexity
+
+### 1. Dijkstra's Algorithm
+- **Description**: Finds the shortest path from a source vertex to all other vertices in a graph with non-negative weights.
+- **Complexity**: \(O((V + E) \log V)\), where \(V\) is the number of vertices and \(E\) is the number of edges.
+- **Pseudocode**:
+    ```plaintext
+    function Dijkstra(Graph, source):
+        dist[source] = 0
+        for each vertex v in Graph:
+            if v ≠ source:
+                dist[v] = ∞
+            add v to priority queue Q
+        while Q is not empty:
+            u = vertex in Q with min dist[u]
+            remove u from Q
+            for each neighbor v of u:
+                if dist[u] + weight(u, v) < dist[v]:
+                    dist[v] = dist[u] + weight(u, v)
+    ```
+
+### 2. Bellman-Ford Algorithm
+- **Description**: Computes shortest paths from a single source vertex in graphs that may contain negative weight edges.
+- **Complexity**: \(O(VE)\).
+- **Pseudocode**:
+    ```plaintext
+    function BellmanFord(Graph, source):
+        for each vertex v in Graph:
+            dist[v] = ∞
+        dist[source] = 0
+        for i from 1 to |V| - 1:
+            for each edge (u, v) in Graph:
+                if dist[u] + weight(u, v) < dist[v]:
+                    dist[v] = dist[u] + weight(u, v)
+        for each edge (u, v) in Graph:
+            if dist[u] + weight(u, v) < dist[v]:
+                return "Negative cycle detected"
+    ```
+
+### 3. DAG Shortest Path
+- **Description**: Finds the shortest paths in a Directed Acyclic Graph (DAG) using topological sorting.
+- **Complexity**: \(O(V + E)\).
+- **Pseudocode**:
+    ```plaintext
+    function DAGShortestPath(Graph, source):
+        topologicalOrder = TopologicalSort(Graph)
+        for each vertex v in topologicalOrder:
+            for each neighbor u of v:
+                if dist[v] + weight(v, u) < dist[u]:
+                    dist[u] = dist[v] + weight(v, u)
+    ```
+
+### 4. Floyd-Warshall Algorithm
+- **Description**: Computes shortest paths between all pairs of vertices.
+- **Complexity**: \(O(V^3)\).
+- **Pseudocode**:
+    ```plaintext
+    function FloydWarshall(Graph):
+        for each vertex k in Graph:
+            for each vertex i in Graph:
+                for each vertex j in Graph:
+                    if dist[i][j] > dist[i][k] + dist[k][j]:
+                        dist[i][j] = dist[i][k] + dist[k][j]
+    ```
+
+## Theorems & Proofs
+- **Theorem 1**: Dijkstra's algorithm produces the correct shortest path tree for graphs with non-negative weights.
+- **Theorem 2**: The Bellman-Ford algorithm can detect negative weight cycles in a graph.
+- **Theorem 3**: The shortest path in a DAG can be found in linear time relative to the number of vertices and edges.
+
+## Worked Examples
+
+### Example 1: Dijkstra's Algorithm
+Given a graph with vertices A, B, C, and edges with weights:
+- A → B (1)
+- A → C (4)
+- B → C (2)
+- B → D (5)
+- C → D (1)
+
+**Solution**:
+1. Start from A: dist[A] = 0, dist[B] = ∞, dist[C] = ∞, dist[D] = ∞.
+2. Update distances:
+   - From A to B: dist[B] = 1
+   - From A to C: dist[C] = 4
+3. Next, process B:
+   - From B to C: dist[C] = min(4, 1 + 2) = 3
+   - From B to D: dist[D] = 1 + 5 = 6
+4. Finally, process C:
+   - From C to D: dist[D] = min(6, 3 + 1) = 4
+
+Final distances: dist[A] = 0, dist[B] = 1, dist[C] = 3, dist[D] = 4.
+
+### Example 2: Bellman-Ford Algorithm
+Given a graph with vertices A, B, C, D and edges:
+- A → B (1)
+- B → C (-2)
+- C → D (1)
+- D → B (2)
+
+**Solution**:
+1. Initialize distances: dist[A] = 0, dist[B] = ∞, dist[C] = ∞, dist[D] = ∞.
+2. Relax edges for |V| - 1 = 3 iterations.
+3. After 3 iterations, check for negative cycles:
+   - If any edge can still be relaxed, a negative cycle exists.
+
+## Practice Problems (with solutions)
+
+### Problem 1: Shortest Path Using a Specific Edge
+**Problem**: Given a directed graph with a specific edge (a, b), describe an algorithm to find the shortest path from u to v that uses edge (a, b). Analyze its complexity.
+
+**Solution**:
+1. Use Bellman-Ford to find the shortest path from b to all other vertices.
+2. Reverse the graph and use Bellman-Ford from a to find the shortest path to u.
+3. Combine the results: the shortest path from u to v using (a, b) is the sum of the two paths.
+4. Complexity: \(O(VE)\).
+
+### Problem 2: Negative Cycle Detection
+**Problem**: Explain how the Bellman-Ford algorithm detects negative cycles.
+
+**Solution**:
+1. After |V| - 1 iterations, if any edge can still be relaxed, it indicates a negative cycle.
+2. This is because a negative cycle allows for continuous reduction of the path cost.
+
+### Problem 3: Dijkstra's Algorithm Failure
+**Problem**: Why does Dijkstra's algorithm fail with negative weights?
+
+**Solution**:
+Dijkstra's algorithm assumes that once a vertex's shortest path is found, it cannot be improved. However, with negative weights, a vertex may be reached via a longer path initially, but a subsequent shorter path may exist, leading to incorrect results.
+
+### Problem 4: Floyd-Warshall Application
+**Problem**: Use the Floyd-Warshall algorithm to find the shortest paths in a graph with 4 vertices and the following edges:
+- (1, 2, 3)
+- (2, 3, 1)
+- (3, 4, 2)
+- (1, 4, 10)
+
+**Solution**:
+1. Initialize the distance matrix.
+2. Apply the Floyd-Warshall algorithm.
+3. Update the matrix iteratively to find the shortest paths.
+
+## Common Mistakes to Avoid
+- Forgetting to check for negative cycles in the Bellman-Ford algorithm.
+- Using Dijkstra's algorithm on graphs with negative weights.
+- Not properly initializing distances in shortest path algorithms.
+- Confusing the relaxation process with the final path determination.
+
+These notes provide a comprehensive overview of shortest path algorithms, their complexities, and practical applications, serving as a primary reference for students in the course.

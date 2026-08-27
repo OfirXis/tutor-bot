@@ -1,775 +1,465 @@
 """
-app.py  —  Socratic Course Tutor
-Run:  streamlit run app.py  ->  http://localhost:8501
+app.py — Course Tutor · curriculum-gated hybrid RAG chat.
+
+Run:  streamlit run app.py
 """
-import json, os
+from __future__ import annotations
+
+import os
+import re
 from pathlib import Path
 
 import streamlit as st
 from dotenv import load_dotenv
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
-# Vector DB integration
-from search_integration import init_search, find_relevant_topics, get_search_method
-
-# Prompt templates from /prompts directory
-from prompts.prompt_builder import build_tutorial_prompt, build_homework_prompt
-
-# Language support & validation
-from language_config import get_text, LANGUAGES
-from homework_validation import is_in_scope, get_scope_reminder
-
-# Graph RAG integration (Phase 4)
-try:
-    from graph_rag_starter import LightweightKnowledgeGraph, HybridRetriever
-    GRAPH_RAG_ENABLED = True
-except ImportError:
-    GRAPH_RAG_ENABLED = False
+import rag_engine as rag
 
 load_dotenv()
-
-PROVIDER  = os.getenv("LLM_PROVIDER", "openai").lower()
-# Use script-relative path so the app works regardless of launch CWD
-_HERE     = Path(__file__).parent
-DB_DIR    = _HERE / "db"
-META_FILE = DB_DIR / "metadata.json"
-# Also switch CWD so relative paths in other places work consistently
-os.chdir(_HERE)
+os.chdir(Path(__file__).parent)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# PAGE CONFIG + LANGUAGE
+# Page + theme
 # ─────────────────────────────────────────────────────────────────────────────
 
 st.set_page_config(
     page_title="Course Tutor",
     page_icon="🎓",
-    layout="wide",
-    initial_sidebar_state="collapsed",
+    layout="centered",
+    initial_sidebar_state="expanded",
 )
-
-# Initialize language in session state
-if "language" not in st.session_state:
-    st.session_state.language = "en"
-
-# Get current language for translations
-current_lang = st.session_state.get("language", "en")
 
 st.markdown("""
 <style>
-/* Strip Streamlit chrome */
-#MainMenu, header[data-testid="stHeader"], footer { display:none !important; }
-.block-container { padding-top:1.2rem !important; padding-bottom:0 !important; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* App background */
-.stApp { background:#f0f4f8; }
-.main .block-container { max-width:820px; }
-
-/* Sidebar: dark admin panel */
-[data-testid="stSidebar"] { background:#0f172a !important; }
-[data-testid="stSidebar"] label,
-[data-testid="stSidebar"] .stMarkdown p,
-[data-testid="stSidebar"] small,
-[data-testid="stSidebar"] .stCaption { color:#94a3b8 !important; }
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 { color:#f1f5f9 !important; }
-[data-testid="stSidebar"] .stTextInput>div>div>input,
-[data-testid="stSidebar"] .stTextArea>div>div>textarea {
-    background:#1e293b !important;
-    border:1px solid #334155 !important;
-    color:#e2e8f0 !important;
-    border-radius:8px !important;
-}
-[data-testid="stSidebar"] [data-testid="stExpander"] {
-    background:#1e293b !important;
-    border:1px solid #334155 !important;
-    border-radius:10px !important;
+/* Neutral dark palette — modeled on the flat, low-chroma look shared by
+   ChatGPT / Claude / Gemini: no gradients, one restrained accent. */
+:root {
+    --bg:        #212121;
+    --bg-sidebar:#171717;
+    --surface:   #2f2f2f;
+    --surface-2: #262626;
+    --border:    #3a3a3a;
+    --text:      #ececec;
+    --text-dim:  #b4b4b4;
+    --text-faint:#8e8e8e;
+    --accent:    #10a37f;
 }
 
-/* Chat messages */
+html, body, .stApp { background: var(--bg) !important; }
+* { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; }
+code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; }
+
+#MainMenu, footer, header[data-testid="stHeader"] { display: none !important; }
+.block-container { padding-top: 2rem !important; padding-bottom: 8rem !important; max-width: 720px; }
+
+/* ── typography in chat ─────────────────────────────────────────────── */
+.main p, .main li, .main span, .main td, .main th { color: var(--text); font-size: .98rem; line-height: 1.7; }
+.main h1, .main h2, .main h3, .main h4 { color: var(--text); font-weight: 600; }
+
+/* ── chat messages: no avatars, alignment carries the meaning ─────────── */
+/* avatar = the stChatMessage child that ISN'T the stChatMessageContent div */
+[data-testid="stChatMessage"] > div:not([data-testid="stChatMessageContent"]) { display: none !important; }
+
 [data-testid="stChatMessage"] {
-    background:white !important;
-    border-radius:14px !important;
-    margin-bottom:6px !important;
-    box-shadow:0 1px 4px rgba(0,0,0,.06) !important;
-    border:1px solid #e8ecf1 !important;
+    display: flex !important;
+    background: transparent !important;
+    border: none !important;
+    padding: .3rem 0 !important;
+    max-width: 100%;
 }
-[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
-    background:#eff6ff !important;
-    border-color:#bfdbfe !important;
+/* user → right-aligned bubble */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageContent"][aria-label="Chat message from user"]) {
+    justify-content: flex-end;
 }
-/* Force dark readable text everywhere in the main area */
-[data-testid="stChatMessage"] p,
-[data-testid="stChatMessage"] li,
-[data-testid="stChatMessage"] span,
-[data-testid="stChatMessage"] .stMarkdown { color:#0f172a !important; }
-.main p, .main li, .main span, .main h1, .main h2, .main h3 { color:#0f172a !important; }
-/* Inline code blocks — light background so they don't appear as black boxes */
-[data-testid="stChatMessage"] code {
-    color: #c7254e !important;
-    background: #f9f2f4 !important;
-    padding: 1px 5px !important;
-    border-radius: 3px !important;
-    font-size: 0.875em !important;
+[data-testid="stChatMessageContent"][aria-label="Chat message from user"] {
+    background: var(--surface) !important;
+    border-radius: 20px !important;
+    padding: .6rem 1.1rem !important;
+    max-width: 78%;
+    width: fit-content;
 }
-/* KaTeX math containers */
-[data-testid="stChatMessage"] .katex,
-[data-testid="stChatMessage"] .katex * { color:#0f172a !important; background:transparent !important; }
-/* Alert/info/success boxes inside chat */
-[data-testid="stChatMessage"] [data-testid="stAlert"] p { color:#0f172a !important; }
-
-/* Chat input */
-[data-testid="stChatInputContainer"]>div {
-    background:white !important;
-    border-radius:14px !important;
-    border:1px solid #cbd5e1 !important;
-    box-shadow:0 2px 8px rgba(0,0,0,.07) !important;
+/* assistant → plain full-width text, no bubble */
+[data-testid="stChatMessageContent"][aria-label="Chat message from assistant"] {
+    padding: .55rem 0 1rem 0 !important;
+    width: 100%;
 }
 
-/* Selectbox pill */
-.stSelectbox>div>div>div { border-radius:10px !important; font-weight:600; }
+/* code blocks */
+.main pre {
+    background: #171717 !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    padding: 14px !important;
+}
+.main pre code { color: #e6e6e6 !important; font-size: .85rem !important; }
+.main :not(pre) > code {
+    background: rgba(255,255,255,.08) !important;
+    color: #ffb98a !important;
+    padding: 2px 6px; border-radius: 5px; font-size: .84em !important;
+}
 
-/* Divider */
-hr { border-color:#e2e8f0 !important; margin:0.5rem 0 !important; }
+/* KaTeX */
+.katex { color: var(--text) !important; font-size: 1.03em !important; }
+
+/* tables */
+.main table { border-collapse: collapse; width: 100%; }
+.main td, .main th { border: 1px solid var(--border) !important; padding: 6px 12px !important; }
+.main th { background: var(--surface-2) !important; }
+
+/* ── chat input ─────────────────────────────────────────────────────── */
+[data-testid="stChatInput"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 26px !important;
+    box-shadow: 0 4px 18px rgba(0,0,0,.35) !important;
+}
+[data-testid="stChatInput"]:focus-within {
+    border-color: #5a5a5a !important;
+    box-shadow: 0 4px 18px rgba(0,0,0,.35) !important;
+}
+[data-testid="stChatInput"] textarea {
+    background: transparent !important;
+    color: var(--text) !important;
+    font-size: .96rem !important;
+}
+[data-testid="stChatInput"] textarea::placeholder { color: var(--text-faint) !important; }
+[data-testid="stChatInput"] button {
+    background: var(--text) !important;
+    border-radius: 50% !important;
+}
+[data-testid="stChatInput"] button svg { color: var(--bg) !important; }
+[data-testid="stBottomBlockContainer"], [data-testid="stBottom"] > div {
+    background: linear-gradient(180deg, transparent, var(--bg) 45%) !important;
+}
+
+/* ── sidebar ────────────────────────────────────────────────────────── */
+[data-testid="stSidebar"] {
+    background: var(--bg-sidebar) !important;
+    border-right: 1px solid var(--border) !important;
+}
+[data-testid="stSidebar"] * { color: var(--text) !important; }
+[data-testid="stSidebar"] .stCaption, [data-testid="stSidebar"] small { color: var(--text-faint) !important; }
+[data-testid="stSidebar"] hr { border-color: var(--border) !important; margin: .75rem 0 !important; }
+
+[data-testid="stSidebar"] [data-baseweb="select"] > div,
+[data-testid="stSidebar"] .stTextInput input, [data-testid="stSidebar"] .stNumberInput input {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+    border-radius: 8px !important;
+}
+[data-baseweb="popover"] li, [data-baseweb="menu"] { background: var(--surface) !important; color: var(--text) !important; }
+
+/* radio → flat segmented control */
+[data-testid="stSidebar"] .stRadio [role="radiogroup"] {
+    gap: 2px; background: var(--surface-2); border-radius: 10px; padding: 3px;
+}
+[data-testid="stSidebar"] .stRadio label {
+    border-radius: 8px; padding: 6px 10px; width: 100%;
+    transition: background .15s;
+}
+[data-testid="stSidebar"] .stRadio label:has(input:checked) { background: var(--surface); }
+
+/* buttons */
+.stButton > button {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    font-weight: 500 !important;
+    transition: background .15s, border-color .15s !important;
+}
+.stButton > button:hover { background: var(--surface-2) !important; border-color: #4d4d4d !important; }
+
+/* expanders (sources) */
+[data-testid="stExpander"] {
+    background: transparent !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+}
+[data-testid="stExpander"] summary { color: var(--text-faint) !important; font-size: .84rem !important; }
+
+/* status pill + hero */
+.pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 999px; padding: 4px 13px;
+    font-size: .78rem; color: var(--text-dim);
+}
+.pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.hero { text-align: center; padding: 3rem 0 1.4rem; }
+.hero .logo {
+    width: 44px; height: 44px; margin: 0 auto 16px; border-radius: 12px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+}
+.hero h1 { font-size: 1.7rem; font-weight: 600; margin: 0 0 6px; color: var(--text); }
+.hero p { color: var(--text-faint); font-size: .95rem; margin: 0; }
+
+.src-line { color: var(--text-faint); font-size: .84rem; margin: 2px 0; }
+.src-line b { color: var(--text-dim); font-weight: 500; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 </style>
 """, unsafe_allow_html=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# DATA HELPERS
+# Cached resources
 # ─────────────────────────────────────────────────────────────────────────────
 
-def load_meta() -> dict:
-    return json.loads(META_FILE.read_text(encoding="utf-8")) if META_FILE.exists() else {}
+@st.cache_resource(show_spinner="Loading retrieval index…")
+def get_retriever():
+    return rag.HybridRetriever()
 
-def save_meta(meta: dict) -> None:
-    DB_DIR.mkdir(parents=True, exist_ok=True)
-    META_FILE.write_text(json.dumps(meta, indent=2, ensure_ascii=False), encoding="utf-8")
-
-def load_homework() -> dict:
-    """Load homework database from homework.json"""
-    hw_file = DB_DIR / "homework.json"
-    return json.loads(hw_file.read_text(encoding="utf-8")) if hw_file.exists() else {}
-
-def get_hw_list() -> list:
-    """Only return items that exist in metadata (keeps stale DB dirs invisible)."""
-    meta = load_meta()
-    if not DB_DIR.exists() or not meta:
-        return []
-    return sorted(
-        name for name in meta
-        if (DB_DIR / name).is_dir()
-    )
-
-def get_homework_list() -> list:
-    """Return list of homework assignments"""
-    hw = load_homework()
-    return sorted(hw.keys())
-
-def api_key_ok() -> bool:
-    return (
-        os.getenv("OPENAI_API_KEY", "").startswith("sk-")
-        or os.getenv("GITHUB_TOKEN", "").startswith("github_pat_")
-        or os.getenv("GITHUB_TOKEN", "").startswith("ghp_")
-    )
-
-# ── Smart history trimming ────────────────────────────────────────────────────
-# Keep last 6 exchanges verbatim (12 messages) so the Socratic thread stays
-# coherent. Older exchanges are condensed into a compact breadcrumb that
-# preserves BOTH the student's questions AND the key points of the tutor's
-# responses — so the tutor can reference or briefly re-explain past concepts
-# if the student asks, without repeating full first-time explanations.
-
-MAX_VERBATIM_EXCHANGES = 6  # last N full exchanges kept verbatim
-
-def trimmed_history(full: list) -> list:
-    max_msgs = MAX_VERBATIM_EXCHANGES * 2
-    if len(full) <= max_msgs:
-        return full                     # short session — send everything as-is
-
-    recent = full[-max_msgs:]           # last N exchanges: full detail
-    older  = full[:-max_msgs]           # earlier exchanges: condensed
-
-    # Pair up [HumanMessage, AIMessage] from the older section and capture
-    # both the question AND the first meaningful sentence of the tutor's hint,
-    # so the model can reference or briefly re-explain those concepts if asked.
-    condensed_lines = []
-    for i in range(0, len(older) - 1, 2):
-        if i + 1 >= len(older):
-            break
-        q = older[i].content[:70].replace("\n", " ").rstrip(".,;")
-        a = older[i + 1].content[:120].replace("\n", " ").rstrip(".,;")
-        condensed_lines.append(f"• Student asked: \"{q}…\"  →  Tutor hinted: \"{a}…\"")
-
-    breadcrumb_text = "\n".join(condensed_lines)
-
-    breadcrumb = [
-        HumanMessage(
-            content=(
-                "[Earlier in this session we covered:\n"
-                + breadcrumb_text
-                + "\nIf I ask about any of these again, give a brief reminder "
-                "rather than a full first-time explanation.]"
-            )
-        ),
-        AIMessage(
-            content=(
-                "[Understood. I remember what we covered. I can re-explain or "
-                "build on any of those concepts concisely if you need it.]"
-            )
-        ),
-    ]
-    return breadcrumb + recent
-
-def save_env_var(key: str, value: str) -> None:
-    env_path = Path(".env")
-    lines = env_path.read_text(encoding="utf-8").splitlines() if env_path.exists() else []
-    found = False
-    for i, ln in enumerate(lines):
-        if ln.startswith(f"{key}="):
-            lines[i] = f"{key}={value}"
-            found = True
-            break
-    if not found:
-        lines.append(f"{key}={value}")
-    env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    os.environ[key] = value
-
-# ─────────────────────────────────────────────────────────────────────────────
-# LLM HELPER
-# ─────────────────────────────────────────────────────────────────────────────
-
-def get_llm():
-    if PROVIDER == "ollama":
-        from langchain_ollama import ChatOllama
-        return ChatOllama(
-            model=os.getenv("OLLAMA_LLM_MODEL", "llama3.2"),
-            base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-            temperature=0,
-            top_p=0.9,  # Improve response quality
-        )
-    from langchain_openai import ChatOpenAI
-    # GitHub Models: OpenAI-compatible endpoint — uses your Copilot subscription
-    gh_token = os.getenv("GITHUB_TOKEN", "")
-    if gh_token:
-        return ChatOpenAI(
-            model="gpt-4o-mini",
-            api_key=gh_token,
-            base_url="https://models.inference.ai.azure.com",
-            temperature=0,
-            streaming=True,
-        )
-    return ChatOpenAI(model="gpt-4o-mini", temperature=0, streaming=True)
-
-@st.cache_resource(show_spinner=False)
-def build_chain(hw_id: str, topic_context: str, disp_name: str = "", language: str = "en") -> dict:
-    """Builds LangChain pipeline using prompts from /prompts directory and metadata.json"""
-    from langchain_core.output_parsers import StrOutputParser
-    from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
-    llm = get_llm()
-
-    # Load topic list from metadata for curriculum boundary enforcement
-    _meta_now = json.loads(META_FILE.read_text(encoding="utf-8"))
-    topic_list = _meta_now.get(hw_id, {}).get("topics", [])
-    
-    # Initialize vector DB for semantic search
-    try:
-        init_search(str(DB_DIR))
-    except:
-        pass  # Vector DB optional; falls back to keyword search
-    
-    if topic_list:
-        topics_formatted = "\n".join(f"  • {t}" for t in topic_list)
-    else:
-        topics_formatted = "  (foundational concepts)"
-
-    tutorial_label = disp_name or hw_id.replace("_", " ").title()
-
-    # Build system prompt from /prompts/tutorial_prompt.json
-    sys_msg = build_tutorial_prompt(
-        topics_list=topics_formatted,
-        tutorial_label=tutorial_label,
-        topic_context=topic_context,
-        language=language
-    )
-
-    # Build the prompt template
-    answer_prompt = ChatPromptTemplate.from_messages([
-        ("system", sys_msg),
-        MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),
-    ])
-
-    return {
-        "llm": llm,
-        "answer_prompt": answer_prompt,
-    }
 
 @st.cache_resource
-def load_knowledge_graph():
-    """Load knowledge graph once per session."""
-    if not GRAPH_RAG_ENABLED:
-        return None, None
-    
+def get_llm_cached(provider: str, model: str):
+    os.environ["LLM_PROVIDER"] = provider
+    if provider == "ollama":
+        os.environ["OLLAMA_LLM_MODEL"] = model
+    elif provider == "github":
+        os.environ["GITHUB_MODEL"] = model
+    elif provider == "openai":
+        os.environ["OPENAI_MODEL"] = model
+    return rag.get_llm()
+
+
+@st.cache_data(ttl=30)
+def ollama_models() -> list[str]:
     try:
-        db_path = str(DB_DIR / "knowledge_graph.db")
-        kg = LightweightKnowledgeGraph(db_path)
-        print(f"✅ Knowledge graph loaded from {db_path}")
-        return kg, None
-    except Exception as e:
-        print(f"⚠️  Knowledge graph load failed: {e}")
-        return None, None
+        import urllib.request
+        import json as _json
+        url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434") + "/api/tags"
+        with urllib.request.urlopen(url, timeout=2) as r:
+            return sorted(m["name"] for m in _json.load(r)["models"])
+    except Exception:
+        return []
 
 
-def get_graph_context_for_homework(user_question: str, hw_key: str, kg) -> str:
-    """Build enriched context using knowledge graph for homework questions."""
-    if not kg:
-        return ""
-    
-    try:
-        # Try to find related entities in the graph
-        result = kg.find_entity_by_name(user_question.split()[0] if user_question.split() else "")
-        
-        if not result:
-            # Try broader search by keywords
-            words = user_question.lower().split()
-            for word in words:
-                result = kg.find_entity_by_name(word)
-                if result:
-                    break
-        
-        if result:
-            context_lines = ["\n**📚 Learning Context from Curriculum:**"]
-            context_lines.append(f"\nTopic: **{result.name}** ({result.entity_type})")
-            
-            # Get prerequisites
-            try:
-                prereqs = kg.find_prerequisites(result.id)
-                if prereqs:
-                    context_lines.append("\n**Prerequisites you should know:**")
-                    for prereq in prereqs[:3]:
-                        context_lines.append(f"  • {prereq['entity'].name}")
-            except:
-                pass
-            
-            # Get learning path
-            try:
-                path = kg.get_learning_path(result.id)
-                if path:
-                    context_lines.append("\n**Suggested learning path:**")
-                    for i, step in enumerate(path[:4], 1):
-                        context_lines.append(f"  {i}. {step.name}")
-            except:
-                pass
-            
-            return "\n".join(context_lines)
-    except Exception as e:
-        pass
-    
-    return ""
+def fix_math(text: str) -> str:
+    text = re.sub(r"\\\[(.+?)\\\]", r"$$\1$$", text, flags=re.DOTALL)
+    return re.sub(r"\\\((.+?)\\\)", r"$\1$", text, flags=re.DOTALL)
 
 
+MAX_VERBATIM = 6  # exchanges sent verbatim; older ones become a breadcrumb
 
 
-def build_homework_chain(hw_key: str, topics_covered: list, week_num: int, graph_context: str = "", language: str = "en") -> dict:
-    """Builds LangChain pipeline for homework problem-solving using /prompts directory (Socratic method)"""
-    from langchain_core.output_parsers import StrOutputParser
-    from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+def trimmed_history(full: list) -> list:
+    if len(full) <= MAX_VERBATIM * 2:
+        return full
+    older, recent = full[:-MAX_VERBATIM * 2], full[-MAX_VERBATIM * 2:]
+    lines = []
+    for i in range(0, len(older) - 1, 2):
+        q = older[i].content[:70].replace("\n", " ")
+        a = older[i + 1].content[:110].replace("\n", " ")
+        lines.append(f"• Q: “{q}…” → A: “{a}…”")
+    return [
+        HumanMessage("[Recap of earlier discussion:\n" + "\n".join(lines) +
+                     "\nBriefly re-explain, don't repeat in full, if these come up again.]"),
+        AIMessage("[Noted — I'll build on what we already covered.]"),
+    ] + recent
 
-    llm = get_llm()
-    hw_data = load_homework().get(hw_key, {})
-    
-    # Build topics known so far (cumulative: all weeks up to this week)
-    all_hw = load_homework()
-    known_concepts = []
-    for k, v in all_hw.items():
-        if v.get("week", 0) <= week_num:
-            known_concepts.extend(v.get("topics", []))
-    known_concepts = sorted(set(known_concepts))
-    
-    concepts_str = "\n".join(f"  • {c}" for c in known_concepts) if known_concepts else "  (foundational concepts)"
-    
-    hw_title = hw_data.get("title", f"Homework {week_num}")
-    hw_description = hw_data.get("description", "")
-    key_concepts_list = hw_data.get("key_concepts", [])
-    key_concepts = "\n".join(f"  • {c}" for c in key_concepts_list)
-    
-    # Add graph context if available
-    if graph_context:
-        key_concepts = graph_context + "\n\n" + key_concepts
-    
-    # Build system prompt from /prompts/homework_prompt.json
-    sys_msg = build_homework_prompt(
-        concepts_list=concepts_str,
-        hw_title=hw_title,
-        hw_description=hw_description,
-        key_concepts=key_concepts,
-        language=language
-    )
-    
-    # Build the prompt template
-    answer_prompt = ChatPromptTemplate.from_messages([
-        ("system", sys_msg),
-        MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),
-    ])
-
-    return {
-        "llm": llm,
-        "answer_prompt": answer_prompt,
-        "hw_data": hw_data,
-    }
 
 # ─────────────────────────────────────────────────────────────────────────────
-# SIDEBAR  —  dark admin panel (teacher only)
+# Guards: index must exist
+# ─────────────────────────────────────────────────────────────────────────────
+
+if not rag.INDEX_DIR.exists() or not rag.CHUNKS_FILE.exists():
+    st.markdown(
+        "<div class='hero'><div class='logo'>🎓</div><h1>Course Tutor</h1>"
+        "<p>The course index hasn't been built yet.</p></div>",
+        unsafe_allow_html=True,
+    )
+    st.code("python build_index.py", language="powershell")
+    st.stop()
+
+meta = rag.load_meta()
+homework = rag.load_homework()
+retriever = get_retriever()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Sidebar
 # ─────────────────────────────────────────────────────────────────────────────
 
 with st.sidebar:
-    st.markdown("## ⚙️ Settings")
-    st.divider()
-    
-    # Language selector
-    lang_col = st.columns([1, 1])
-    with lang_col[0]:
-        selected_lang = st.selectbox(
-            get_text(current_lang, "language"),
-            options=["en", "he"],
-            format_func=lambda x: get_text(current_lang, "english" if x == "en" else "hebrew"),
-            label_visibility="collapsed",
-            key="lang_selector",
-        )
-        if selected_lang != st.session_state.language:
-            st.session_state.language = selected_lang
-            st.rerun()
-    
+    st.markdown("### 🎓 Course Tutor")
+    st.caption("Curriculum-gated hybrid RAG")
     st.divider()
 
-    # Only show API key section for OpenAI provider
-    if PROVIDER == "openai":
-        with st.expander("🔑 API Key", expanded=not api_key_ok()):
-            if api_key_ok():
-                src = "GitHub Copilot" if os.getenv("GITHUB_TOKEN") else "OpenAI"
-                st.success(f"{src} key saved ✅")
+    mode = st.radio("Mode", ["📖 Learn", "💪 Homework"], label_visibility="collapsed")
+    is_hw = "Homework" in mode
 
-            st.markdown("**Option A — GitHub Copilot** *(recommended — you already pay for it)*")
-            st.caption(
-                "Get a free PAT at [github.com/settings/tokens](https://github.com/settings/tokens) "
-                "→ *Generate new token (classic)* → no scopes needed → copy."
-            )
-            gh_input = st.text_input(
-                "GitHub PAT", type="password",
-                placeholder="github_pat_... or ghp_...",
-                label_visibility="collapsed",
-            )
-            if st.button("Save GitHub token", use_container_width=True):
-                if gh_input.startswith(("github_pat_", "ghp_")):
-                    save_env_var("GITHUB_TOKEN", gh_input)
-                    save_env_var("OPENAI_API_KEY", "")   # clear OpenAI key
-                    build_chain.clear()
-                    st.success("GitHub token saved! Uses gpt-4o-mini via Copilot.")
-                    st.rerun()
-                else:
-                    st.error("Must start with github_pat_ or ghp_")
-
-            st.divider()
-            st.markdown("**Option B — OpenAI key** *(pay-per-use, needs credits)*")
-            oi = st.text_input(
-                "OpenAI key", type="password",
-                placeholder="sk-proj-...",
-                label_visibility="collapsed",
-            )
-            if st.button("Save OpenAI key", use_container_width=True):
-                if oi.startswith("sk-"):
-                    save_env_var("OPENAI_API_KEY", oi)
-                    save_env_var("GITHUB_TOKEN", "")   # clear GH token
-                    build_chain.clear()
-                st.success("OpenAI key saved!")
-                st.rerun()
-            else:
-                st.error("Must start with sk-")
-
-    st.divider()
-    active = "GitHub Copilot" if os.getenv("GITHUB_TOKEN") else PROVIDER.upper()
-    st.caption(f"LLM: **{active}**")
-    if PROVIDER == "openai" and not api_key_ok():
-        st.warning("Chat needs an API key.")
-
-# ─────────────────────────────────────────────────────────────────────────────
-# MAIN  —  student chat interface
-# ─────────────────────────────────────────────────────────────────────────────
-
-# Load knowledge graph once at session start
-kg, _ = load_knowledge_graph()
-
-meta    = load_meta()
-hw_list = get_hw_list()
-homework_list = get_homework_list()
-
-# ── Nothing loaded yet ────────────────────────────────────────────────────────
-if not hw_list and not homework_list:
-    st.markdown(
-        "<div style=\"text-align:center;padding:80px 0;color:#64748b\">"
-        "<div style=\"font-size:4rem\">🎓</div>"
-        "<h2 style=\"color:#1e293b;margin:12px 0 8px\">Course Tutor</h2>"
-        "<p style=\"font-size:1rem\">No tutorials or homework loaded.<br>"
-        "Please ensure metadata.json and homework.json are populated in the db/ folder.</p></div>",
-        unsafe_allow_html=True,
-    )
-    st.stop()
-
-# ── Mode selector: Tutorial vs Homework ───────────────────────────────────────
-col_mode_1, col_mode_2 = st.columns(2)
-with col_mode_1:
-    mode_tabs = st.radio(
-        get_text(current_lang, "select_mode"),
-        options=[
-            get_text(current_lang, "mode_learn"),
-            get_text(current_lang, "mode_homework")
-        ],
-        horizontal=True,
-        key="mode_selector",
-    )
-
-mode = "homework" if get_text(current_lang, "mode_homework") in mode_tabs else "tutorial"
-
-# ────────────────────────────────────────────────────────────────────────────────
-# TUTORIAL MODE
-# ────────────────────────────────────────────────────────────────────────────────
-
-if mode == "tutorial":
-    if not hw_list:
-        st.warning("No tutorials loaded yet. Add tutorial PDFs to metadata.json")
-        st.stop()
-    
-    # ── HW selector bar ───────────────────────────────────────────────────────────
-    hw_labels = {hw: meta.get(hw, {}).get("display_name", hw) for hw in hw_list}
-
-    col_sel, col_clr = st.columns([5, 1])
-    with col_sel:
-        selected_hw = st.selectbox(
-            "hw",
-            options=hw_list,
-            format_func=lambda hw: "📚  " + hw_labels[hw],
-            label_visibility="collapsed",
-            key="hw_selector",
+    if not is_hw:
+        tut_ids = sorted(meta, key=rag.tutorial_week)
+        sel = st.selectbox(
+            "Week / tutorial", tut_ids,
+            format_func=lambda t: meta[t].get("display_name", t),
+            index=len(tut_ids) - 1,
         )
-    with col_clr:
-        if st.button("🗑 Clear", use_container_width=True, help="Clear conversation"):
-            st.session_state.chat_history     = []
-            st.session_state.display_messages = []
-            st.rerun()
-
-    hw_info   = meta.get(selected_hw, {})
-    topic_ctx = hw_info.get("topic_context", "")
-    disp_name = hw_info.get("display_name", selected_hw)
-
-    # Reset on HW switch
-    if st.session_state.get("active_hw") != selected_hw:
-        st.session_state.active_hw        = selected_hw
-        st.session_state.active_mode      = "tutorial"
-        st.session_state.chat_history     = []
-        st.session_state.display_messages = []
-
-# ────────────────────────────────────────────────────────────────────────────────
-# HOMEWORK MODE
-# ────────────────────────────────────────────────────────────────────────────────
-
-elif mode == "homework":
-    if not homework_list:
-        st.warning("No homework assignments loaded yet. Add homework.json to db/")
-        st.stop()
-    
-    # ── Homework selector bar ─────────────────────────────────────────────────────
-    homework_data = load_homework()
-    hw_labels_hw = {k: f"Week {homework_data[k].get('week', '?')}: {homework_data[k].get('title', k)}" 
-                    for k in homework_list}
-
-    col_sel, col_clr = st.columns([5, 1])
-    with col_sel:
-        selected_hw = st.selectbox(
-            "hw",
-            options=homework_list,
-            format_func=lambda hw: "💪  " + hw_labels_hw.get(hw, hw),
-            label_visibility="collapsed",
-            key="hw_selector_hw",
-        )
-    with col_clr:
-        if st.button("🗑 Clear", use_container_width=True, help="Clear conversation"):
-            st.session_state.chat_history     = []
-            st.session_state.display_messages = []
-            st.rerun()
-
-    hw_info = homework_data.get(selected_hw, {})
-    disp_name = hw_info.get("title", selected_hw)
-    week_num = hw_info.get("week", 1)
-    
-    # Show homework info
-    with st.expander(f"� {disp_name} Details", expanded=False):
-        st.markdown(f"**Description**: {hw_info.get('description', 'N/A')}")
-        st.markdown(f"**Problems**: {hw_info.get('problems', '?')}")
-        st.markdown(f"**Topics**: {', '.join(hw_info.get('topics', []))}")
-        if hw_info.get("problem_preview"):
-            st.markdown(f"**Preview**: {hw_info['problem_preview'][:300]}...")
-
-    # Reset on HW switch
-    if st.session_state.get("active_hw") != selected_hw or st.session_state.get("active_mode") != "homework":
-        st.session_state.active_hw        = selected_hw
-        st.session_state.active_mode      = "homework"
-        st.session_state.chat_history     = []
-        st.session_state.display_messages = []
-    
-    # Use homework-specific chain
-    topic_ctx = ""  # Not used in homework mode
-
-st.divider()
-
-# ── Welcome screen (empty chat) ───────────────────────────────────────────────
-if not st.session_state.get("display_messages"):
-    welcome_msg = (
-        "I'm your Socratic tutor. I'll guide you toward the answer "
-        "with questions and hints — not give it to you directly."
-    )
-    if mode == "homework":
-        welcome_msg += f"\n\n**{disp_name}**: {hw_info.get('description', '')}"
-    
-    st.markdown(
-        f"<div style=\"text-align:center;padding:32px 0 20px;color:#475569\">"
-        f"<div style=\"font-size:3rem\">{'💪' if mode == 'homework' else '🎓'}</div>"
-        f"<h3 style=\"color:#1e293b;margin:10px 0 6px\">{disp_name}</h3>"
-        f"<p style=\"margin:0 auto;max-width:480px;line-height:1.6\">"
-        f"{welcome_msg}<br>"
-        "<b>Ask your first question below.</b>"
-        "</p></div>",
-        unsafe_allow_html=True,
-    )
-
-# ── Render conversation ───────────────────────────────────────────────────────
-for msg in st.session_state.get("display_messages", []):
-    avatar = "🧑‍🎓" if msg["role"] == "user" else "🎓"
-    with st.chat_message(msg["role"], avatar=avatar):
-        st.markdown(msg["content"])
-
-# ── No API key guard ──────────────────────────────────────────────────────────
-# Only require API key for OpenAI provider; Ollama works without keys
-if PROVIDER == "openai" and not api_key_ok():
-    st.chat_input("Open the sidebar to add your API key…", disabled=True)
-    st.info("👈 Open the sidebar (top-left ▸) and add your OpenAI API key to start chatting.")
-    st.stop()
-elif PROVIDER != "openai":
-    # For Ollama, skip API key requirement
-    pass
-
-# ── Chat input + streaming response ──────────────────────────────────────────
-placeholder = f"Ask about {disp_name}…"
-if user_input := st.chat_input(placeholder):
-
-    # ═══ HOMEWORK SCOPE VALIDATION ═══════════════════════════════════════════════
-    # For homework mode, validate that the question stays on topic
-    if mode == "homework":
-        hw_scope_topics = hw_info.get("topics", [])
-        is_valid, reason = is_in_scope(user_input, selected_hw, hw_scope_topics)
-        
-        if not is_valid:
-            # Out of scope question - show error and redirect
-            with st.chat_message("user", avatar="🧑‍🎓"):
-                st.markdown(user_input)
-            
-            with st.chat_message("assistant", avatar="🎓"):
-                # Build error message in the student's language
-                if current_lang == "he":
-                    error_prefix = f"❌ השאלה הזו לא נראית קשורה לשיעורי הבית. בואו נתמקד בבעיה הנוכחית."
-                else:
-                    error_prefix = f"❌ This question doesn't seem to relate to the homework. Please focus on the current problem."
-                
-                error_msg = (
-                    f"{error_prefix}\n\n"
-                    f"**{get_text(current_lang, 'refocus')}**\n\n"
-                    f"{get_scope_reminder(selected_hw, current_lang)}"
-                )
-                st.markdown(error_msg)
-            
-            # Store the message pair but mark it as validation error
-            st.session_state.setdefault("chat_history", []).extend([
-                HumanMessage(content=user_input),
-                AIMessage(content=error_msg),
-            ])
-            st.session_state.setdefault("display_messages", []).extend([
-                {"role": "user", "content": user_input},
-                {"role": "assistant", "content": error_msg},
-            ])
-            st.rerun()
-
-    # 1. Show user message IMMEDIATELY — before any processing
-    with st.chat_message("user", avatar="🧑‍🎓"):
-        st.markdown(user_input)
-
-    # 2. Use vector search to find related topics (enhances context)
-    enhanced_context = topic_ctx
-    if mode == "tutorial":
-        try:
-            related_topics = find_relevant_topics(user_input, top_k=3)
-            if related_topics:
-                related_names = [t[0] for t in related_topics if t[2] == selected_hw]  # Filter to current tutorial
-                if related_names:
-                    enhanced_context = topic_ctx + f"\n\n[Related topics from your question: {', '.join(related_names)}]"
-        except:
-            pass  # Vector search failed; use original context
-
-    # 3. Build appropriate chain based on mode
-    if mode == "homework":
-        # Get graph context for homework questions
-        graph_ctx = ""
-        if kg:
-            graph_ctx = get_graph_context_for_homework(user_input, selected_hw, kg)
-        parts        = build_homework_chain(selected_hw, [], week_num, graph_ctx, current_lang)
+        week = rag.tutorial_week(sel)
+        display_name = meta[sel].get("display_name", sel)
+        topics = meta[sel].get("topics", [])
     else:
-        parts        = build_chain(selected_hw, enhanced_context, disp_name, current_lang)
-    
-    llm          = parts["llm"]
-    ans_prompt   = parts["answer_prompt"]
-    chat_history = trimmed_history(st.session_state.get("chat_history", []))
+        hw_ids = sorted(homework, key=lambda k: homework[k].get("week", 0))
+        sel = st.selectbox(
+            "Assignment", hw_ids,
+            format_func=lambda k: f"Week {homework[k].get('week', '?')} · {homework[k].get('title', k)}",
+        )
+        week = homework[sel].get("week", 1)
+        display_name = homework[sel].get("title", sel)
+        topics = sorted({
+            t for k, v in homework.items() if v.get("week", 0) <= week for t in v.get("topics", [])
+        })
+
+    st.divider()
+    st.markdown("**Model**")
+
+    providers = ["ollama", "github", "openai"]
+    provider = st.selectbox(
+        "Provider", providers,
+        index=providers.index(os.getenv("LLM_PROVIDER", "ollama"))
+        if os.getenv("LLM_PROVIDER", "ollama") in providers else 0,
+        format_func={"ollama": "Ollama (local · free)", "github": "GitHub Models (free)",
+                     "openai": "OpenAI (paid)"}.get,
+    )
+
+    if provider == "ollama":
+        local = ollama_models()
+        if local:
+            default = os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b")
+            model = st.selectbox("Model", local,
+                                 index=local.index(default) if default in local else 0)
+        else:
+            st.error("Ollama isn't running — start it or pick another provider.")
+            model = os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b")
+    elif provider == "github":
+        model = st.selectbox("Model", ["gpt-4o-mini", "gpt-4o", "Phi-3.5-mini-instruct",
+                                       "Meta-Llama-3.1-8B-Instruct"])
+        if not os.getenv("GITHUB_TOKEN"):
+            tok = st.text_input("GitHub token", type="password", placeholder="github_pat_… / ghp_…")
+            if tok:
+                os.environ["GITHUB_TOKEN"] = tok
+    else:
+        model = st.selectbox("Model", ["gpt-4o-mini", "gpt-4o"])
+        if not os.getenv("OPENAI_API_KEY"):
+            key = st.text_input("OpenAI key", type="password", placeholder="sk-…")
+            if key:
+                os.environ["OPENAI_API_KEY"] = key
+
+    with st.expander("⚙️ Retrieval"):
+        k_val = st.slider("Passages", 2, 8, 4)
+        modes = ["dense", "hybrid", "hybrid+rerank"]
+        ret_mode = st.selectbox(
+            "Mode", modes,
+            index=modes.index(rag.RETRIEVAL_MODE) if rag.RETRIEVAL_MODE in modes else 0,
+            format_func={"dense": "Dense (benchmark winner · fast)",
+                         "hybrid": "Hybrid (dense + BM25)",
+                         "hybrid+rerank": "Hybrid + rerank (thorough · slow)"}.get,
+        )
+        show_sources = st.toggle("Show sources", value=True)
+
+    st.divider()
+    if st.button("🗑  Clear conversation", use_container_width=True):
+        st.session_state.pop("history", None)
+        st.session_state.pop("display", None)
+        st.rerun()
+    st.caption(f"Embeddings: `{rag.EMBED_MODEL.split('/')[-1]}` · index: "
+               f"{len(retriever.chunks)} chunks")
+
+# Reset chat when the context changes
+ctx_key = f"{mode}|{sel}"
+if st.session_state.get("ctx") != ctx_key:
+    st.session_state.ctx = ctx_key
+    st.session_state.history = []
+    st.session_state.display = []
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Hero + suggestions (empty chat)
+# ─────────────────────────────────────────────────────────────────────────────
+
+pending = None
+
+if not st.session_state.get("display"):
+    subtitle = ("Socratic guidance — hints and questions, never the final answer."
+                if is_hw else "Grounded in your course material, week by week.")
+    st.markdown(
+        f"<div class='hero'><div class='logo'>{'💪' if is_hw else '🎓'}</div>"
+        f"<h1>{display_name}</h1><p>{subtitle}</p></div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f"<div style='text-align:center;margin-bottom:1.3rem'><span class='pill'>"
+        f"<span class='dot'></span>{rag.llm_label()} · week {week} scope</span></div>",
+        unsafe_allow_html=True,
+    )
+
+    if is_hw:
+        chips = ["Where should I start?", "What technique fits this problem?",
+                 "Can you check my reasoning so far?", "Give me a small hint."]
+    else:
+        pool = topics[-8:] if len(topics) > 8 else topics
+        chips = [f"Explain: {t}" for t in pool[:2]] + [f"Give me an example of {t.lower()}" for t in pool[2:3]]
+        chips.append("Quiz me on this week's material")
+
+    cols = st.columns(2)
+    for i, chip in enumerate(chips[:4]):
+        if cols[i % 2].button(chip, key=f"chip{i}", use_container_width=True):
+            pending = chip
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Conversation
+# ─────────────────────────────────────────────────────────────────────────────
+
+for m in st.session_state.get("display", []):
+    with st.chat_message(m["role"], avatar="🧑‍🎓" if m["role"] == "user" else "🎓"):
+        st.markdown(m["content"])
+        if m.get("sources") and show_sources:
+            with st.expander(f"📚 {len(m['sources'])} sources"):
+                for s in m["sources"]:
+                    st.markdown(f"<div class='src-line'><b>{s['section']}</b> · score {s['score']:.2f}</div>",
+                                unsafe_allow_html=True)
+
+user_input = st.chat_input(f"Ask about {display_name}…")
+question = pending or user_input
+
+if question:
+    with st.chat_message("user", avatar="🧑‍🎓"):
+        st.markdown(question)
+
+    hits = retriever.retrieve(question, max_tutorial=week, k=k_val, mode=ret_mode)
+    context = rag.format_context(hits)
+    if is_hw:
+        sys_prompt = rag.homework_system_prompt(homework[sel], week, topics, context)
+    else:
+        sys_prompt = rag.tutor_system_prompt(week, display_name, topics, context)
+
+    llm = get_llm_cached(provider, model)
+    messages = ([SystemMessage(sys_prompt)]
+                + trimmed_history(st.session_state.history)
+                + [HumanMessage(question)])
 
     with st.chat_message("assistant", avatar="🎓"):
-        # Build messages and stream response
-        messages = ans_prompt.format_messages(
-            chat_history=chat_history,
-            input=user_input,
-        )
+        slot, buf = st.empty(), ""
         try:
-            # Show "thinking..." indicator while waiting for first token
-            _slot  = st.empty()
-            _slot.markdown("🤔 *Thinking...*")
-            _buf   = ""
-            _started = False
-            
-            # Stream token-by-token with cursor, then re-render with math fixed
-            for _chunk in llm.stream(messages):
-                if not _started:
-                    _slot.empty()  # Clear "thinking..." on first token
-                    _started = True
-                _buf += _chunk.content
-                _slot.markdown(_buf + "\u258c")   # ▌ cursor while streaming
-            
-            # Final render: convert \( \) and \[ \] to $ and $$ for KaTeX
-            import re as _re
-            _fixed = _re.sub(r"\\\[(.+?)\\\]", r"$$\1$$", _buf, flags=_re.DOTALL)
-            _fixed = _re.sub(r"\\\((.+?)\\\)",  r"$\1$",   _fixed, flags=_re.DOTALL)
-            _slot.markdown(_fixed)
-            answer = _fixed
+            for chunk in llm.stream(messages):
+                buf += chunk.content
+                slot.markdown(buf + " ▌")
+            answer = fix_math(buf)
+            slot.markdown(answer)
         except Exception as exc:
-            answer = f"⚠️ Error calling the model: {exc}"
-            st.markdown(answer)
+            answer = f"⚠️ **Model error:** {exc}"
+            slot.markdown(answer)
 
-    # 5. Persist to session state, then force a clean re-render from history
-    #    (prevents the "immediate render" coexisting with the history loop render)
-    st.session_state.setdefault("chat_history", []).extend([
-        HumanMessage(content=user_input),
-        AIMessage(content=answer),
-    ])
-    st.session_state.setdefault("display_messages", []).extend([
-        {"role": "user",      "content": user_input},
-        {"role": "assistant", "content": answer},
-    ])
+    sources = [{"section": h.chunk.section, "score": h.score} for h in hits]
+    st.session_state.history += [HumanMessage(question), AIMessage(answer)]
+    st.session_state.display += [
+        {"role": "user", "content": question},
+        {"role": "assistant", "content": answer, "sources": sources},
+    ]
     st.rerun()
-
-

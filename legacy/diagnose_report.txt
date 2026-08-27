@@ -1,0 +1,100 @@
+
+============================================================
+TUTORIAL_1
+============================================================
+  ✅ Query: Big-O notation asymptotic complexity
+     Hits: 3
+     Top:  סיבוכיות זמן ריצה Running Time Complexity and Asymptotic Order of Growth 10
+
+  ✅ Query: sorting algorithm time complexity
+     Hits: 3
+     Top:  סיבוכיות זמן ריצה Running Time Complexity and Asymptotic Order of Growth 10
+
+
+============================================================
+TUTORIAL_2
+============================================================
+  ✅ Query: divide and conquer recurrence relation
+     Hits: 3
+     Top:  •סיבוכיות מיון המיזוג נתונה ע"י הנוסחה הרקורסיבית 𝑇 𝑛 = 2𝑇 Τ𝑛 2 + Θ(𝑛). •נתבונן 
+
+  ✅ Query: merge sort Master Theorem
+     Hits: 3
+     Top:  מיון מיזוג Merge Sort 3
+
+
+============================================================
+TUTORIAL_3
+============================================================
+  ✅ Query: greedy algorithm correctness proof
+     Hits: 3
+     Top:  בעיית שיבוץ הסועדים The “Scheduling all Intervals” Problem 18
+
+  ✅ Query: exchange argument optimal solution
+     Hits: 3
+     Top:  בעיית שיבוץ הסועדים The “Scheduling all Intervals” Problem 18
+
+
+============================================================
+TUTORIAL_4
+============================================================
+  ✅ Query: dynamic programming Fibonacci O(n)
+     Hits: 3
+     Top:  סדרת פיבונאצ'י The Fibonacci Sequence 3
+
+  ✅ Query: optimal substructure overlapping subproblems
+     Hits: 3
+     Top:  כיסוי מינימלי בצמתים על עצים (בעזרת תכנון דינאמי) Minimum Vertex Cover on Trees 
+
+  ✅ Query: memoization recurrence table
+     Hits: 3
+     Top:  סדרת פיבונאצ'י The Fibonacci Sequence 3
+
+
+============================================================
+TUTORIAL_5
+============================================================
+  ✅ Query: dynamic programming continued advanced
+     Hits: 3
+     Top:  כיסוי מינימלי בצמתים על עצים (בעזרת תכנון דינאמי) Minimum Vertex Cover on Trees 
+
+  ✅ Query: DP recurrence solution reconstruction
+     Hits: 3
+     Top:  פתרון דוגמה 28 I J F G HED A B C L M N K + - A 1 0 B 1 0 C 1 0 D 1 0 E 1 1 F 1 0
+
+
+============================================================
+TUTORIAL_6
+============================================================
+  ✅ Query: subset sum partition problem
+     Hits: 3
+     Top:  בהינתןn,כמהאפשרויותשונותאפשרלחלקאתהקבוצה{1,…,n}ל-2קבוצות שונות(שהאיחוד שלהם   הו
+
+  ✅ Query: counting ways divide set
+     Hits: 3
+     Top:  מספר מסלולים בDAG Number of Paths in a DAG
+
+
+============================================================
+TUTORIAL_7
+============================================================
+  ✅ Query: minimum spanning tree cut property
+     Hits: 3
+     Top:  האלגוריתם של קרוסקל למציאת עץ פורש מינימלי Kruskal’s Algorithm 34
+
+  ✅ Query: Kruskal Prim algorithm
+     Hits: 3
+     Top:  האלגוריתם של פרים Prim’s Algorithm 61
+
+
+============================================================
+TUTORIAL_8
+============================================================
+  ✅ Query: Dijkstra shortest path algorithm
+     Hits: 3
+     Top:  •נניח שיש לנו אלגוריתם כלשהו לAPSP(All pairs shortest path) ,עם משקלים כלליים.  
+
+  ✅ Query: Bellman-Ford negative edges relaxation
+     Hits: 3
+     Top:  •נניח שיש לנו אלגוריתם כלשהו לAPSP(All pairs shortest path) ,עם משקלים כלליים.  
+

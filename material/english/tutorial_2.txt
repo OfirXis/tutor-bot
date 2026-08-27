@@ -1,0 +1,156 @@
+# Tutorial 2 — Divide & Conquer
+
+## Core Concepts
+The Divide and Conquer (D&C) algorithm design paradigm involves breaking a problem into smaller subproblems, solving each subproblem recursively, and then combining the solutions to solve the original problem. The general recurrence relation for a D&C algorithm can be expressed as:
+
+\[ T(n) = aT\left(\frac{n}{b}\right) + f(n) \]
+
+Where:
+- \( n \) is the size of the problem,
+- \( a \) is the number of subproblems,
+- \( b \) is the factor by which the problem size is reduced,
+- \( f(n) \) is the cost of the work done outside the recursive calls.
+
+### Master Theorem
+The Master Theorem provides a method for analyzing the time complexity of divide and conquer algorithms. It states:
+
+Let \( k = \log_b a \). Then:
+1. If \( f(n) = O(n^{k - \epsilon}) \) for some \( \epsilon > 0 \), then \( T(n) = \Theta(n^k) \).
+2. If \( f(n) = \Theta(n^k \log^p n) \) for some \( p \geq 0 \), then \( T(n) = \Theta(n^k \log^{p + 1} n) \).
+3. If \( f(n) = \Omega(n^{k + \epsilon}) \) for some \( \epsilon > 0 \) and \( a f(n/b) \leq c f(n) \) for some \( c < 1 \) and sufficiently large \( n \), then \( T(n) = \Theta(f(n)) \).
+
+## Algorithms & Complexity
+
+### 1. Merge Sort
+**Description**: Merge Sort is a classic example of a divide and conquer algorithm used for sorting an array.
+
+**Pseudocode**:
+```plaintext
+function mergeSort(array):
+    if length(array) <= 1:
+        return array
+    mid = length(array) / 2
+    left = mergeSort(array[0:mid])
+    right = mergeSort(array[mid:length(array)])
+    return merge(left, right)
+
+function merge(left, right):
+    result = []
+    while left and right are not empty:
+        if left[0] <= right[0]:
+            append left[0] to result
+            remove left[0]
+        else:
+            append right[0] to result
+            remove right[0]
+    append remaining elements of left and right to result
+    return result
+```
+
+**Recurrence**:
+\[ T(n) = 2T\left(\frac{n}{2}\right) + O(n) \]
+
+**Complexity Analysis**:
+Using the Master Theorem:
+- Here, \( a = 2 \), \( b = 2 \), and \( f(n) = O(n) \).
+- \( k = \log_2 2 = 1 \).
+- Since \( f(n) = O(n^{1 - \epsilon}) \) for \( \epsilon = 1 \), we have \( T(n) = \Theta(n \log n) \).
+
+### 2. Binary Search
+**Description**: Binary Search is an efficient algorithm for finding an item from a sorted array.
+
+**Pseudocode**:
+```plaintext
+function binarySearch(array, target):
+    low = 0
+    high = length(array) - 1
+    while low <= high:
+        mid = (low + high) / 2
+        if array[mid] == target:
+            return mid
+        else if array[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+```
+
+**Recurrence**:
+\[ T(n) = T\left(\frac{n}{2}\right) + O(1) \]
+
+**Complexity Analysis**:
+Using the Master Theorem:
+- Here, \( a = 1 \), \( b = 2 \), and \( f(n) = O(1) \).
+- \( k = \log_2 1 = 0 \).
+- Since \( f(n) = O(n^{0 - \epsilon}) \) for any \( \epsilon > 0 \), we have \( T(n) = \Theta(\log n) \).
+
+### 3. Karatsuba Multiplication
+**Description**: Karatsuba is an efficient algorithm for multiplying large numbers.
+
+**Pseudocode**:
+```plaintext
+function karatsuba(x, y):
+    if x < 10 or y < 10:
+        return x * y
+    n = max(length(x), length(y))
+    half = n / 2
+    a = x // 10^half
+    b = x % 10^half
+    c = y // 10^half
+    d = y % 10^half
+    ac = karatsuba(a, c)
+    bd = karatsuba(b, d)
+    abcd = karatsuba(a + b, c + d)
+    return ac * 10^(2 * half) + (abcd - ac - bd) * 10^half + bd
+```
+
+**Recurrence**:
+\[ T(n) = 3T\left(\frac{n}{2}\right) + O(n) \]
+
+**Complexity Analysis**:
+Using the Master Theorem:
+- Here, \( a = 3 \), \( b = 2 \), and \( f(n) = O(n) \).
+- \( k = \log_2 3 \approx 1.585 \).
+- Since \( f(n) = O(n^{1 - \epsilon}) \) for \( \epsilon = 0.585 \), we have \( T(n) = \Theta(n^{\log_2 3}) \).
+
+## Theorems & Proofs
+- **Master Theorem**: A method for analyzing the time complexity of divide and conquer algorithms.
+- **Induction Proof**: Used to prove the correctness of algorithms, particularly in recursive algorithms.
+
+## Worked Examples
+
+### Example 1: Merge Sort
+Given the array [38, 27, 43, 3, 9, 82, 10], apply Merge Sort:
+1. Split into [38, 27, 43] and [3, 9, 82, 10].
+2. Further split until single elements: [38], [27], [43], [3], [9], [82], [10].
+3. Merge back: [27, 38, 43], [3, 9, 10, 82].
+4. Final merge: [3, 9, 10, 27, 38, 43, 82].
+
+### Example 2: Binary Search
+Given a sorted array [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] and target 7:
+1. Check middle (5): 7 > 5, search right half.
+2. Check middle (8): 7 < 8, search left half.
+3. Check middle (7): found at index 6.
+
+## Practice Problems (with solutions)
+
+### Problem 1: Merge Sort Complexity
+**Question**: Analyze the time complexity of Merge Sort using the Master Theorem.
+**Solution**: \( T(n) = 2T(n/2) + O(n) \) leads to \( T(n) = O(n \log n) \).
+
+### Problem 2: Binary Search Implementation
+**Question**: Implement Binary Search and analyze its complexity.
+**Solution**: Implement as shown above; complexity is \( O(\log n) \).
+
+### Problem 3: Karatsuba Multiplication
+**Question**: What is the time complexity of Karatsuba multiplication?
+**Solution**: \( T(n) = 3T(n/2) + O(n) \) leads to \( T(n) = O(n^{\log_2 3}) \).
+
+### Problem 4: Maximum Profit Problem
+**Question**: Given stock prices over n days, find the maximum profit from one buy and one sell.
+**Solution**: Use D&C to split prices, find min in left and max in right, combine results.
+
+## Common Mistakes to Avoid
+- Misapplying the Master Theorem: Ensure conditions are met for each case.
+- Forgetting base cases in recursive algorithms: Always define a clear base case.
+- Not considering the cost of combining solutions: This can significantly affect overall complexity.

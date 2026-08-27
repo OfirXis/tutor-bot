@@ -23,6 +23,12 @@ if (-not (Test-Path "$venv\Scripts\python.exe")) {
 Write-Host "Installing requirements (only downloads new packages)..." -ForegroundColor Cyan
 pip install -r requirements.txt --quiet --upgrade
 
+# Build the retrieval index on first run
+if (-not (Test-Path "db\index")) {
+    Write-Host "Building course index (first run only)..." -ForegroundColor Cyan
+    python build_index.py
+}
+
 # Launch the app
 Write-Host "`nStarting Course Tutor — opening browser at http://localhost:8501`n" -ForegroundColor Green
 streamlit run app.py

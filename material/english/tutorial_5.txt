@@ -1,0 +1,166 @@
+# Tutorial 5: Dynamic Programming (continued)
+
+## Core Concepts
+Dynamic programming (DP) is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable when the problem can be divided into overlapping subproblems that can be solved independently. The key idea is to store the results of subproblems to avoid redundant calculations.
+
+### Key Concepts:
+1. **Optimal Substructure**: A problem exhibits optimal substructure if an optimal solution to the problem contains optimal solutions to its subproblems.
+2. **Overlapping Subproblems**: A problem has overlapping subproblems if it can be broken down into subproblems that are reused several times.
+
+## Algorithms & Complexity
+
+### 1. Coin Change Problem
+**Problem Statement**: Given a set of coin denominations and an amount, find the minimum number of coins needed to make that amount.
+
+**Recurrence Relation**:
+\[ dp[i] = \min(dp[i - \text{coin}] + 1) \]
+
+**Pseudocode**:
+```plaintext
+function coinChange(coins, amount):
+    dp = array of size (amount + 1) initialized to infinity
+    dp[0] = 0
+    for i from 1 to amount:
+        for coin in coins:
+            if i - coin >= 0:
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+    return dp[amount] if dp[amount] != infinity else -1
+```
+
+**Time Complexity**: \( O(\text{amount} \times \text{coins}) \)
+
+---
+
+### 2. Matrix Chain Multiplication
+**Problem Statement**: Given a sequence of matrices, find the most efficient way to multiply these matrices together.
+
+**Recurrence Relation**:
+\[ dp[i][j] = \min_{k=i}^{j-1} (dp[i][k] + dp[k+1][j] + p[i-1] \cdot p[k] \cdot p[j]) \]
+
+**Pseudocode**:
+```plaintext
+function matrixChainOrder(p):
+    n = length(p) - 1
+    dp = array of size (n+1)(n+1) initialized to 0
+    for length from 2 to n:
+        for i from 1 to n - length + 1:
+            j = i + length - 1
+            dp[i][j] = infinity
+            for k from i to j - 1:
+                q = dp[i][k] + dp[k+1][j] + p[i-1] * p[k] * p[j]
+                if q < dp[i][j]:
+                    dp[i][j] = q
+    return dp[1][n]
+```
+
+**Time Complexity**: \( O(n^3) \)
+
+---
+
+### 3. Edit Distance
+**Problem Statement**: Given two strings, find the minimum number of operations required to convert one string into the other.
+
+**Recurrence Relation**:
+\[ dp[i][j] = dp[i-1][j-1] \text{ if match, else } 1 + \min(\text{del}, \text{ins}, \text{rep}) \]
+
+**Pseudocode**:
+```plaintext
+function editDistance(str1, str2):
+    m = length(str1)
+    n = length(str2)
+    dp = array of size (m+1)(n+1)
+    for i from 0 to m:
+        dp[i][0] = i
+    for j from 0 to n:
+        dp[0][j] = j
+    for i from 1 to m:
+        for j from 1 to n:
+            if str1[i-1] == str2[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+            else:
+                dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
+    return dp[m][n]
+```
+
+**Time Complexity**: \( O(mn) \)
+
+---
+
+### 4. Longest Increasing Subsequence (LIS)
+**Problem Statement**: Given an array, find the length of the longest increasing subsequence.
+
+**Recurrence Relation**:
+\[ dp[i] = 1 + \max(dp[j] \text{ for } j < i \text{ and } A[j] < A[i]) \]
+
+**Pseudocode**:
+```plaintext
+function longestIncreasingSubsequence(A):
+    n = length(A)
+    dp = array of size n initialized to 1
+    for i from 1 to n-1:
+        for j from 0 to i-1:
+            if A[j] < A[i]:
+                dp[i] = max(dp[i], dp[j] + 1)
+    return max(dp)
+```
+
+**Time Complexity**: \( O(n^2) \) (can be improved to \( O(n \log n) \) using patience sorting)
+
+---
+
+### 5. Minimum Vertex Cover on Trees
+**Problem Statement**: Given a tree, find the minimum vertex cover.
+
+**Recurrence Relation**:
+- Let \( +i \) be the minimum number of vertices in the subtree rooted at \( i \) when \( i \) is included.
+- Let \( -i \) be the minimum number of vertices in the subtree rooted at \( i \) when \( i \) is not included.
+
+**Pseudocode**:
+```plaintext
+function minVertexCover(root):
+    if root is null:
+        return (0, 0)
+    +i, -i = (1, 0)
+    for child in children(root):
+        child_cover = minVertexCover(child)
+        +i += child_cover[1]
+        -i += min(child_cover)
+    return (+i, -i)
+```
+
+**Time Complexity**: \( O(n) \)
+
+## Theorems & Proofs
+1. **Optimal Substructure Theorem**: If a problem can be broken down into subproblems that can be solved independently, then the optimal solution to the problem can be constructed from optimal solutions of its subproblems.
+2. **Induction Proof for Minimum Vertex Cover**: The correctness of the minimum vertex cover algorithm can be proven using mathematical induction on the structure of the tree.
+
+## Worked Examples
+### Example 1: Coin Change
+Given coins = [1, 2, 5] and amount = 11, the minimum number of coins needed is 3 (5 + 5 + 1).
+
+### Example 2: Edit Distance
+For strings "kitten" and "sitting", the edit distance is 3 (kitten → sitten → sittin → sitting).
+
+## Practice Problems (with solutions)
+### Problem 1: Coin Change
+**Problem**: Given coins = [1, 3, 4] and amount = 6, find the minimum number of coins.
+**Solution**: The minimum number of coins is 2 (3 + 3).
+
+### Problem 2: Edit Distance
+**Problem**: Find the edit distance between "flaw" and "lawn".
+**Solution**: The edit distance is 2 (flaw → law → lawn).
+
+### Problem 3: Longest Increasing Subsequence
+**Problem**: For the array [10, 22, 9, 33, 21, 50, 41, 60, 80], find the length of the longest increasing subsequence.
+**Solution**: The length is 6 (10, 22, 33, 50, 60, 80).
+
+### Problem 4: Minimum Vertex Cover
+**Problem**: Given a tree with edges (1,2), (1,3), (2,4), (2,5), find the minimum vertex cover.
+**Solution**: The minimum vertex cover includes nodes 1, 2, and 4, resulting in a size of 3.
+
+## Common Mistakes to Avoid
+1. **Ignoring Base Cases**: Always define base cases for recursive algorithms.
+2. **Not Storing Results**: Failing to store results of subproblems can lead to exponential time complexity.
+3. **Misunderstanding Optimal Substructure**: Ensure that the problem truly exhibits optimal substructure before applying DP.
+
+These notes provide a comprehensive overview of dynamic programming concepts and algorithms, along with examples and practice problems to reinforce understanding.

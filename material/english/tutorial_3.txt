@@ -1,0 +1,159 @@
+# Tutorial 3 — Greedy Algorithms
+
+## Core Concepts
+Greedy algorithms are a class of algorithms that make a series of choices, each of which looks best at the moment. The key characteristics of greedy algorithms are:
+
+1. **Greedy Choice Property**: A global optimum can be reached by selecting a local optimum.
+2. **Optimal Substructure**: An optimal solution to the problem contains optimal solutions to subproblems.
+
+### Exchange Argument
+The exchange argument is a method used to prove the correctness of greedy algorithms. It involves showing that if we take an optimal solution (OPT) and swap one of its choices with the choice made by the greedy algorithm, the new solution is still optimal.
+
+## Algorithms & Complexity
+
+### 1. Activity Selection Problem
+- **Description**: Given a set of activities with start and finish times, select the maximum number of activities that don't overlap.
+- **Approach**: Sort activities by their finish times and iteratively select the earliest finishing compatible activity.
+- **Pseudocode**:
+    ```plaintext
+    function activitySelection(activities):
+        sort activities by finish time
+        selectedActivities = []
+        lastFinishTime = 0
+        
+        for activity in activities:
+            if activity.start >= lastFinishTime:
+                selectedActivities.append(activity)
+                lastFinishTime = activity.finish
+        
+        return selectedActivities
+    ```
+- **Complexity**: O(n log n) due to sorting.
+
+### 2. Fractional Knapsack Problem
+- **Description**: Given weights and values of items, determine the maximum value that can be carried in a knapsack of capacity W, allowing fractional items.
+- **Approach**: Calculate value-to-weight ratio, sort items by this ratio, and take as much as possible from the highest ratio items.
+- **Pseudocode**:
+    ```plaintext
+    function fractionalKnapsack(items, W):
+        sort items by value/weight ratio in descending order
+        totalValue = 0
+        
+        for item in items:
+            if W == 0:
+                break
+            if item.weight <= W:
+                W -= item.weight
+                totalValue += item.value
+            else:
+                totalValue += item.value * (W / item.weight)
+                W = 0
+        
+        return totalValue
+    ```
+- **Complexity**: O(n log n) due to sorting.
+
+### 3. 0/1 Knapsack Problem
+- **Description**: Given weights and values of items, determine the maximum value that can be carried in a knapsack of capacity W, where items cannot be broken.
+- **Approach**: Greedy approach fails; dynamic programming is required.
+- **Complexity**: O(nW) using dynamic programming.
+
+### 4. Huffman Coding
+- **Description**: A method for data compression that assigns variable-length codes to input characters, with shorter codes assigned to more frequent characters.
+- **Approach**: Use a min-heap to merge the two smallest frequencies iteratively.
+- **Pseudocode**:
+    ```plaintext
+    function huffmanCoding(frequencies):
+        create a min-heap from frequencies
+        
+        while size of heap > 1:
+            left = extract-min from heap
+            right = extract-min from heap
+            merged = new node with frequency left.freq + right.freq
+            insert merged into heap
+        
+        return extract-min from heap
+    ```
+- **Complexity**: O(n log n) due to heap operations.
+
+### 5. Counterexample for Generic Greedy Algorithm
+- **Example**: Given denominations {1, 3, 4} and target 6, the greedy algorithm would choose 4 + 1 + 1 = 3 coins, while the optimal solution is 3 + 3 = 2 coins.
+
+## Theorems & Proofs
+- **Greedy Choice Theorem**: If a problem exhibits the greedy choice property and optimal substructure, then a greedy algorithm will yield an optimal solution.
+- **Exchange Argument**: If an optimal solution can be transformed into a greedy solution without loss of optimality, then the greedy solution is optimal.
+
+## Worked Examples
+
+### Example 1: Activity Selection
+Given activities with the following start and finish times:
+- A1: (0, 6)
+- A2: (1, 4)
+- A3: (3, 5)
+- A4: (4, 7)
+- A5: (5, 9)
+- A6: (8, 9)
+
+**Solution**:
+1. Sort by finish time: A2, A3, A1, A4, A5, A6.
+2. Select A2 (1, 4), then A4 (4, 7), and finally A6 (8, 9).
+3. Selected activities: A2, A4, A6.
+
+### Example 2: Fractional Knapsack
+Given items with values and weights:
+- Item 1: (value = 60, weight = 10)
+- Item 2: (value = 100, weight = 20)
+- Item 3: (value = 120, weight = 30)
+- Knapsack capacity = 50.
+
+**Solution**:
+1. Calculate ratios: Item 1 = 6, Item 2 = 5, Item 3 = 4.
+2. Sort by ratio: Item 1, Item 2, Item 3.
+3. Take all of Item 1 (10), all of Item 2 (20), and 2/3 of Item 3 (20).
+4. Total value = 60 + 100 + 80 = 240.
+
+## Practice Problems (with solutions)
+
+### Problem 1: Activity Selection
+Given activities:
+- A1: (0, 5)
+- A2: (1, 3)
+- A3: (4, 6)
+- A4: (5, 7)
+- A5: (8, 9)
+
+**Solution**: Select A2, A3, A4, A5. Total activities = 4.
+
+### Problem 2: Fractional Knapsack
+Items:
+- Item 1: (value = 40, weight = 10)
+- Item 2: (value = 100, weight = 20)
+- Item 3: (value = 120, weight = 30)
+- Capacity = 50.
+
+**Solution**: Total value = 40 + 100 + (20/30)*120 = 240.
+
+### Problem 3: 0/1 Knapsack
+Given items:
+- Item 1: (value = 60, weight = 10)
+- Item 2: (value = 100, weight = 20)
+- Item 3: (value = 120, weight = 30)
+- Capacity = 50.
+
+**Solution**: Use dynamic programming to find maximum value = 220.
+
+### Problem 4: Huffman Coding
+Given frequencies:
+- A: 5
+- B: 9
+- C: 12
+- D: 13
+- E: 16
+- F: 45
+
+**Solution**: Build Huffman tree and assign codes.
+
+## Common Mistakes to Avoid
+- Assuming all greedy algorithms yield optimal solutions; verify the greedy choice property and optimal substructure.
+- Not sorting inputs when required, especially in activity selection and fractional knapsack problems.
+- Confusing 0/1 knapsack with fractional knapsack; remember that 0/1 knapsack cannot break items.
