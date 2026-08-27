@@ -432,31 +432,61 @@ if question:
     with st.chat_message("user", avatar="🧑‍🎓"):
         st.markdown(question)
 
-    hits = retriever.retrieve(question, max_tutorial=week, k=k_val, mode=ret_mode)
-    context = rag.format_context(hits)
-    if is_hw:
-        sys_prompt = rag.homework_system_prompt(homework[sel], week, topics, context)
-    else:
-        sys_prompt = rag.tutor_system_prompt(week, display_name, topics, context)
-
-    llm = get_llm_cached(provider, model)
-    messages = ([SystemMessage(sys_prompt)]
-                + trimmed_history(st.session_state.history)
-                + [HumanMessage(question)])
-
     with st.chat_message("assistant", avatar="🎓"):
-        slot, buf = st.empty(), ""
-        try:
-            for chunk in llm.stream(messages):
-                buf += chunk.content
-                slot.markdown(buf + " ▌")
-            answer = fix_math(buf)
-            slot.markdown(answer)
-        except Exception as exc:
-            answer = f"⚠️ **Model error:** {exc}"
-            slot.markdown(answer)
+        status = st.status(f"🔍 Searching week ≤ {week} course material…", expanded=False)
+        with status:
+            hits = retriever.retrieve(question, max_tutorial=week, k=k_val, mode=ret_mode)
+            st.write(f"Found {len(hits)} candidate sections in the allowed material.")
+            status.update(label="🛡️ Checking curriculum scope…")
+            is_future, fut_tut = retriever.scope_check(question, week)
+            if is_future:
+                st.write(f"Question matches material from tutorial {fut_tut} — not covered yet.")
+            else:
+                for h in hits:
+                    st.write(f"• {h.chunk.section}")
 
-    sources = [{"section": h.chunk.section, "score": h.score} for h in hits]
+        if is_future:
+            status.update(label="⛔ Outside this week's scope", state="complete", expanded=False)
+            fut_name = meta.get(f"tutorial_{fut_tut}", {}).get("display_name", f"Tutorial {fut_tut}")
+            suggest = "\n".join(f"- {t}" for t in topics[-3:]) if topics else ""
+            answer = (
+                f"That question touches material from **{fut_name}**, which you haven't "
+                f"reached yet — we'll get there! 🔒\n\n"
+                f"To keep you on track, I only answer from what the course has covered so far "
+                f"(week ≤ {week}). From what you already know, I can help with:\n{suggest}\n\n"
+                "Ask me anything about those and I'm all yours."
+            )
+            st.markdown(answer)
+            sources = []
+        else:
+            context = rag.format_context(hits)
+            if is_hw:
+                sys_prompt = rag.homework_system_prompt(homework[sel], week, topics, context)
+            else:
+                sys_prompt = rag.tutor_system_prompt(week, display_name, topics, context)
+
+            llm = get_llm_cached(provider, model)
+            messages = ([SystemMessage(sys_prompt)]
+                        + trimmed_history(st.session_state.history)
+                        + [HumanMessage(question)])
+
+            status.update(label="✍️ Formulating answer from course material…")
+            slot, buf = st.empty(), ""
+            try:
+                for chunk in llm.stream(messages):
+                    buf += chunk.content
+                    slot.markdown(buf + " ▌")
+                answer = fix_math(buf)
+                slot.markdown(answer)
+                status.update(label=f"✓ Answered from {len(hits)} course sections (week ≤ {week})",
+                              state="complete", expanded=False)
+            except Exception as exc:
+                answer = f"⚠️ **Model error:** {exc}"
+                slot.markdown(answer)
+                status.update(label="⚠️ Model error", state="error", expanded=False)
+
+            sources = [{"section": h.chunk.section, "score": h.score} for h in hits]
+
     st.session_state.history += [HumanMessage(question), AIMessage(answer)]
     st.session_state.display += [
         {"role": "user", "content": question},

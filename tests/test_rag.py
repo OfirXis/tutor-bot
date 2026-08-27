@@ -125,3 +125,21 @@ class TestRetrieverIntegration:
     def test_bm25_respects_filter_too(self, retriever):
         ids = retriever._lexical("Dijkstra shortest path negative weights", 3, 10)
         assert all(retriever.chunks[cid].tutorial <= 3 for cid in ids)
+
+    def test_scope_check_flags_future_material(self, retriever):
+        for q, week in [
+            ("how to find shortest path in a directed graph", 3),
+            ("Explain Dijkstra's algorithm.", 1),
+            ("How do I build a Huffman tree?", 1),
+        ]:
+            flagged, fut = retriever.scope_check(q, week)
+            assert flagged and fut > week, f"leak not caught: {q!r} at week {week}"
+
+    def test_scope_check_allows_covered_material(self, retriever):
+        for q, week in [
+            ("What is the formal definition of Big-O notation?", 1),
+            ("How does the activity selection greedy algorithm work?", 3),
+            ("Why does Dijkstra fail with negative edge weights?", 8),
+        ]:
+            flagged, _ = retriever.scope_check(q, week)
+            assert not flagged, f"false refusal: {q!r} at week {week}"

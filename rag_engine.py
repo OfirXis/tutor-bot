@@ -39,6 +39,10 @@ EMBED_MODEL = os.getenv("EMBED_MODEL", "BAAI/bge-small-en-v1.5")
 RERANKER_MODEL = os.getenv("RERANKER_MODEL", "cross-encoder/ms-marco-MiniLM-L-6-v2")
 # dense | hybrid | hybrid+rerank — default per BENCHMARK_RESULTS.md (dense bge-small wins)
 RETRIEVAL_MODE = os.getenv("RETRIEVAL_MODE", "dense")
+# scope gate thresholds: refuse when the question matches future material this much
+# better than covered material (cosine sims; tuned on the golden set + leak probes)
+SCOPE_SIM_FLOOR = float(os.getenv("SCOPE_SIM_FLOOR", "0.55"))
+SCOPE_SIM_MARGIN = float(os.getenv("SCOPE_SIM_MARGIN", "0.05"))
 
 # Query prefixes some embedding families need (passages are indexed raw).
 _QUERY_PREFIXES = {
@@ -277,6 +281,33 @@ class HybridRetriever:
 
         return [Hit(self.chunks[cid], fused[cid]) for cid in candidates[:k]]
 
+    def scope_check(self, query: str, week: int,
+                    floor: float = SCOPE_SIM_FLOOR,
+                    margin: float = SCOPE_SIM_MARGIN) -> tuple[bool, int]:
+        """Deterministic curriculum gate: does the question target future material?
+
+        Compares the query's best cosine similarity against not-yet-covered chunks
+        (tutorial > week) vs covered ones (tutorial <= week). Returns
+        (is_future, best_future_tutorial). LLM prompts alone are unreliable for
+        refusal (see BENCHMARK_LLM.md) — this runs before the LLM is ever called.
+        """
+        emb = embed_texts([query], self.embed_model, queries=True).tolist()
+        future = self.collection.query(
+            query_embeddings=emb, n_results=1,
+            where={"tutorial": {"$gt": week}}, include=["distances", "metadatas"],
+        )
+        if not future["ids"][0]:
+            return False, 0
+        allowed = self.collection.query(
+            query_embeddings=emb, n_results=1,
+            where={"tutorial": {"$lte": week}}, include=["distances"],
+        )
+        sim_future = 1.0 - future["distances"][0][0]
+        sim_allowed = 1.0 - allowed["distances"][0][0] if allowed["ids"][0] else 0.0
+        if sim_future > floor and (sim_future - sim_allowed) > margin:
+            return True, int(future["metadatas"][0][0]["tutorial"])
+        return False, 0
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Index build
@@ -400,7 +431,8 @@ def tutor_system_prompt(week: int, display_name: str, topics: list[str], context
         "2. GROUND every answer in the course material excerpts below. Prefer the course's "
         "definitions, notation and examples over generic knowledge. Cite excerpts as (Source N).\n"
         "3. If the material doesn't contain the answer but it IS within the covered topics, say so, "
-        "then answer from general knowledge of those topics.\n"
+        "then answer from general knowledge of those topics ONLY. NEVER introduce algorithms, "
+        "data structures or theorems from later weeks — not even as an aside or 'better way'.\n"
         "4. Teach for understanding: short explanation → worked example → check-in question back "
         "to the student.\n"
         "5. Be concise. Use bullet points and short paragraphs, not walls of text.\n\n"
