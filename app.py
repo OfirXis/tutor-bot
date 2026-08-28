@@ -247,6 +247,18 @@ def fix_math(text: str) -> str:
     return re.sub(r"\\\((.+?)\\\)", r"$\1$", text, flags=re.DOTALL)
 
 
+def render_md(target, content: str, rtl: bool = False) -> None:
+    """Render markdown; when rtl, wrap in a dir="rtl" block so Hebrew text and
+    embedded LTR spans (numbers, math, code) render in correct reading order
+    instead of the scrambled look mixed-direction text gets with no dir set.
+    The blank lines around content keep it a CommonMark HTML block only for the
+    div tags themselves, so markdown/KaTeX inside still parses normally."""
+    if rtl:
+        target.markdown(f'<div dir="rtl">\n\n{content}\n\n</div>', unsafe_allow_html=True)
+    else:
+        target.markdown(content)
+
+
 MAX_VERBATIM = 6  # exchanges sent verbatim; older ones become a breadcrumb
 
 
@@ -418,7 +430,7 @@ if not st.session_state.get("display"):
 
 for m in st.session_state.get("display", []):
     with st.chat_message(m["role"], avatar="🧑‍🎓" if m["role"] == "user" else "🎓"):
-        st.markdown(m["content"])
+        render_md(st, m["content"], rtl=m.get("rtl", False))
         if m.get("sources") and show_sources:
             with st.expander(f"📚 {len(m['sources'])} sources"):
                 for s in m["sources"]:
@@ -429,16 +441,32 @@ user_input = st.chat_input(f"Ask about {display_name}…")
 question = pending or user_input
 
 if question:
+    q_is_he = rag.is_hebrew(question)
+    llm = get_llm_cached(provider, model)
+    # Translation is deliberately decoupled from the tutoring model: it uses
+    # OpenAI gpt-4o-mini when a key is configured (reliable Hebrew CS
+    # terminology, verified untrustworthy on free local 3B models — see
+    # rag.get_translation_llm), falling back to the tutoring LLM otherwise
+    # so Hebrew mode still works with zero paid dependencies.
+    translate_llm = rag.get_translation_llm() or llm
+
     with st.chat_message("user", avatar="🧑‍🎓"):
-        st.markdown(question)
+        render_md(st, question, rtl=q_is_he)
 
     with st.chat_message("assistant", avatar="🎓"):
         status = st.status(f"🔍 Searching week ≤ {week} course material…", expanded=False)
         with status:
-            hits = retriever.retrieve(question, max_tutorial=week, k=k_val, mode=ret_mode)
+            if q_is_he:
+                status.update(label="🌐 Translating question…")
+                query_en = rag.translate(question, "en", translate_llm)
+            else:
+                query_en = question
+
+            status.update(label=f"🔍 Searching week ≤ {week} course material…")
+            hits = retriever.retrieve(query_en, max_tutorial=week, k=k_val, mode=ret_mode)
             st.write(f"Found {len(hits)} candidate sections in the allowed material.")
             status.update(label="🛡️ Checking curriculum scope…")
-            is_future, fut_tut = retriever.scope_check(question, week)
+            is_future, fut_tut = retriever.scope_check(query_en, week)
             if is_future:
                 st.write(f"Question matches material from tutorial {fut_tut} — not covered yet.")
             else:
@@ -449,14 +477,15 @@ if question:
             status.update(label="⛔ Outside this week's scope", state="complete", expanded=False)
             fut_name = meta.get(f"tutorial_{fut_tut}", {}).get("display_name", f"Tutorial {fut_tut}")
             suggest = "\n".join(f"- {t}" for t in topics[-3:]) if topics else ""
-            answer = (
+            answer_en = (
                 f"That question touches material from **{fut_name}**, which you haven't "
                 f"reached yet — we'll get there! 🔒\n\n"
                 f"To keep you on track, I only answer from what the course has covered so far "
                 f"(week ≤ {week}). From what you already know, I can help with:\n{suggest}\n\n"
                 "Ask me anything about those and I'm all yours."
             )
-            st.markdown(answer)
+            answer = rag.translate(answer_en, "he", translate_llm) if q_is_he else answer_en
+            render_md(st, answer, rtl=q_is_he)
             sources = []
         else:
             context = rag.format_context(hits)
@@ -465,31 +494,47 @@ if question:
             else:
                 sys_prompt = rag.tutor_system_prompt(week, display_name, topics, context)
 
-            llm = get_llm_cached(provider, model)
             messages = ([SystemMessage(sys_prompt)]
                         + trimmed_history(st.session_state.history)
-                        + [HumanMessage(question)])
+                        + [HumanMessage(query_en)])
 
             status.update(label="✍️ Formulating answer from course material…")
-            slot, buf = st.empty(), ""
+            slot = st.empty()
             try:
-                for chunk in llm.stream(messages):
-                    buf += chunk.content
-                    slot.markdown(buf + " ▌")
-                answer = fix_math(buf)
-                slot.markdown(answer)
+                if q_is_he:
+                    # Skip live token streaming here — the model generates in
+                    # English, and streaming English then swapping to a
+                    # Hebrew translation once done reads as broken/flickering
+                    # for a Hebrew-only reader. Show the status spinner
+                    # instead and reveal the finished Hebrew answer at once.
+                    buf = "".join(chunk.content for chunk in llm.stream(messages))
+                    answer_en = fix_math(buf)
+                    status.update(label="🌐 Translating answer…")
+                    answer = rag.translate(answer_en, "he", translate_llm)
+                    render_md(slot, answer, rtl=True)
+                else:
+                    buf = ""
+                    for chunk in llm.stream(messages):
+                        buf += chunk.content
+                        slot.markdown(buf + " ▌")
+                    answer_en = fix_math(buf)
+                    answer = answer_en
+                    slot.markdown(answer)
                 status.update(label=f"✓ Answered from {len(hits)} course sections (week ≤ {week})",
                               state="complete", expanded=False)
             except Exception as exc:
-                answer = f"⚠️ **Model error:** {exc}"
+                answer_en = answer = f"⚠️ **Model error:** {exc}"
                 slot.markdown(answer)
                 status.update(label="⚠️ Model error", state="error", expanded=False)
 
             sources = [{"section": h.chunk.section, "score": h.score} for h in hits]
 
-    st.session_state.history += [HumanMessage(question), AIMessage(answer)]
+    # History sent back to the LLM stays English (matches the grounded
+    # material/prompts); only the display copy carries the Hebrew shown to
+    # the student.
+    st.session_state.history += [HumanMessage(query_en), AIMessage(answer_en)]
     st.session_state.display += [
-        {"role": "user", "content": question},
-        {"role": "assistant", "content": answer, "sources": sources},
+        {"role": "user", "content": question, "rtl": q_is_he},
+        {"role": "assistant", "content": answer, "sources": sources, "rtl": q_is_he},
     ]
     st.rerun()

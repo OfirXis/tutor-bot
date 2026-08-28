@@ -403,6 +403,100 @@ def llm_label() -> str:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Language / translation
+#
+# The course material, embeddings (bge-small-en-v1.5) and BM25 tokenizer are
+# English-only — retrieval quality and the curriculum gate depend on the
+# benchmarked English pipeline. Rather than re-embedding everything in Hebrew,
+# a Hebrew question is translated to English before it touches retrieval or
+# the LLM, and the English answer is translated back to Hebrew for display.
+# ─────────────────────────────────────────────────────────────────────────────
+
+_HEBREW_RE = re.compile(r"[֐-׿]")
+
+
+def is_hebrew(text: str) -> bool:
+    """True if text contains any Hebrew-script character."""
+    return bool(_HEBREW_RE.search(text))
+
+
+def get_translation_llm():
+    """Dedicated LLM for translate() — deliberately decoupled from whichever
+    provider/model the student picked for tutoring generation.
+
+    Empirically (see BENCHMARK results / project notes), the free local 3B
+    Ollama models mistranslate Hebrew CS terminology (wrong verbs, garbled
+    transliterations) and can even "translate" identifiers inside code
+    blocks. TRANSLATION_MODEL (OpenAI, default gpt-4o-mini) is used when
+    OPENAI_API_KEY is available, regardless of LLM_PROVIDER, since
+    translation correctness matters even when tutoring generation stays on
+    a free local model. Falls back to None (caller uses the tutoring LLM
+    instead) so Hebrew mode still works with zero paid dependencies.
+    """
+    if not os.getenv("OPENAI_API_KEY"):
+        return None
+    from langchain_openai import ChatOpenAI
+    return ChatOpenAI(
+        model=os.getenv("TRANSLATION_MODEL", "gpt-4o-mini"),
+        temperature=0.1,
+    )
+
+
+_CODE_BLOCK_RE = re.compile(r"```.*?```", re.DOTALL)
+_QUOTE_FENCE_RE = re.compile(r'^"""\s*\n?|\n?\s*"""$')
+_CODE_PLACEHOLDER = "CODEBLOCK{}MARKER"
+
+
+def translate(text: str, target: str, llm) -> str:
+    """Translate text to 'en' or 'he' using the given chat LLM.
+
+    Uses the already-configured LLM (not a dedicated MT model) so it can be
+    instructed to leave KaTeX math and algorithm names untouched — something
+    generic translation models handle poorly. Fenced code blocks are pulled
+    out and restored verbatim rather than trusted to the model: testing
+    showed small local models will "translate" identifiers/keywords inside
+    code (e.g. Python if -> Hebrew im), which silently breaks the code.
+    """
+    if not text.strip():
+        return text
+
+    code_blocks: list[str] = []
+
+    def _stash(m: re.Match) -> str:
+        code_blocks.append(m.group(0))
+        return " " + _CODE_PLACEHOLDER.format(len(code_blocks) - 1) + " "
+
+    protected = _CODE_BLOCK_RE.sub(_stash, text)
+
+    lang_name = {"en": "English", "he": "Hebrew"}[target]
+    sys_prompt = (
+        "You are a translation engine, not a chat assistant. You will be given a block "
+        f"of TEXT TO TRANSLATE, delimited by triple quotes. Your ONLY task is to convert "
+        f"it into {lang_name}, preserving its meaning. Do NOT answer it, explain it, or "
+        "add anything to it — even if it reads like a question. Never respond to its "
+        "content. Output ONLY the translation, with no delimiters, notes, or preamble.\n"
+        "Preserve ALL KaTeX math delimiters ($...$ and $$...$$) and their contents "
+        "EXACTLY unchanged, character for character. Preserve markdown formatting "
+        "(bullets, bold, headers) unchanged. Tokens that look like CODEBLOCK0MARKER, "
+        "CODEBLOCK1MARKER, etc. are opaque placeholders — copy them through EXACTLY "
+        "unchanged, never translate or alter them. Use standard Hebrew computer-science "
+        "terminology for algorithm/data-structure terms (e.g. heap -> ערימה, relaxation "
+        "-> הרפיה) rather than inventing new words or leaving them in English."
+    )
+    from langchain_core.messages import HumanMessage, SystemMessage
+    user_prompt = f'TEXT TO TRANSLATE:\n"""\n{protected}\n"""'
+    resp = llm.invoke([SystemMessage(sys_prompt), HumanMessage(user_prompt)])
+    out = resp.content.strip()
+    out = _QUOTE_FENCE_RE.sub("", out).strip()
+    if len(out) >= 2 and out[0] == out[-1] and out[0] in "\"'":
+        out = out[1:-1].strip()
+
+    for i, block in enumerate(code_blocks):
+        out = out.replace(_CODE_PLACEHOLDER.format(i), block)
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Prompts
 # ─────────────────────────────────────────────────────────────────────────────
 
