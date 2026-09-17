@@ -1,0 +1,2253 @@
+[
+  {
+    "id": "course_01",
+    "category": "course",
+    "question": "What is the formal definition of Big-O notation?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_1::005",
+      "tutorial_1::015",
+      "tutorial_1::012",
+      "tutorial_1::011"
+    ],
+    "similarities": [
+      0.7644,
+      0.7027,
+      0.6794,
+      0.6623
+    ],
+    "expected_chunks": [
+      "tutorial_1::005"
+    ],
+    "ms": 2440.6
+  },
+  {
+    "id": "course_02",
+    "category": "course",
+    "question": "How do I figure out how fast a function grows compared to another one?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_1::014"
+    ],
+    "similarities": [
+      0.6916
+    ],
+    "expected_chunks": [
+      "tutorial_1::006",
+      "tutorial_1::012",
+      "tutorial_1::014"
+    ],
+    "ms": 20.0
+  },
+  {
+    "id": "course_03",
+    "category": "course",
+    "question": "What's the difference between decision and optimization algorithms?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_1::002"
+    ],
+    "similarities": [
+      0.7932
+    ],
+    "expected_chunks": [
+      "tutorial_1::002"
+    ],
+    "ms": 20.9
+  },
+  {
+    "id": "course_04",
+    "category": "course",
+    "question": "How many operations do nested loops cost?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_1::007",
+      "tutorial_1::015"
+    ],
+    "similarities": [
+      0.8252,
+      0.7447
+    ],
+    "expected_chunks": [
+      "tutorial_1::007",
+      "tutorial_1::011"
+    ],
+    "ms": 32.3
+  },
+  {
+    "id": "course_05",
+    "category": "course",
+    "question": "State the Master Theorem cases.",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_2::005",
+      "tutorial_2::001",
+      "tutorial_2::012",
+      "tutorial_2::008"
+    ],
+    "similarities": [
+      0.7243,
+      0.7155,
+      0.6873,
+      0.6168
+    ],
+    "expected_chunks": [
+      "tutorial_2::001"
+    ],
+    "ms": 28.6
+  },
+  {
+    "id": "course_06",
+    "category": "course",
+    "question": "How does merge sort split and combine the array?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_2::006",
+      "tutorial_2::002",
+      "tutorial_2::008"
+    ],
+    "similarities": [
+      0.8443,
+      0.8292,
+      0.7249
+    ],
+    "expected_chunks": [
+      "tutorial_2::002",
+      "tutorial_2::006"
+    ],
+    "ms": 27.8
+  },
+  {
+    "id": "course_07",
+    "category": "course",
+    "question": "What's a faster way to multiply two big numbers than the school method?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_2::004"
+    ],
+    "similarities": [
+      0.6896
+    ],
+    "expected_chunks": [
+      "tutorial_2::004"
+    ],
+    "ms": 542.2
+  },
+  {
+    "id": "course_08",
+    "category": "course",
+    "question": "Why does searching a sorted array only take logarithmic time?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_2::003",
+      "tutorial_2::007"
+    ],
+    "similarities": [
+      0.7372,
+      0.6948
+    ],
+    "expected_chunks": [
+      "tutorial_2::003",
+      "tutorial_2::007"
+    ],
+    "ms": 24.1
+  },
+  {
+    "id": "course_09",
+    "category": "course",
+    "question": "What is the exchange argument used for in greedy proofs?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_3::001",
+      "tutorial_3::007"
+    ],
+    "similarities": [
+      0.935,
+      0.845
+    ],
+    "expected_chunks": [
+      "tutorial_3::001"
+    ],
+    "ms": 547.2
+  },
+  {
+    "id": "course_10",
+    "category": "course",
+    "question": "How do I pick the maximum number of non-overlapping activities?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_3::002"
+    ],
+    "similarities": [
+      0.846
+    ],
+    "expected_chunks": [
+      "tutorial_3::002",
+      "tutorial_3::008",
+      "tutorial_3::010"
+    ],
+    "ms": 30.7
+  },
+  {
+    "id": "course_11",
+    "category": "course",
+    "question": "When can I take fractions of items to maximize value in a knapsack?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_3::003",
+      "tutorial_3::009",
+      "tutorial_3::011",
+      "tutorial_3::012"
+    ],
+    "similarities": [
+      0.8475,
+      0.8182,
+      0.8096,
+      0.8049
+    ],
+    "expected_chunks": [
+      "tutorial_3::003",
+      "tutorial_3::009",
+      "tutorial_3::011"
+    ],
+    "ms": 560.1
+  },
+  {
+    "id": "course_12",
+    "category": "course",
+    "question": "How are Huffman codes built from character frequencies?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_3::005",
+      "tutorial_3::013"
+    ],
+    "similarities": [
+      0.8215,
+      0.7869
+    ],
+    "expected_chunks": [
+      "tutorial_3::005",
+      "tutorial_3::013"
+    ],
+    "ms": 25.6
+  },
+  {
+    "id": "course_13",
+    "category": "course",
+    "question": "What are overlapping subproblems and optimal substructure?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_4::006",
+      "tutorial_3::007"
+    ],
+    "similarities": [
+      0.9078,
+      0.6726
+    ],
+    "expected_chunks": [
+      "tutorial_4::000",
+      "tutorial_4::001",
+      "tutorial_4::006"
+    ],
+    "ms": 16.1
+  },
+  {
+    "id": "course_14",
+    "category": "course",
+    "question": "Compare memoization with the bottom-up table method.",
+    "expected_status": "insufficient",
+    "status": "insufficient",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 41.6
+  },
+  {
+    "id": "course_15",
+    "category": "course",
+    "question": "How do I compute the longest common subsequence of two strings?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_4::004",
+      "tutorial_4::010",
+      "tutorial_5::005",
+      "tutorial_5::012"
+    ],
+    "similarities": [
+      0.8405,
+      0.8038,
+      0.7833,
+      0.742
+    ],
+    "expected_chunks": [
+      "tutorial_4::004",
+      "tutorial_4::010"
+    ],
+    "ms": 32.2
+  },
+  {
+    "id": "course_16",
+    "category": "course",
+    "question": "What's the DP recurrence for cutting a rod into pieces for max revenue?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_4::003",
+      "tutorial_4::007",
+      "tutorial_4::009"
+    ],
+    "similarities": [
+      0.8603,
+      0.8138,
+      0.8122
+    ],
+    "expected_chunks": [
+      "tutorial_4::003",
+      "tutorial_4::007",
+      "tutorial_4::009"
+    ],
+    "ms": 26.4
+  },
+  {
+    "id": "course_17",
+    "category": "course",
+    "question": "How do I count the minimum number of coins to make an amount?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_5::008",
+      "tutorial_5::010",
+      "tutorial_5::002"
+    ],
+    "similarities": [
+      0.8482,
+      0.8148,
+      0.7738
+    ],
+    "expected_chunks": [
+      "tutorial_5::002",
+      "tutorial_5::008",
+      "tutorial_5::010"
+    ],
+    "ms": 42.6
+  },
+  {
+    "id": "course_18",
+    "category": "course",
+    "question": "What order should I multiply a chain of matrices to minimize work?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_5::003"
+    ],
+    "similarities": [
+      0.7777
+    ],
+    "expected_chunks": [
+      "tutorial_5::003"
+    ],
+    "ms": 571.3
+  },
+  {
+    "id": "course_19",
+    "category": "course",
+    "question": "How many single-letter changes turn one word into another?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_5::004",
+      "tutorial_5::009"
+    ],
+    "similarities": [
+      0.642,
+      0.6355
+    ],
+    "expected_chunks": [
+      "tutorial_5::004",
+      "tutorial_5::009",
+      "tutorial_5::011"
+    ],
+    "ms": 392.2
+  },
+  {
+    "id": "course_20",
+    "category": "course",
+    "question": "How do I find the longest increasing subsequence?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_5::012",
+      "tutorial_5::005",
+      "tutorial_4::004",
+      "tutorial_4::010"
+    ],
+    "similarities": [
+      0.8411,
+      0.8286,
+      0.7588,
+      0.7505
+    ],
+    "expected_chunks": [
+      "tutorial_5::005",
+      "tutorial_5::012"
+    ],
+    "ms": 57.2
+  },
+  {
+    "id": "course_21",
+    "category": "course",
+    "question": "Can a set of numbers be split into two halves with equal sums?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::010",
+      "tutorial_6::003",
+      "tutorial_6::006",
+      "tutorial_6::001"
+    ],
+    "similarities": [
+      0.7259,
+      0.7031,
+      0.6555,
+      0.6538
+    ],
+    "expected_chunks": [
+      "tutorial_6::003",
+      "tutorial_6::010"
+    ],
+    "ms": 36.7
+  },
+  {
+    "id": "course_22",
+    "category": "course",
+    "question": "How many ways can I reach the bottom-right cell of a grid moving only right and down?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::012",
+      "tutorial_6::005"
+    ],
+    "similarities": [
+      0.7434,
+      0.7212
+    ],
+    "expected_chunks": [
+      "tutorial_6::005",
+      "tutorial_6::012"
+    ],
+    "ms": 25.1
+  },
+  {
+    "id": "course_23",
+    "category": "course",
+    "question": "How do I check whether some subset of numbers sums to a target value?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::007",
+      "tutorial_6::009",
+      "tutorial_6::001",
+      "tutorial_6::011"
+    ],
+    "similarities": [
+      0.7935,
+      0.7861,
+      0.7764,
+      0.7377
+    ],
+    "expected_chunks": [
+      "tutorial_6::002",
+      "tutorial_6::007",
+      "tutorial_6::009"
+    ],
+    "ms": 27.1
+  },
+  {
+    "id": "course_24",
+    "category": "course",
+    "question": "Explain the cut property for minimum spanning trees.",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_7::001",
+      "tutorial_7::005",
+      "tutorial_7::010",
+      "tutorial_7::009"
+    ],
+    "similarities": [
+      0.8725,
+      0.8632,
+      0.8126,
+      0.7943
+    ],
+    "expected_chunks": [
+      "tutorial_7::005"
+    ],
+    "ms": 62.8
+  },
+  {
+    "id": "course_25",
+    "category": "course",
+    "question": "How does Kruskal's algorithm avoid creating cycles?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_7::002",
+      "tutorial_7::010",
+      "tutorial_7::007"
+    ],
+    "similarities": [
+      0.7766,
+      0.7663,
+      0.6762
+    ],
+    "expected_chunks": [
+      "tutorial_7::002"
+    ],
+    "ms": 29.1
+  },
+  {
+    "id": "course_26",
+    "category": "course",
+    "question": "What data structure quickly tells me if two nodes are already connected?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_7::004"
+    ],
+    "similarities": [
+      0.676
+    ],
+    "expected_chunks": [
+      "tutorial_7::004"
+    ],
+    "ms": 25.3
+  },
+  {
+    "id": "course_27",
+    "category": "course",
+    "question": "Why can't Dijkstra handle negative edge weights?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_8::011",
+      "tutorial_8::006",
+      "tutorial_8::013",
+      "tutorial_8::010"
+    ],
+    "similarities": [
+      0.8616,
+      0.7771,
+      0.7696,
+      0.7472
+    ],
+    "expected_chunks": [
+      "tutorial_8::011"
+    ],
+    "ms": 35.2
+  },
+  {
+    "id": "course_28",
+    "category": "course",
+    "question": "Which algorithm finds shortest paths between every pair of vertices?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_8::005",
+      "tutorial_8::002",
+      "tutorial_8::007",
+      "tutorial_8::009"
+    ],
+    "similarities": [
+      0.8022,
+      0.7749,
+      0.7654,
+      0.7623
+    ],
+    "expected_chunks": [
+      "tutorial_8::005",
+      "tutorial_8::012"
+    ],
+    "ms": 197.1
+  },
+  {
+    "id": "course_29",
+    "category": "course",
+    "question": "How can I detect a negative cycle in a graph?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_8::010",
+      "tutorial_8::008",
+      "tutorial_8::003",
+      "tutorial_8::006"
+    ],
+    "similarities": [
+      0.8137,
+      0.7563,
+      0.7364,
+      0.7163
+    ],
+    "expected_chunks": [
+      "tutorial_8::003",
+      "tutorial_8::010"
+    ],
+    "ms": 32.1
+  },
+  {
+    "id": "course_30",
+    "category": "course",
+    "question": "What's the fastest way to find shortest paths in a graph with no cycles?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_8::000",
+      "tutorial_8::006",
+      "tutorial_8::003",
+      "tutorial_8::013"
+    ],
+    "similarities": [
+      0.8044,
+      0.7775,
+      0.7748,
+      0.77
+    ],
+    "expected_chunks": [
+      "tutorial_8::004"
+    ],
+    "ms": 86.0
+  },
+  {
+    "id": "flow_1",
+    "category": "course",
+    "question": "What makes a flow feasible?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::001",
+      "tutorial_9::004"
+    ],
+    "similarities": [
+      0.7414,
+      0.6935
+    ],
+    "expected_chunks": [
+      "tutorial_9::001"
+    ],
+    "ms": 82.6
+  },
+  {
+    "id": "flow_2",
+    "category": "course",
+    "question": "Why do residual networks have reverse edges?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::002",
+      "tutorial_9::003",
+      "tutorial_9::005",
+      "tutorial_9::006"
+    ],
+    "similarities": [
+      0.7982,
+      0.6952,
+      0.6924,
+      0.6896
+    ],
+    "expected_chunks": [
+      "tutorial_9::002"
+    ],
+    "ms": 21.4
+  },
+  {
+    "id": "flow_3",
+    "category": "course",
+    "question": "Explain the max-flow min-cut theorem.",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::004",
+      "tutorial_9::003",
+      "tutorial_9::012"
+    ],
+    "similarities": [
+      0.8262,
+      0.8176,
+      0.775
+    ],
+    "expected_chunks": [
+      "tutorial_9::003"
+    ],
+    "ms": 401.6
+  },
+  {
+    "id": "flow_4",
+    "category": "course",
+    "question": "Why does Ford-Fulkerson depend on the flow value?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::004",
+      "tutorial_9::006",
+      "tutorial_9::007",
+      "tutorial_9::001"
+    ],
+    "similarities": [
+      0.6685,
+      0.6396,
+      0.6232,
+      0.6173
+    ],
+    "expected_chunks": [
+      "tutorial_9::004"
+    ],
+    "ms": 28.6
+  },
+  {
+    "id": "flow_5",
+    "category": "course",
+    "question": "How does Edmonds-Karp choose an augmenting path?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::006"
+    ],
+    "similarities": [
+      0.7147
+    ],
+    "expected_chunks": [
+      "tutorial_9::006"
+    ],
+    "ms": 33.7
+  },
+  {
+    "id": "flow_6",
+    "category": "course",
+    "question": "How do we model capacities on vertices?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::008",
+      "tutorial_9::003",
+      "tutorial_9::012"
+    ],
+    "similarities": [
+      0.8262,
+      0.7274,
+      0.7242
+    ],
+    "expected_chunks": [
+      "tutorial_9::008"
+    ],
+    "ms": 42.2
+  },
+  {
+    "id": "flow_7",
+    "category": "course",
+    "question": "What does Hall's theorem say about perfect matching?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::013",
+      "tutorial_9::011",
+      "tutorial_9::015",
+      "tutorial_9::014"
+    ],
+    "similarities": [
+      0.7952,
+      0.7078,
+      0.7033,
+      0.6637
+    ],
+    "expected_chunks": [
+      "tutorial_9::013"
+    ],
+    "ms": 24.2
+  },
+  {
+    "id": "flow_8",
+    "category": "course",
+    "question": "Explain Dilworth's theorem and chain covers.",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::014",
+      "tutorial_5::007"
+    ],
+    "similarities": [
+      0.8391,
+      0.6648
+    ],
+    "expected_chunks": [
+      "tutorial_9::014"
+    ],
+    "ms": 984.9
+  },
+  {
+    "id": "hw_1_p1",
+    "category": "homework",
+    "question": "Give me a hint for problem 1",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_1::009",
+      "tutorial_1::010",
+      "tutorial_1::014",
+      "tutorial_1::005"
+    ],
+    "similarities": [
+      0.7814,
+      0.7796,
+      0.7697,
+      0.7552
+    ],
+    "expected_chunks": [
+      "tutorial_2::000",
+      "tutorial_2::001"
+    ],
+    "ms": 2686.2
+  },
+  {
+    "id": "hw_1_p2",
+    "category": "homework",
+    "question": "Give me a hint for problem 2",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_1::014",
+      "tutorial_1::009",
+      "tutorial_1::012",
+      "tutorial_1::010"
+    ],
+    "similarities": [
+      0.8646,
+      0.7724,
+      0.7602,
+      0.7565
+    ],
+    "expected_chunks": [
+      "tutorial_1::005",
+      "tutorial_1::014"
+    ],
+    "ms": 1840.8
+  },
+  {
+    "id": "hw_1_p3",
+    "category": "homework",
+    "question": "Give me a hint for problem 3",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_2::007",
+      "tutorial_2::003",
+      "tutorial_2::002",
+      "tutorial_1::008"
+    ],
+    "similarities": [
+      0.7705,
+      0.7407,
+      0.7331,
+      0.7076
+    ],
+    "expected_chunks": [
+      "tutorial_2::000",
+      "tutorial_2::003"
+    ],
+    "ms": 4065.4
+  },
+  {
+    "id": "hw_1_p4",
+    "category": "homework",
+    "question": "Give me a hint for problem 4",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_3::013",
+      "tutorial_3::010",
+      "tutorial_3::011",
+      "tutorial_3::012"
+    ],
+    "similarities": [
+      0.7562,
+      0.7121,
+      0.7032,
+      0.7013
+    ],
+    "expected_chunks": [
+      "tutorial_3::005"
+    ],
+    "ms": 6365.4
+  },
+  {
+    "id": "hw_1_p5",
+    "category": "homework",
+    "question": "Give me a hint for problem 5",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_3::000",
+      "tutorial_3::006",
+      "tutorial_1::002",
+      "tutorial_3::014"
+    ],
+    "similarities": [
+      0.7831,
+      0.774,
+      0.7637,
+      0.759
+    ],
+    "expected_chunks": [
+      "tutorial_3::000",
+      "tutorial_3::001"
+    ],
+    "ms": 5344.8
+  },
+  {
+    "id": "hw_2_p1",
+    "category": "homework",
+    "question": "Give me a hint for problem 1",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_5::003",
+      "tutorial_1::007",
+      "tutorial_1::013",
+      "tutorial_4::001"
+    ],
+    "similarities": [
+      0.8337,
+      0.7423,
+      0.7287,
+      0.7276
+    ],
+    "expected_chunks": [
+      "tutorial_5::003"
+    ],
+    "ms": 6283.6
+  },
+  {
+    "id": "hw_2_p2",
+    "category": "homework",
+    "question": "Give me a hint for problem 2",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_5::012",
+      "tutorial_5::005",
+      "tutorial_4::004",
+      "tutorial_5::014"
+    ],
+    "similarities": [
+      0.7929,
+      0.76,
+      0.7569,
+      0.7518
+    ],
+    "expected_chunks": [
+      "tutorial_4::001",
+      "tutorial_5::005"
+    ],
+    "ms": 4321.8
+  },
+  {
+    "id": "hw_2_p3",
+    "category": "homework",
+    "question": "Give me a hint for problem 3",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_4::003",
+      "tutorial_4::005",
+      "tutorial_3::004",
+      "tutorial_4::007"
+    ],
+    "similarities": [
+      0.7134,
+      0.7032,
+      0.7004,
+      0.6979
+    ],
+    "expected_chunks": [
+      "tutorial_2::011",
+      "tutorial_4::001"
+    ],
+    "ms": 178.6
+  },
+  {
+    "id": "hw_2_p4",
+    "category": "homework",
+    "question": "Give me a hint for problem 4",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_3::002",
+      "tutorial_3::008",
+      "tutorial_4::007",
+      "tutorial_4::009"
+    ],
+    "similarities": [
+      0.7741,
+      0.772,
+      0.7696,
+      0.7665
+    ],
+    "expected_chunks": [
+      "tutorial_3::002",
+      "tutorial_4::001"
+    ],
+    "ms": 1842.4
+  },
+  {
+    "id": "hw_2_p5",
+    "category": "homework",
+    "question": "Give me a hint for problem 5",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_4::004",
+      "tutorial_4::010",
+      "tutorial_5::004",
+      "tutorial_5::012"
+    ],
+    "similarities": [
+      0.7776,
+      0.7572,
+      0.7482,
+      0.7462
+    ],
+    "expected_chunks": [
+      "tutorial_4::001",
+      "tutorial_4::004"
+    ],
+    "ms": 1500.7
+  },
+  {
+    "id": "hw_3_p1",
+    "category": "homework",
+    "question": "Give me a hint for problem 1",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::014",
+      "tutorial_6::015",
+      "tutorial_5::013",
+      "tutorial_5::006"
+    ],
+    "similarities": [
+      0.8229,
+      0.8142,
+      0.7804,
+      0.7689
+    ],
+    "expected_chunks": [
+      "tutorial_6::014",
+      "tutorial_6::015"
+    ],
+    "ms": 1169.2
+  },
+  {
+    "id": "hw_3_p2",
+    "category": "homework",
+    "question": "Give me a hint for problem 2",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::014",
+      "tutorial_6::015",
+      "tutorial_1::002",
+      "tutorial_6::017"
+    ],
+    "similarities": [
+      0.836,
+      0.7985,
+      0.7756,
+      0.7688
+    ],
+    "expected_chunks": [
+      "tutorial_6::014",
+      "tutorial_6::015"
+    ],
+    "ms": 819.8
+  },
+  {
+    "id": "hw_3_p3",
+    "category": "homework",
+    "question": "Give me a hint for problem 3",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::015",
+      "tutorial_6::014",
+      "tutorial_5::006",
+      "tutorial_5::013"
+    ],
+    "similarities": [
+      0.8149,
+      0.8086,
+      0.7657,
+      0.7533
+    ],
+    "expected_chunks": [
+      "tutorial_6::015"
+    ],
+    "ms": 136.1
+  },
+  {
+    "id": "hw_3_p4",
+    "category": "homework",
+    "question": "Give me a hint for problem 4",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.3333333333333333,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::017",
+      "tutorial_6::014",
+      "tutorial_6::015",
+      "tutorial_6::018"
+    ],
+    "similarities": [
+      0.7315,
+      0.7121,
+      0.7103,
+      0.7088
+    ],
+    "expected_chunks": [
+      "tutorial_6::015",
+      "tutorial_6::016"
+    ],
+    "ms": 61.7
+  },
+  {
+    "id": "hw_3_p5",
+    "category": "homework",
+    "question": "Give me a hint for problem 5",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::014",
+      "tutorial_6::015",
+      "tutorial_6::018",
+      "tutorial_6::017"
+    ],
+    "similarities": [
+      0.8284,
+      0.8261,
+      0.7754,
+      0.7588
+    ],
+    "expected_chunks": [
+      "tutorial_6::014"
+    ],
+    "ms": 814.0
+  },
+  {
+    "id": "hw_3_p6",
+    "category": "homework",
+    "question": "Give me a hint for problem 6",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::017",
+      "tutorial_6::015",
+      "tutorial_6::014",
+      "tutorial_6::012"
+    ],
+    "similarities": [
+      0.7839,
+      0.7746,
+      0.7717,
+      0.7667
+    ],
+    "expected_chunks": [
+      "tutorial_6::015",
+      "tutorial_6::016"
+    ],
+    "ms": 49.0
+  },
+  {
+    "id": "hw_4_p1",
+    "category": "homework",
+    "question": "Give me a hint for problem 1",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_7::009",
+      "tutorial_7::008",
+      "tutorial_7::005",
+      "tutorial_7::006"
+    ],
+    "similarities": [
+      0.8532,
+      0.8453,
+      0.8382,
+      0.8375
+    ],
+    "expected_chunks": [
+      "tutorial_7::000",
+      "tutorial_7::001"
+    ],
+    "ms": 150.5
+  },
+  {
+    "id": "hw_4_p2",
+    "category": "homework",
+    "question": "Give me a hint for problem 2",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_8::002",
+      "tutorial_8::006",
+      "tutorial_8::007",
+      "tutorial_8::009"
+    ],
+    "similarities": [
+      0.8296,
+      0.8236,
+      0.8226,
+      0.8087
+    ],
+    "expected_chunks": [
+      "tutorial_8::002"
+    ],
+    "ms": 533.3
+  },
+  {
+    "id": "hw_4_p3",
+    "category": "homework",
+    "question": "Give me a hint for problem 3",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_7::005",
+      "tutorial_7::009",
+      "tutorial_7::008",
+      "tutorial_7::001"
+    ],
+    "similarities": [
+      0.827,
+      0.8198,
+      0.8034,
+      0.7932
+    ],
+    "expected_chunks": [
+      "tutorial_7::005",
+      "tutorial_7::006"
+    ],
+    "ms": 564.2
+  },
+  {
+    "id": "hw_4_p4",
+    "category": "homework",
+    "question": "Give me a hint for problem 4",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_8::002",
+      "tutorial_8::006",
+      "tutorial_8::009",
+      "tutorial_8::013"
+    ],
+    "similarities": [
+      0.8232,
+      0.8165,
+      0.8067,
+      0.8028
+    ],
+    "expected_chunks": [
+      "tutorial_6::018",
+      "tutorial_8::002"
+    ],
+    "ms": 277.2
+  },
+  {
+    "id": "hw_4_p5",
+    "category": "homework",
+    "question": "Give me a hint for problem 5",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_8::004",
+      "tutorial_8::009",
+      "tutorial_8::003",
+      "tutorial_8::006"
+    ],
+    "similarities": [
+      0.8458,
+      0.8343,
+      0.8215,
+      0.8203
+    ],
+    "expected_chunks": [
+      "tutorial_8::004"
+    ],
+    "ms": 1177.0
+  },
+  {
+    "id": "hw_5_p1",
+    "category": "homework",
+    "question": "Give me a hint for problem 1",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::012",
+      "tutorial_9::004",
+      "tutorial_2::001",
+      "tutorial_9::006"
+    ],
+    "similarities": [
+      0.7518,
+      0.7482,
+      0.7448,
+      0.742
+    ],
+    "expected_chunks": [
+      "tutorial_9::004"
+    ],
+    "ms": 1130.8
+  },
+  {
+    "id": "hw_5_p2",
+    "category": "homework",
+    "question": "Give me a hint for problem 2",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::015",
+      "tutorial_9::013",
+      "tutorial_9::011",
+      "tutorial_9::014"
+    ],
+    "similarities": [
+      0.7866,
+      0.7636,
+      0.7545,
+      0.7369
+    ],
+    "expected_chunks": [
+      "tutorial_9::011",
+      "tutorial_9::013",
+      "tutorial_9::015"
+    ],
+    "ms": 601.4
+  },
+  {
+    "id": "hw_5_p3",
+    "category": "homework",
+    "question": "Give me a hint for problem 3",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::010",
+      "tutorial_9::003",
+      "tutorial_9::004",
+      "tutorial_9::005"
+    ],
+    "similarities": [
+      0.8265,
+      0.798,
+      0.7974,
+      0.7885
+    ],
+    "expected_chunks": [
+      "tutorial_9::002",
+      "tutorial_9::003"
+    ],
+    "ms": 49.9
+  },
+  {
+    "id": "hw_5_p4",
+    "category": "homework",
+    "question": "Give me a hint for problem 4",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::010",
+      "tutorial_9::011",
+      "tutorial_3::010",
+      "tutorial_9::015"
+    ],
+    "similarities": [
+      0.7227,
+      0.7137,
+      0.7046,
+      0.7042
+    ],
+    "expected_chunks": [
+      "tutorial_9::001",
+      "tutorial_9::011"
+    ],
+    "ms": 50.3
+  },
+  {
+    "id": "hw_5_p5",
+    "category": "homework",
+    "question": "Give me a hint for problem 5",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.3333333333333333,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::010",
+      "tutorial_9::010",
+      "tutorial_9::003",
+      "tutorial_6::003"
+    ],
+    "similarities": [
+      0.7634,
+      0.7567,
+      0.7518,
+      0.7515
+    ],
+    "expected_chunks": [
+      "tutorial_9::003"
+    ],
+    "ms": 50.6
+  },
+  {
+    "id": "unsupported_1",
+    "category": "unsupported",
+    "question": "How do I bake chocolate cake?",
+    "expected_status": "insufficient",
+    "status": "insufficient",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 18.0
+  },
+  {
+    "id": "unsupported_2",
+    "category": "unsupported",
+    "question": "Explain blockchain mining",
+    "expected_status": "insufficient",
+    "status": "insufficient",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 18.8
+  },
+  {
+    "id": "unsupported_3",
+    "category": "unsupported",
+    "question": "Explain quantum entanglement",
+    "expected_status": "insufficient",
+    "status": "insufficient",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 24.7
+  },
+  {
+    "id": "unsupported_4",
+    "category": "unsupported",
+    "question": "Who won the last football World Cup?",
+    "expected_status": "insufficient",
+    "status": "insufficient",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 477.1
+  },
+  {
+    "id": "unsupported_5",
+    "category": "unsupported",
+    "question": "What is the capital of France?",
+    "expected_status": "insufficient",
+    "status": "insufficient",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 20.0
+  },
+  {
+    "id": "unsupported_6",
+    "category": "unsupported",
+    "question": "How does backpropagation train a neural network?",
+    "expected_status": "insufficient",
+    "status": "insufficient",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 68.6
+  },
+  {
+    "id": "unsupported_7",
+    "category": "unsupported",
+    "question": "Explain RSA key generation and encryption.",
+    "expected_status": "insufficient",
+    "status": "insufficient",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 19.3
+  },
+  {
+    "id": "future_1",
+    "category": "future",
+    "question": "Explain Dijkstra",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.6
+  },
+  {
+    "id": "future_2",
+    "category": "future",
+    "question": "Compare BFS and Dijkstra",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.6
+  },
+  {
+    "id": "future_3",
+    "category": "future",
+    "question": "Why does Dijkstra not work with negative weights?",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.6
+  },
+  {
+    "id": "future_4",
+    "category": "future",
+    "question": "Without Dijkstra, explain Bellman-Ford",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.9
+  },
+  {
+    "id": "future_5",
+    "category": "future",
+    "question": "Explain maximum flow",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.5
+  },
+  {
+    "id": "future_6",
+    "category": "future",
+    "question": "Explain BFS",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.4
+  },
+  {
+    "id": "future_7",
+    "category": "future",
+    "question": "Do not use Dijkstra code, just explain its idea",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.4
+  },
+  {
+    "id": "future_8",
+    "category": "future",
+    "question": "Without Dijkstra, teach dynamic programming",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.4
+  },
+  {
+    "id": "exclusion_1",
+    "category": "exclusion",
+    "question": "Find a shortest path in an unweighted graph without Dijkstra",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.3333333333333333,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::015",
+      "tutorial_6::018",
+      "tutorial_6::014",
+      "tutorial_6::017"
+    ],
+    "similarities": [
+      0.7583,
+      0.7152,
+      0.7121,
+      0.6937
+    ],
+    "expected_chunks": [
+      "tutorial_6::014"
+    ],
+    "ms": 29.1
+  },
+  {
+    "id": "exclusion_2",
+    "category": "exclusion",
+    "question": "Do not use Dijkstra. Explain BFS.",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::015",
+      "tutorial_6::014"
+    ],
+    "similarities": [
+      0.694,
+      0.6887
+    ],
+    "expected_chunks": [
+      "tutorial_6::014"
+    ],
+    "ms": 32.6
+  },
+  {
+    "id": "exclusion_3",
+    "category": "exclusion",
+    "question": "Explain BFS without using Dijkstra or Bellman-Ford",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::015",
+      "tutorial_6::014",
+      "tutorial_6::018"
+    ],
+    "similarities": [
+      0.7366,
+      0.7268,
+      0.6674
+    ],
+    "expected_chunks": [
+      "tutorial_6::014"
+    ],
+    "ms": 1036.2
+  },
+  {
+    "id": "clarify_1",
+    "category": "clarification",
+    "question": "Why does that work?",
+    "expected_status": "clarify",
+    "status": "clarify",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.8
+  },
+  {
+    "id": "clarify_2",
+    "category": "clarification",
+    "question": "Give me another example",
+    "expected_status": "clarify",
+    "status": "clarify",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.8
+  },
+  {
+    "id": "clarify_3",
+    "category": "clarification",
+    "question": "Explain it",
+    "expected_status": "clarify",
+    "status": "clarify",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.8
+  },
+  {
+    "id": "invalid_problem",
+    "category": "clarification",
+    "question": "Give me a hint for problem 99",
+    "expected_status": "clarify",
+    "status": "clarify",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.8
+  },
+  {
+    "id": "missing_problem",
+    "category": "clarification",
+    "question": "Give me a hint",
+    "expected_status": "clarify",
+    "status": "clarify",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 1.4
+  },
+  {
+    "id": "hebrew_1",
+    "category": "hebrew",
+    "question": "הסבר את אלגוריתם דייקסטרה",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.4
+  },
+  {
+    "id": "hebrew_2",
+    "category": "hebrew",
+    "question": "הסבר חיפוש לרוחב בלי להשתמש בדייקסטרה",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.5,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::015",
+      "tutorial_6::014",
+      "tutorial_6::018"
+    ],
+    "similarities": [
+      0.7409,
+      0.7389,
+      0.6785
+    ],
+    "expected_chunks": [
+      "tutorial_6::014"
+    ],
+    "ms": 56.8
+  },
+  {
+    "id": "hebrew_3",
+    "category": "hebrew",
+    "question": "מהו חתך מינימלי?",
+    "expected_status": "future",
+    "status": "future",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.4
+  },
+  {
+    "id": "hebrew_4",
+    "category": "hebrew",
+    "question": "מהו חתך מינימלי?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 0.25,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_7::001",
+      "tutorial_7::005",
+      "tutorial_9::010",
+      "tutorial_9::003"
+    ],
+    "similarities": [
+      0.7061,
+      0.6921,
+      0.6665,
+      0.6573
+    ],
+    "expected_chunks": [
+      "tutorial_9::003"
+    ],
+    "ms": 541.9
+  },
+  {
+    "id": "hebrew_5",
+    "category": "hebrew",
+    "question": "אפשר רמז לשאלה 1?",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_5::003",
+      "tutorial_1::007",
+      "tutorial_1::013",
+      "tutorial_4::001"
+    ],
+    "similarities": [
+      0.8337,
+      0.7423,
+      0.7287,
+      0.7276
+    ],
+    "expected_chunks": [
+      "tutorial_5::003"
+    ],
+    "ms": 65.3
+  },
+  {
+    "id": "hebrew_6",
+    "category": "hebrew",
+    "question": "איך זה עובד?",
+    "expected_status": "clarify",
+    "status": "clarify",
+    "decision_correct": true,
+    "support_hit": false,
+    "reciprocal_rank": 0,
+    "future_context_leaks": 0,
+    "chunks": [],
+    "similarities": [],
+    "expected_chunks": [],
+    "ms": 0.9
+  },
+  {
+    "id": "hw_natural_1",
+    "category": "homework",
+    "question": "Give me one small hint for problem 4. Do not give the full solution.",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_9::011",
+      "tutorial_9::010",
+      "tutorial_9::015"
+    ],
+    "similarities": [
+      0.731,
+      0.7303,
+      0.7155
+    ],
+    "expected_chunks": [
+      "tutorial_9::001",
+      "tutorial_9::011"
+    ],
+    "ms": 51.9
+  },
+  {
+    "id": "hw_natural_2",
+    "category": "homework",
+    "question": "I'm stuck on problem 1. Please give me a little guidance, not a complete answer.",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_5::003",
+      "tutorial_1::007",
+      "tutorial_4::001",
+      "tutorial_2::000"
+    ],
+    "similarities": [
+      0.8345,
+      0.7481,
+      0.7307,
+      0.7273
+    ],
+    "expected_chunks": [
+      "tutorial_5::003"
+    ],
+    "ms": 53.2
+  },
+  {
+    "id": "hw_natural_3",
+    "category": "homework",
+    "question": "Can you help me understand problem 2? Just a small hint please.",
+    "expected_status": "answer",
+    "status": "answer",
+    "decision_correct": true,
+    "support_hit": true,
+    "reciprocal_rank": 1.0,
+    "future_context_leaks": 0,
+    "chunks": [
+      "tutorial_6::014",
+      "tutorial_6::015",
+      "tutorial_1::002",
+      "tutorial_6::017"
+    ],
+    "similarities": [
+      0.8338,
+      0.8021,
+      0.7862,
+      0.7685
+    ],
+    "expected_chunks": [
+      "tutorial_6::014",
+      "tutorial_6::015"
+    ],
+    "ms": 92.3
+  }
+]

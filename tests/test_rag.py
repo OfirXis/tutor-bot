@@ -70,7 +70,7 @@ class TestChunker:
     def test_real_course_material_loads(self):
         chunks = load_course_chunks()
         assert len(chunks) > 50
-        assert {c.tutorial for c in chunks} == set(range(1, 9))
+        assert {c.tutorial for c in chunks} == set(range(1, 10))
 
 
 class TestRRF:

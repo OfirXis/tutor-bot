@@ -1,5 +1,54 @@
 # Project Summary — Course Tutor (Curriculum-Gated Hybrid RAG)
 
+## RAG update — September 2026
+
+- Runtime curriculum rules now come from `db/curriculum.json`, shared by the UI,
+  prompts, scope checks and homework concept IDs. `db/metadata.json` is a compatibility export.
+- Dense hits carry measured cosine similarity. Relevance filtering and source-ID
+  validation withhold weak evidence or nonexistent citations; neither proves entailment.
+- Explicit method exclusions (including Hebrew) avoid treating "without Dijkstra"
+  as a request to teach it. Original questions are retained, and ambiguous references
+  ask for clarification. A subsequent term-normalization update is described below.
+- Homework retrieval uses per-problem concept IDs and only the requested statements,
+  instead of adding all assignment topics. Invalid problem numbers ask for clarification.
+- `evaluate_rag.py` and `eval/rag_cases.json` evaluate specific supporting passages,
+  unsupported questions, homework, future material, exclusions and reference-translated
+  Hebrew cases. See `RAG_EVALUATION.md` for results and remaining misses; this is an
+  offline regression evaluation, not a live model-quality guarantee.
+- Corrected the missing strict-weight condition in the MST cycle property and the
+  Prim example's last edge (total weight 6, not 8). The course index was rebuilt.
+- No new reranking stage or translation-provider change was introduced.
+
+## Homework assistance — September 2026
+
+- Assignment statements now count as evidence independently of lecture matches.
+  Contents/statement requests display the real PDF text; guidance can use both the
+  selected statement and in-scope lecture passages. Weak retrieval retries with
+  the problem's mapped prerequisite concepts.
+- Natural problem references and explicit-problem follow-ups are supported; the
+  active problem resets when the assignment changes. Standalone prerequisite questions
+  use the regular teaching prompt, including Dijkstra on Homework 5. Tutoring instructions permit
+  direct task explanations and stepwise solving, with one validated citation retry.
+- The runtime syllabus is cumulative through the assignment week. The legacy
+  curriculum extractor had a separate stale topic table, incorrect project root,
+  and truncated PDFs. It now uses `db/curriculum.json`, all source pages, and a
+  review directory. No course weeks were guessed or reassigned, and existing
+  lecture notes were not automatically regenerated.
+
+## Term normalization — September 2026
+
+- `query_normalization.py` proposes close spelling matches from the curriculum and
+  known abbreviation expansions; the selected tutor LLM approves only candidate IDs.
+- The app applies approved edits before retrieval, scope checking and evidence
+  filtering. Original wording remains visible and accompanies the interpretation
+  in generation/history. Exclusions, numbers and formatted code/math stay intact.
+- Short ambiguous abbreviations require recognizable course context. Invalid model
+  output or a failed call preserves the original; clean queries avoid the extra call.
+- The offline RAG evaluation does not invoke normalization. Separate tests cover
+  edits, failures, scope restrictions, protected content and the chat integration.
+
+The older benchmark results below describe the previous, smaller evaluation set.
+
 A local-first, free-to-run tutoring chatbot for an algorithms course, rebuilt from the
 ground up. This document summarizes what changed, why, and what's now measured.
 
@@ -88,3 +137,23 @@ streamlit run app.py
 
 Swap LLM providers by editing `LLM_PROVIDER` in `.env` (`ollama` | `github` | `openai` |
 `compatible`) — no code changes required. See `.env.example` for all options.
+
+## Independent Hebrew translator — September 2026
+
+- Sidebar and environment settings select auto, dedicated local Ollama, tutor, or
+  OpenAI translation independently of the answering model. Hebrew input is
+  translated to English; the checked English answer is translated back and only
+  Hebrew is displayed. Code/math protection and citation checks remain active.
+- Explicit local translation does not silently use a paid model on failure.
+  DictaLM 3.0 1.7B Instruct is a candidate to evaluate, not an installed or
+  quality-benchmarked default. `dictalm-translator` is an example Ollama alias.
+
+## English answer refusal fix — September 2026
+
+- Reproduced false insufficient-evidence decisions for beginner phrasing, “teach me”
+  and short Big-O questions. Evidence keywords now omit presentation instructions;
+  recognized topics can retry with canonical names while retaining original query
+  constraints and curriculum filters.
+- English input skips translator initialization. Learning mode now retries missing
+  citations once, as homework mode does; invalid citation IDs remain rejected.
+- Exact “what is dijkstra” at week 9 is included in real-index regressions.

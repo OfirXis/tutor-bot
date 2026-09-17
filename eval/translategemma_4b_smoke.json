@@ -1,0 +1,110 @@
+[
+  {
+    "model": "translategemma:4b",
+    "text": "תעזור לי עם שאלה 4 ותסביר את הצעד הראשון",
+    "target": "en",
+    "translation": "Please help me with question 4 and explain the first step.",
+    "seconds": 0.149
+  },
+  {
+    "model": "translategemma:4b",
+    "text": "איך מחשבים את ערך הזרימה ברשת?",
+    "target": "en",
+    "translation": "How do you calculate the flow value in a network?",
+    "seconds": 0.09
+  },
+  {
+    "model": "translategemma:4b",
+    "text": "(Source 2) A flow in a flow network is a function $f$ that assigns a nonnegative value to each edge, representing the amount of flow sent through that edge. The flow value $|f|$ is the net flow leaving the source, equal to the net flow entering the sink. In other words, it measures the total amount of \"stuff\" being sent from the source to the sink through the network.",
+    "target": "he",
+    "question": "מה זה זרימה?",
+    "sources": 3,
+    "assignments": 0,
+    "translation": "(Source 2) זרימה ברשת זרימה היא פונקציה $f$ שמקצה ערך לא שלילי לכל קצה, ומייצג את כמות הזרימה המועברת דרך הקצה הזה. הערך של הזרימה $|f|$ הוא הזרימה נטו היוצאת ממקור, שהוא שווה לזרימה נטו הנכנסת ליעד. במילים אחרות, היא מודדת את הכמות הכוללת של \"חומר\" המועברת מהמקור ליעד דרך הרשת.",
+    "seconds": 0.779
+  },
+  {
+    "model": "translategemma:4b",
+    "text": "(Source 1) Dynamic programming is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable when the problem exhibits two key properties: (1) **Overlapping Subproblems**: The problem can be broken down into subproblems that are reused multiple times, and (2) **Optimal Substructure**: An optimal solution to the problem can be constructed from optimal solutions of its subproblems.\n\nThis approach allows us to store the results of subproblems to avoid redundant calculations, reducing the time complexity of the algorithm. By breaking down the problem into smaller subproblems and solving each one only once, we can efficiently solve the original problem.",
+    "target": "he",
+    "question": "מה זה dp?",
+    "sources": 4,
+    "assignments": 0,
+    "translation": "(Source 1) תכנות דינמי הוא שיטה לפתרון בעיות מורכבות על ידי פירוקן לתת-בעיות פשוטות יותר. השיטה מתאימה כאשר הבעיה מאופיינת בשתי תכונות עיקריות: (1) **תת-בעיות חוזרות**: ניתן לפצל את הבעיה לתת-בעיות שחוזרות על עצמן מספר פעמים, ו-(2) **מבנה אופטימלי**: ניתן לבנות פתרון אופטימלי לבעיה מפתרונות אופטימליים של תתי-הבעיות שלה.\n\nגישה זו מאפשרת לנו לשמור את תוצאות תתי-הבעיות כדי להימנע מחשבונות חוזרים, ובכך להפחית את המורכבות הזמנית של האלגוריתם. על ידי פירוק הבעיה לתתי-בעיות קטנות יותר ופתרון כל אחת מהן פעם אחת בלבד, ניתן לפתור ביעילות את הבעיה המקורית.",
+    "seconds": 1.447
+  },
+  {
+    "model": "translategemma:4b",
+    "text": "(Source 1 — Tutorial 2 — Divide & Conquer › Worked Examples › Example 1: Merge Sort)\n\nConsider the array [38, 27, 43, 3, 9, 82, 10]. We can apply Merge Sort to sort this array. The steps are as follows:\n\n1. Split into [38, 27, 43] and [3, 9, 82, 10].\n2. Further split until single elements: [38], [27], [43], [3], [9], [82], [10].\n3. Merge back: [27, 38, 43], [3, 9, 10, 82].\n4. Final merge: [3, 9, 10, 27, 38, 43, 82].\n\nThis example illustrates the basic idea of Divide and Conquer, where we break down a problem into smaller subproblems, solve each subproblem recursively, and then combine the solutions to solve the original problem.\n\nCheck-in question: What is the recurrence relation for Merge Sort, as described in (Source 2)?",
+    "target": "he",
+    "question": "תן לי דוגמה להפרד ומשול",
+    "sources": 3,
+    "assignments": 0,
+    "seconds": 2.264,
+    "translation": "(Source 1 — Tutorial 2 — Divide & Conquer › Worked Examples › Example 1: Merge Sort)\n\nנניח שהרשימה היא [38, 27, 43, 3, 9, 82, 10]. ניתן להשתמש במיון מיזוג כדי למיין את הרשימה הזו. השלבים הם הבאים:\n\n1. חלוק לרשימות [38, 27, 43] ו-[3, 9, 82, 10].\n2. חלוק נוסף עד לקבלת רכיבים בודדים: [38], [27], [43], [3], [9], [82], [10].\n3. מיזוג חוזר: [27, 38, 43], [3, 9, 10, 82].\n4. מיזוג סופי: [3, 9, 10, 27, 38, 43, 82].\n\nדוגמה זו מדגימה את הרעיון הבסיסי של \"הפרד ומשול\", שבו מפרקים בעיה לתת-בעיות קטנות יותר, פותרים כל תת-בעיה באופן רקורסיבי, ולאחר מכן משלבים את הפתרונות כדי לפתור את הבעיה המקורית.\n\nשאלת בדיקה: מהו נוסחת הנסיגה עבור מיון מיזוג, כפי שתואר ב(Source 2)?"
+  },
+  {
+    "model": "translategemma:4b",
+    "text": "(Assignment 1)\n\nYou are tasked with organizing a charity event for 3n volunteers. To ensure effective teamwork, the volunteers need to be divided into teams, each consisting of exactly 3 members.\n\nAmong the volunteers, n have been pre-selected as team leaders based on their experience.\n\nYour goal is to assign each volunteer to a team in such a way that:\n\n1. Every team has exactly one team leader and two additional volunteers.\n2. Each volunteer feels comfortable working with their team leader. This is determined by a given friendship matrix, where:\n(a)Friends[i,j] = True means that thei-th team leader and thej-th volunteer are friends.\n(b)Friends[i,j] = False means there is no friendship connection between them.\n\nTo begin, let's examine the problem statement. What does the problem statement mean by \"Each volunteer feels comfortable working with their team leader\"?",
+    "target": "he",
+    "question": "תעזור לי עם שאלה 4",
+    "sources": 3,
+    "assignments": 1,
+    "translation": "(Assignment 1)\n\nאתם מיועדים לארגן אירוע צדקה עבור 3n מתנדבים. כדי להבטיח שיתוף פעולה יעיל, יש לחלק את המתנדבים לקבוצות, כאשר לכל קבוצה יש בדיוק 3 חברים.\n\nמתוך המתנדבים, נבחרו מראש n כמנהיגי קבוצות על סמך הניסיון שלהם.\n\nהמטרה שלכם היא להקצות לכל מתנדב קבוצה כך ש:\n\n1. לכל קבוצה יש בדיוק מנהל קבוצה אחד ושני מתנדבים נוספים.\n2. כל מתנדב מרגיש בנוח לעבוד עם מנהל הקבוצה שלו. זה נקבע על ידי מטריצת חברות, כאשר:\n(א) Friends[i,j] = True אומר ש-המנהל ה-i של הקבוצה והמתנדב ה-j הם חברים.\n(ב) אם `Friends[i,j] = False` אומר שאין קשר של חברות ביניהם.\n\nכדי להתחיל, בואו נבחן את הניסוח של הבעיה. מה הכוונה ב\"כל מתנדב מרגיש בנוח לעבוד עם המנהל שלו\"?",
+    "seconds": 1.76
+  },
+  {
+    "model": "hf.co/dicta-il/DictaLM-3.0-Nemotron-12B-Instruct-GGUF:Q4_K_M",
+    "text": "תעזור לי עם שאלה 4 ותסביר את הצעד הראשון",
+    "target": "en",
+    "translation": "Help me with question 4 and explain the first step.",
+    "seconds": 2.549
+  },
+  {
+    "model": "hf.co/dicta-il/DictaLM-3.0-Nemotron-12B-Instruct-GGUF:Q4_K_M",
+    "text": "איך מחשבים את ערך הזרימה ברשת?",
+    "target": "en",
+    "translation": "How do you compute the flow value in a network?",
+    "seconds": 0.278
+  },
+  {
+    "model": "hf.co/dicta-il/DictaLM-3.0-Nemotron-12B-Instruct-GGUF:Q4_K_M",
+    "text": "(Source 2) A flow in a flow network is a function $f$ that assigns a nonnegative value to each edge, representing the amount of flow sent through that edge. The flow value $|f|$ is the net flow leaving the source, equal to the net flow entering the sink. In other words, it measures the total amount of \"stuff\" being sent from the source to the sink through the network.",
+    "target": "he",
+    "question": "מה זה זרימה?",
+    "sources": 3,
+    "assignments": 0,
+    "translation": "(Source 2) זרימה ברשת זרימה היא פונקציה $f$ שמייחסת ערך לא שלילי לכל קשת, המייצג את כמות הזרימה שנשלחת דרך אותה קשת. ערך הזרימה $|f|$ הוא הזרימה הנטו היוצאת מהמקור, השווה לזרימה הנטו הנכנסת למטרה. במילים אחרות, היא מודדת את הכמות הכוללת של \"חומר\" שנשלחת מהמקור אל המטרה דרך הרשת.",
+    "seconds": 1.74
+  },
+  {
+    "model": "hf.co/dicta-il/DictaLM-3.0-Nemotron-12B-Instruct-GGUF:Q4_K_M",
+    "text": "(Source 1) Dynamic programming is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable when the problem exhibits two key properties: (1) **Overlapping Subproblems**: The problem can be broken down into subproblems that are reused multiple times, and (2) **Optimal Substructure**: An optimal solution to the problem can be constructed from optimal solutions of its subproblems.\n\nThis approach allows us to store the results of subproblems to avoid redundant calculations, reducing the time complexity of the algorithm. By breaking down the problem into smaller subproblems and solving each one only once, we can efficiently solve the original problem.",
+    "target": "he",
+    "question": "מה זה dp?",
+    "sources": 4,
+    "assignments": 0,
+    "translation": "(Source 1) תכנות דינמי הוא שיטה לפתרון בעיות מורכבות על ידי פירוקן לתת-בעיות פשוטות יותר. היא מתאימה כאשר הבעיה מציגה שני תכונות מפתח: (1) **תת-בעיות חופפות**: ניתן לפרק את הבעיה לתת-בעיות המשמשות מספר פעמים, ו-(2) **מבנה אופטימלי של תת-בעיות**: פתרון אופטימלי לבעיה יכול להיבנות מפתרונות אופטימליים של תת-הבעיות שלה.\n\nגישה זו מאפשרת לאחסן את התוצאות של תת-הבעיות כדי למנוע חישובים מיותרים, ובכך להפחית את מורכבות הזמן של האלגוריתם. על ידי פירוק הבעיה לתת-בעיות קטנות יותר ופתרון כל אחת מהן רק פעם אחת, ניתן לפתור ביעילות את הבעיה המקורית.",
+    "seconds": 2.94
+  },
+  {
+    "model": "hf.co/dicta-il/DictaLM-3.0-Nemotron-12B-Instruct-GGUF:Q4_K_M",
+    "text": "(Source 1 — Tutorial 2 — Divide & Conquer › Worked Examples › Example 1: Merge Sort)\n\nConsider the array [38, 27, 43, 3, 9, 82, 10]. We can apply Merge Sort to sort this array. The steps are as follows:\n\n1. Split into [38, 27, 43] and [3, 9, 82, 10].\n2. Further split until single elements: [38], [27], [43], [3], [9], [82], [10].\n3. Merge back: [27, 38, 43], [3, 9, 10, 82].\n4. Final merge: [3, 9, 10, 27, 38, 43, 82].\n\nThis example illustrates the basic idea of Divide and Conquer, where we break down a problem into smaller subproblems, solve each subproblem recursively, and then combine the solutions to solve the original problem.\n\nCheck-in question: What is the recurrence relation for Merge Sort, as described in (Source 2)?",
+    "target": "he",
+    "question": "תן לי דוגמה להפרד ומשול",
+    "sources": 3,
+    "assignments": 0,
+    "translation": "(Source 1 — Tutorial 2 — Divide & Conquer › Worked Examples › Example 1: Merge Sort)\n\nשקלו את המערך [38, 27, 43, 3, 9, 82, 10]. נוכל ליישם Merge Sort כדי למיין מערך זה. השלבים הם כדלקמן:\n\n1. פיצול ל-[38, 27, 43] ו-[3, 9, 82, 10].\n2. המשך לפצל עד אלמנטים בודדים: [38], [27], [43], [3], [9], [82], [10].\n3. מיזוג בחזרה: [27, 38, 43], [3, 9, 10, 82].\n4. המיזוג הסופי: [3, 9, 10, 27, 38, 43, 82].\n\nדוגמה זו ממחישה את הרעיון הבסיסי של הפרד ומשול, שבו אנו מפרקים בעיה לתת-בעיות קטנות יותר, פותרים כל תת-בעיה באופן רקורסיבי, ולאחר מכן משלבים את הפתרונות כדי לפתור את הבעיה המקורית.\n\nשאלה לבדיקה: מהי היחסה הרקורסיבית של מיון המיזוג, כפי שתוארה ב-(Source 2)?",
+    "seconds": 4.587
+  },
+  {
+    "model": "hf.co/dicta-il/DictaLM-3.0-Nemotron-12B-Instruct-GGUF:Q4_K_M",
+    "text": "(Assignment 1)\n\nYou are tasked with organizing a charity event for 3n volunteers. To ensure effective teamwork, the volunteers need to be divided into teams, each consisting of exactly 3 members.\n\nAmong the volunteers, n have been pre-selected as team leaders based on their experience.\n\nYour goal is to assign each volunteer to a team in such a way that:\n\n1. Every team has exactly one team leader and two additional volunteers.\n2. Each volunteer feels comfortable working with their team leader. This is determined by a given friendship matrix, where:\n(a)Friends[i,j] = True means that thei-th team leader and thej-th volunteer are friends.\n(b)Friends[i,j] = False means there is no friendship connection between them.\n\nTo begin, let's examine the problem statement. What does the problem statement mean by \"Each volunteer feels comfortable working with their team leader\"?",
+    "target": "he",
+    "question": "תעזור לי עם שאלה 4",
+    "sources": 3,
+    "assignments": 1,
+    "translation": "(Assignment 1)\n\nאתם מתבקשים לארגן אירוע צדקה עבור 3n מתנדבים. כדי להבטיח עבודת צוות יעילה, המתנדבים צריכים להיות מחולקים לצוותים, שכל אחד מהם מורכב בדיוק מ-3 חברים.\n\nבין המתנדבים, n נבחרו מראש כמנהיגי הצוותים על סמך הניסיון שלהם.\n\nהמטרה היא להקצות כל מתנדב לצוות באופן שבו:\n1. לכל צוות יש בדיוק מנהיג צוות אחד ושני מתנדבים נוספים.\n2. כל מתנדב מרגיש בנוח לעבוד עם מנהיג הצוות שלו. זה נקבע על ידי מטריצת ידידות נתונה, כאשר: \n(a) Friends[i,j] = True פירושו שהמנהיג ה-i של הצוות והמתנדב ה-j הם חברים.\n(ב) Friends[i,j] = False פירושו שאין קשר ידידות בין השניים.\n\nכעת, נבחן את הצהרת הבעיה. מה משמעות הביטוי \"כל מתנדב מרגיש בנוח לעבוד עם מנהל הקבוצה שלו\" בהצהרת הבעיה?",
+    "seconds": 3.615
+  }
+]

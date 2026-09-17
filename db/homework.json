@@ -1,111 +1,357 @@
 {
   "hw_1": {
-    "week": 1,
+    "week": 3,
     "title": "Homework 1",
-    "problems": 4,
-    "description": "Introduction to algorithm analysis and complexity",
-    "topics": ["Big O notation", "Asymptotic analysis", "Time complexity"],
-    "problem_preview": "Problem 1: Given an array of n integers, analyze the time complexity of your sorting algorithm. Problem 2: Prove that f(n) = n² + 3n + 5 is O(n²).",
-    "key_concepts": [
-      "Asymptotic notation (Big O, Omega, Theta)",
-      "Analyzing algorithms empirically",
-      "Identifying growth rates",
-      "Proving complexity bounds"
+    "description": "Asymptotic analysis, recurrences, sorted-matrix search, greedy rope merging and graph degree sequences.",
+    "week_basis": "Aligned to the latest tutorial needed by the supplied assignment PDF topics.",
+    "problem_pdf": "material/Homework/HW1.pdf",
+    "problems": 5,
+    "problem_statements": [
+      {
+        "number": 1,
+        "pages": [
+          1
+        ],
+        "text": "Letf(n) be defined by:\nf(n) =\n(\nn+f(αn) +f(βn),ifn≥0\n0,otherwise\nWhere 0<α,β <1. Give a tight asymptotic forf(n) in each case:\n1.α+β <1\n2.α+β= 1\n3.α+β >1"
+      },
+      {
+        "number": 2,
+        "pages": [
+          1
+        ],
+        "text": "1. Prove for any 1<α∈N:log an=o( √n)\n2. Next there are 5 functions, order them in asymptotic ascending order. I.e.\nf1,f 2,f 3,f 4,f 5 :f 1 =O(f 2) =O(f 3) =O(f 4) =O(f 5)\nThe functions are:\nlog(nn),(logn) n,log(n 6006),(logn) 6006,loglog(6006n)"
+      },
+      {
+        "number": 3,
+        "pages": [
+          2
+        ],
+        "text": "A matrixMwithrrows andccolumns containingdistinctintegers is said to be\nsortedif each row and column is sorted. Namely, for every 1≥i<r,1≥j <c\nit holds that\nM(i,j)<M(i,j+ 1) andM(i,j)<M(i+ 1,j)\nFor example, the following matrixMis a sorted matrix:\nM=\n\n\n5 8 11 23\n6 9 14 25\n10 15 18 31\n30 32 40 50\n\n\n1. Given a sorted matrix, which cell contains the minimum element? Prove\nit. Namely, if you claim that the minimum element is in cellM(a,b) you\nneed to show that for any (a ′,b ′)̸= (a,b) =⇒M(a,b)<M(a ′,b ′)\n2. Given a sorted matrixMwith n rows and n columns and an integerz, we\nwant to check ifzis inM. A student suggested the following algorithm:\n(a) Comparezwith an elementwin the middle of the matrix. Namely,\nw=M(x mid,y mid) wherex mid =⌊ n+1\n2 ⌋,y mid =⌊ n+1\n2 ⌋\n(b) DivideMto four sub-matricesA,B,C,Dof size (roughly)n/2n/2:\nA=M(1,...,x mid)(1,...,y mid)\nB=M(1,...,x mid)(ymid + 1,...,n)\nC=M(x mid + 1,...n)(1,...,y mid)\nD=M(x mid + 1,...,n)(y mid + 1,...,n)\n(c) Ifz=w, returnF ound.\n(d) Ifz <w, we look forzrecursively in the following sub-matrices (fill\nin the blank):\n(e) Ifz >w, we look forzrecursively in the following sub-matrices (fill\nin the blank):\n3. Write a pseudo-code implementing the above algorithm and analyze its\nrunning time. Namely, letT(n) denote the worst-case running time of the\nalgorithm on a matrix of sizenn. Write the recurrence relation and solve\nit.\n4. Write an algorithm checks ifzis an element of a sorted matrixM. Your\nalgorithm should have runtime which is better thanO(n 1.001)"
+      },
+      {
+        "number": 4,
+        "pages": [
+          3
+        ],
+        "text": "Given an arrayarr[] of rope lengths, connect all ropes into a single rope with the\nminimum total cost. The cost to connect two ropes is the sum of their lengths.\nExample: Inputarr[] = [4,3,2,6]\nOutput: 29 Explanation: Minimum cost to connect all ropes into a single rope\nis\nConnect ropes 2 and 3 - [4,5,6], cost = 5\nConnect ropes 4 and 5 - [9,6], cost = 9\nConnect ropes 9 and 6 - [15], cost = 15\nTotal cost = 5 + 9 + 15 = 29"
+      },
+      {
+        "number": 5,
+        "pages": [
+          3
+        ],
+        "text": "Given a listD=d1,d2,...,dnofnnatural numbers, Design a Greedy algorithm\nthat decides wether there exists an undirected graphG= (v1,v2,...,vn,E)−\ns.t.∀i:degree(vi) =di. G should be a simple graph which means that it should\nnot contain self loops or multiple edges between the same pair of nodes. if exists\nsuch a graph the algorithm should return it, otherwise it returns ”FALSE”.\nJustify correctness of your solution and analyze running time. Example A:D=\n(1,1,1,1). The graph with the set of edges (v1,v2),(v3,v4) may be returned by\nthe algorithm. Example B:D= (4,3,1,1). There is no graph with four having\ntheses degrees, then the algorithm in this case returns ”FALSE”."
+      }
     ],
-    "hint_sequence": [
-      "Look at the dominant term in the function.",
-      "Which term grows fastest as n increases?",
-      "Can you find constants c and n₀ to satisfy the definition?",
-      "What's the relationship between your constants and the Big O notation?"
-    ]
+    "full_problem_text": "Problem 1\nLetf(n) be defined by:\nf(n) =\n(\nn+f(αn) +f(βn),ifn≥0\n0,otherwise\nWhere 0<α,β <1. Give a tight asymptotic forf(n) in each case:\n1.α+β <1\n2.α+β= 1\n3.α+β >1\n\nProblem 2\n1. Prove for any 1<α∈N:log an=o( √n)\n2. Next there are 5 functions, order them in asymptotic ascending order. I.e.\nf1,f 2,f 3,f 4,f 5 :f 1 =O(f 2) =O(f 3) =O(f 4) =O(f 5)\nThe functions are:\nlog(nn),(logn) n,log(n 6006),(logn) 6006,loglog(6006n)\n\nProblem 3\nA matrixMwithrrows andccolumns containingdistinctintegers is said to be\nsortedif each row and column is sorted. Namely, for every 1≥i<r,1≥j <c\nit holds that\nM(i,j)<M(i,j+ 1) andM(i,j)<M(i+ 1,j)\nFor example, the following matrixMis a sorted matrix:\nM=\n\n\n5 8 11 23\n6 9 14 25\n10 15 18 31\n30 32 40 50\n\n\n1. Given a sorted matrix, which cell contains the minimum element? Prove\nit. Namely, if you claim that the minimum element is in cellM(a,b) you\nneed to show that for any (a ′,b ′)̸= (a,b) =⇒M(a,b)<M(a ′,b ′)\n2. Given a sorted matrixMwith n rows and n columns and an integerz, we\nwant to check ifzis inM. A student suggested the following algorithm:\n(a) Comparezwith an elementwin the middle of the matrix. Namely,\nw=M(x mid,y mid) wherex mid =⌊ n+1\n2 ⌋,y mid =⌊ n+1\n2 ⌋\n(b) DivideMto four sub-matricesA,B,C,Dof size (roughly)n/2n/2:\nA=M(1,...,x mid)(1,...,y mid)\nB=M(1,...,x mid)(ymid + 1,...,n)\nC=M(x mid + 1,...n)(1,...,y mid)\nD=M(x mid + 1,...,n)(y mid + 1,...,n)\n(c) Ifz=w, returnF ound.\n(d) Ifz <w, we look forzrecursively in the following sub-matrices (fill\nin the blank):\n(e) Ifz >w, we look forzrecursively in the following sub-matrices (fill\nin the blank):\n3. Write a pseudo-code implementing the above algorithm and analyze its\nrunning time. Namely, letT(n) denote the worst-case running time of the\nalgorithm on a matrix of sizenn. Write the recurrence relation and solve\nit.\n4. Write an algorithm checks ifzis an element of a sorted matrixM. Your\nalgorithm should have runtime which is better thanO(n 1.001)\n\nProblem 4\nGiven an arrayarr[] of rope lengths, connect all ropes into a single rope with the\nminimum total cost. The cost to connect two ropes is the sum of their lengths.\nExample: Inputarr[] = [4,3,2,6]\nOutput: 29 Explanation: Minimum cost to connect all ropes into a single rope\nis\nConnect ropes 2 and 3 - [4,5,6], cost = 5\nConnect ropes 4 and 5 - [9,6], cost = 9\nConnect ropes 9 and 6 - [15], cost = 15\nTotal cost = 5 + 9 + 15 = 29\n\nProblem 5\nGiven a listD=d1,d2,...,dnofnnatural numbers, Design a Greedy algorithm\nthat decides wether there exists an undirected graphG= (v1,v2,...,vn,E)−\ns.t.∀i:degree(vi) =di. G should be a simple graph which means that it should\nnot contain self loops or multiple edges between the same pair of nodes. if exists\nsuch a graph the algorithm should return it, otherwise it returns ”FALSE”.\nJustify correctness of your solution and analyze running time. Example A:D=\n(1,1,1,1). The graph with the set of edges (v1,v2),(v3,v4) may be returned by\nthe algorithm. Example B:D= (4,3,1,1). There is no graph with four having\ntheses degrees, then the algorithm in this case returns ”FALSE”.",
+    "problem_preview": "Problem 1\nLetf(n) be defined by:\nf(n) =\n(\nn+f(αn) +f(βn),ifn≥0\n0,otherwise\nWhere 0<α,β <1. Give a tight asymptotic forf(n) in each case:\n1.α+β <1\n2.α+β= 1\n3.α+β >1\n\nProblem 2\n1. Prove for any 1<α∈N:log an=o( √n)\n2. Next there are 5 functions, order them in asymptotic ascending order. I.e.\nf1,f 2,f 3,f 4,f 5 :f 1 =O(f 2) =O(f 3) =O(f 4) =O(f 5)\nThe functions are:\nlog(nn),(logn) n,log(n 6006),(logn) 6006,loglog(6006n)\n\nProblem 3\nA matrixMwithrrows andccolumns containingdistinctintegers is said to ",
+    "pdf_sha256": "113578e66e00b0392701064ab90becef270d847e8e486969025f67ce0fc57c4c",
+    "problem_topics": {
+      "1": [
+        "algorithm_analysis",
+        "divide_and_conquer"
+      ],
+      "2": [
+        "algorithm_analysis"
+      ],
+      "3": [
+        "divide_and_conquer",
+        "binary_search"
+      ],
+      "4": [
+        "greedy_algorithms",
+        "huffman_coding"
+      ],
+      "5": [
+        "greedy_algorithms"
+      ]
+    }
   },
   "hw_2": {
-    "week": 2,
+    "week": 5,
     "title": "Homework 2",
+    "description": "Dynamic programming: matrix-chain multiplication, constrained subsequences, maximum bias, weighted scheduling and string shuffles.",
+    "week_basis": "Aligned to the latest tutorial needed by the supplied assignment PDF topics.",
+    "problem_pdf": "material/Homework/HW2_algo.pdf",
     "problems": 5,
-    "description": "Greedy algorithms and divide-and-conquer strategies",
-    "topics": ["Greedy algorithms", "Divide and conquer", "Activity selection", "Huffman coding"],
-    "problem_preview": "Problem 1: Design a greedy algorithm for activity selection. Problem 2: Prove the greedy choice property.",
-    "key_concepts": [
-      "Greedy choice property",
-      "Optimal substructure",
-      "Exchange argument",
-      "Correctness proofs",
-      "Divide and conquer paradigm"
+    "problem_statements": [
+      {
+        "number": 1,
+        "pages": [
+          1
+        ],
+        "text": "GivennmatricesA 1, A2, . . . , An with different sizes, we want to compute the\nproduct:\nnY\ni=1\nAi\nAssume all of the shapes match so we can multiply the matrices, and assume\nmultiplying two matrices of sizesr×mandm×ktakesrmktime.\n1. Give an algorithm that runs inO(n 3) which returns the minimum number\nof operations needed to compute the product. Notice you are not com-\nputing the actual product.\nHint:Give a little thought to how you fill the table.\nIf you need a little intuition regarding why multiplying in a different order\nyields a different number of operations, consider matrices of sizes 1×2,\n2×4, 4×1 and try multiplying them in different orders.\n2. Write a procedure in pseudo-code that prints the parenthesis such that\nthe number of operations is optimal. For example, matrices of size 1×2,\n2×4, 4×1 will yield:\n(A1(A2A3))\nThe input of the procedure is an arrayPof dimensions, where matrixA i\nhas dimensionsP[i−1]×P[i]."
+      },
+      {
+        "number": 2,
+        "pages": [
+          2
+        ],
+        "text": "Given an arrayAofnreal numbers, suggest an efficient algorithm that returns\na subsequence (not necessarily contiguous) with maximum sum that does not\ncontain 3 consecutive elements."
+      },
+      {
+        "number": 3,
+        "pages": [
+          2
+        ],
+        "text": "Given abinaryarrayA[1. . . n], we define thebiasof a subarrayA[i . . . j] as\nthe number of zeros minus the number of ones in that subarray.\nFor example, for the array\nA= [1,1,0,0,1,0,0,1],\nthe bias ofA[1. . .3] = [1,1,0] is 1−2 =−1.\n1. Give a linear-time algorithm that returns the maximum bias in the array\nA.\n2. Using the previous part, provide a linear-time algorithm that returns the\nindicesi, jsuch thatA[i . . . j] obtains the maximum bias.\nHint:(Highlight and copy to reveal)\nTry to think about an array P[i], which saves in index i the subarray with the\nbiggest bias that ends in this index."
+      },
+      {
+        "number": 4,
+        "pages": [
+          2
+        ],
+        "text": "Givennjobs, each represented as (startT ime[i], endT ime[i], prof it[i]), find the\nmaximum profit that can be earned by scheduling jobs such that no two jobs\noverlap.\nFor example:\nstartT ime= [1,2,3,4]\nendT ime= [3,4,5,6]\nprof it= [50,10,40,70]\noutput= 120"
+      },
+      {
+        "number": 5,
+        "pages": [
+          3
+        ],
+        "text": "Ashuffleof two stringsXandYis formed by interspersing their characters\ninto a new string, keeping the characters of each string in the same order.\nFor example, the stringBANANAANANASis a shuffle of the stringsBANANAand\nANANASin several different ways:\nBANANAANANAS,BANANAANANAS,BANANAANANAS.\nSimilarly, the stringsPRODGYRNAMAMMIINCGandDYPRONGARMAMMICINGare\nboth shuffles ofDYNAMICandPROGRAMMING:\nPRODGYRNAMAMMIINCG,DYPRONGARMAMMICING.\nGiven three stringsA[1. . . m],B[1. . . n], andC[1. . . m+n], describe and\nanalyze an algorithm to determine whetherCis a shuffle ofAandB."
+      }
     ],
-    "hint_sequence": [
-      "Is there a property that makes a local choice globally optimal?",
-      "What happens when you pick the item with the earliest finish time?",
-      "Can you prove this choice leads to an optimal solution?",
-      "How would you construct the remaining solution after making the greedy choice?"
-    ]
+    "full_problem_text": "Problem 1\nGivennmatricesA 1, A2, . . . , An with different sizes, we want to compute the\nproduct:\nnY\ni=1\nAi\nAssume all of the shapes match so we can multiply the matrices, and assume\nmultiplying two matrices of sizesr×mandm×ktakesrmktime.\n1. Give an algorithm that runs inO(n 3) which returns the minimum number\nof operations needed to compute the product. Notice you are not com-\nputing the actual product.\nHint:Give a little thought to how you fill the table.\nIf you need a little intuition regarding why multiplying in a different order\nyields a different number of operations, consider matrices of sizes 1×2,\n2×4, 4×1 and try multiplying them in different orders.\n2. Write a procedure in pseudo-code that prints the parenthesis such that\nthe number of operations is optimal. For example, matrices of size 1×2,\n2×4, 4×1 will yield:\n(A1(A2A3))\nThe input of the procedure is an arrayPof dimensions, where matrixA i\nhas dimensionsP[i−1]×P[i].\n\nProblem 2\nGiven an arrayAofnreal numbers, suggest an efficient algorithm that returns\na subsequence (not necessarily contiguous) with maximum sum that does not\ncontain 3 consecutive elements.\n\nProblem 3\nGiven abinaryarrayA[1. . . n], we define thebiasof a subarrayA[i . . . j] as\nthe number of zeros minus the number of ones in that subarray.\nFor example, for the array\nA= [1,1,0,0,1,0,0,1],\nthe bias ofA[1. . .3] = [1,1,0] is 1−2 =−1.\n1. Give a linear-time algorithm that returns the maximum bias in the array\nA.\n2. Using the previous part, provide a linear-time algorithm that returns the\nindicesi, jsuch thatA[i . . . j] obtains the maximum bias.\nHint:(Highlight and copy to reveal)\nTry to think about an array P[i], which saves in index i the subarray with the\nbiggest bias that ends in this index.\n\nProblem 4\nGivennjobs, each represented as (startT ime[i], endT ime[i], prof it[i]), find the\nmaximum profit that can be earned by scheduling jobs such that no two jobs\noverlap.\nFor example:\nstartT ime= [1,2,3,4]\nendT ime= [3,4,5,6]\nprof it= [50,10,40,70]\noutput= 120\n\nProblem 5\nAshuffleof two stringsXandYis formed by interspersing their characters\ninto a new string, keeping the characters of each string in the same order.\nFor example, the stringBANANAANANASis a shuffle of the stringsBANANAand\nANANASin several different ways:\nBANANAANANAS,BANANAANANAS,BANANAANANAS.\nSimilarly, the stringsPRODGYRNAMAMMIINCGandDYPRONGARMAMMICINGare\nboth shuffles ofDYNAMICandPROGRAMMING:\nPRODGYRNAMAMMIINCG,DYPRONGARMAMMICING.\nGiven three stringsA[1. . . m],B[1. . . n], andC[1. . . m+n], describe and\nanalyze an algorithm to determine whetherCis a shuffle ofAandB.",
+    "problem_preview": "Problem 1\nGivennmatricesA 1, A2, . . . , An with different sizes, we want to compute the\nproduct:\nnY\ni=1\nAi\nAssume all of the shapes match so we can multiply the matrices, and assume\nmultiplying two matrices of sizesr×mandm×ktakesrmktime.\n1. Give an algorithm that runs inO(n 3) which returns the minimum number\nof operations needed to compute the product. Notice you are not com-\nputing the actual product.\nHint:Give a little thought to how you fill the table.\nIf you need a little intuition regardi",
+    "pdf_sha256": "86ba2dcc5a6b1d1ef72f8dd112975e2ec86629213d8bdd36a11600d64c0b66d0",
+    "problem_topics": {
+      "1": [
+        "matrix_chain_multiplication"
+      ],
+      "2": [
+        "dynamic_programming"
+      ],
+      "3": [
+        "dynamic_programming",
+        "maximum_profit_problem"
+      ],
+      "4": [
+        "dynamic_programming",
+        "activity_selection"
+      ],
+      "5": [
+        "dynamic_programming",
+        "longest_common_subsequence"
+      ]
+    }
   },
   "hw_3": {
-    "week": 3,
+    "week": 6,
     "title": "Homework 3",
-    "problems": 4,
-    "description": "Dynamic programming and recursion trees",
-    "topics": ["Dynamic programming", "Memoization", "Bottom-up DP", "Recursion trees"],
-    "problem_preview": "Problem 1: Solve a variant of matrix chain multiplication using DP. Problem 2: Analyze the recursion tree for fibonacci.",
-    "key_concepts": [
-      "Overlapping subproblems",
-      "Optimal substructure",
-      "Memoization vs tabulation",
-      "Recursion tree analysis",
-      "Time and space trade-offs"
+    "description": "Graph traversal: tree diameter, BFS/DFS runtimes and trees, unique connectivity and path reachability.",
+    "week_basis": "Aligned to the latest tutorial needed by the supplied assignment PDF topics.",
+    "problem_pdf": "material/Homework/HW3_ALGO.pdf",
+    "problems": 6,
+    "problem_statements": [
+      {
+        "number": 1,
+        "pages": [
+          1
+        ],
+        "text": "In class, we discussed how to find the diameter of a tree using dynamic pro-\ngramming. In this exercise, we will explore an alternative algorithm that solves\nthe problem using Breadth-First Search (BF S).\nDescribe an algorithm to find the diameter of a tree usingBF S.\nHint: prove that given any vertexwin the tree, at least one ofuorv(the\nendpoints of the diameter) will be the vertex with the maximum distance from\nw."
+      },
+      {
+        "number": 2,
+        "pages": [
+          1,
+          2
+        ],
+        "text": "1. For the algorithmBF Sshown in class, answerT rue/F alsefor the fol-\nlowing questions, and justify your answers. In every question,T BF S(G, v)\ndenotes the running time ofBF Son a graphGstarting from a node\nv∈V(G). Assume|V(G)|=n.\n(a) For every graphGand for everyv∈V(G),T BF S(G, v) =O(n 2).\n(b) For everyn≥2, there exists a graphGovernvertices, and a vertex\nvsuch thatT BF S(G, v) = Θ(nlog 2 n).\n2. Recall the running time ofBF Son a connected graphGis Θ(|V|+|E|),\nprovided the graph is given in an adjacency list.\n(a) Now the graph is still connected, but is represented as an adjacency\nmatrix. Give a tight bound for the running time of BFS.\n(b) Give an example for a connected graphGand a vertexvsuch that\n\nthe running time ofBF Sis asymptotically different for the two ways to\nrepresent the graph.\n(c) Give an example for a connected graphGand a vertexvsuch that the\nrunning time ofBF Sis asymptotically equal for the two ways to represent\nthe graph.\n3. Answer the following questions and prove your answer.\n(a) Give an example for a connected graph overnvertices, such that the\norder of scanning the graph viaBF Sis always different than the order of\nscanning viaDF S.\n(b) Give an example for a connected graph overnvertices, such that the\norder of scanning the graph viaBF Sis always the same as the order of\nscanning viaDF S."
+      },
+      {
+        "number": 3,
+        "pages": [
+          2
+        ],
+        "text": "LetG= (V, E) be a connected (undirected) simple graph. Fix a vertexs∈V.\nSuppose we run Breadth-First Search (BF S) and Depth-First Search (DF S)\nonGstarting at nodes. LetT B andT D denote the resultingBF Stree and\nDF Stree, respectively. Prove that ifT B =T D, thenGmust be a tree.\n(Hint: What happens ifGhas a cycle?)"
+      },
+      {
+        "number": 4,
+        "pages": [
+          2
+        ],
+        "text": "A directed graph is calleduniquely connectedif for any two verticesu, v:\n1. There is at most one simple path fromutov.\n2. There is at most one simple path fromvtou.\nDescribe an algorithm that checks whether a given directed graph is uniquely\nconnected."
+      },
+      {
+        "number": 5,
+        "pages": [
+          3
+        ],
+        "text": "LetG= (V, E) be a directed, unweighted graph and lets∈Vbe a source vertex.\nA vertexv∈Vis calledunique-path reachablefromsif there exists\nexactly one shortest pathfromstov.\nDesign an algorithm to find all unique-path reachable vertices froms."
+      },
+      {
+        "number": 6,
+        "pages": [
+          3
+        ],
+        "text": "LetG= (V, E) be a directed graph, whereVis the set of vertices andEis\nthe set of directed edges. Given two verticesu, v∈V, design an algorithm that\ndetects whether there exists anon-simple pathfromutov. Anon-simple\npathis defined as a path in which at least one vertex is visited more than once\n(i.e., the path contains repeated vertices or cycles).\nInput:\n•A directed graphG= (V, E),\n•Two verticesu(start vertex) andv(end vertex).\nOutput:ReturnT rueif there exists a non-simple path fromutov. Otherwise,\nreturnF alse."
+      }
     ],
-    "hint_sequence": [
-      "What subproblems are you solving repeatedly?",
-      "How can you avoid recomputing the same subproblem?",
-      "What is the recurrence relation for this problem?",
-      "Can you draw the recursion tree and count the work at each level?",
-      "What pattern do you see in the tree structure?"
-    ]
+    "full_problem_text": "Problem 1\nIn class, we discussed how to find the diameter of a tree using dynamic pro-\ngramming. In this exercise, we will explore an alternative algorithm that solves\nthe problem using Breadth-First Search (BF S).\nDescribe an algorithm to find the diameter of a tree usingBF S.\nHint: prove that given any vertexwin the tree, at least one ofuorv(the\nendpoints of the diameter) will be the vertex with the maximum distance from\nw.\n\nProblem 2\n1. For the algorithmBF Sshown in class, answerT rue/F alsefor the fol-\nlowing questions, and justify your answers. In every question,T BF S(G, v)\ndenotes the running time ofBF Son a graphGstarting from a node\nv∈V(G). Assume|V(G)|=n.\n(a) For every graphGand for everyv∈V(G),T BF S(G, v) =O(n 2).\n(b) For everyn≥2, there exists a graphGovernvertices, and a vertex\nvsuch thatT BF S(G, v) = Θ(nlog 2 n).\n2. Recall the running time ofBF Son a connected graphGis Θ(|V|+|E|),\nprovided the graph is given in an adjacency list.\n(a) Now the graph is still connected, but is represented as an adjacency\nmatrix. Give a tight bound for the running time of BFS.\n(b) Give an example for a connected graphGand a vertexvsuch that\n\nthe running time ofBF Sis asymptotically different for the two ways to\nrepresent the graph.\n(c) Give an example for a connected graphGand a vertexvsuch that the\nrunning time ofBF Sis asymptotically equal for the two ways to represent\nthe graph.\n3. Answer the following questions and prove your answer.\n(a) Give an example for a connected graph overnvertices, such that the\norder of scanning the graph viaBF Sis always different than the order of\nscanning viaDF S.\n(b) Give an example for a connected graph overnvertices, such that the\norder of scanning the graph viaBF Sis always the same as the order of\nscanning viaDF S.\n\nProblem 3\nLetG= (V, E) be a connected (undirected) simple graph. Fix a vertexs∈V.\nSuppose we run Breadth-First Search (BF S) and Depth-First Search (DF S)\nonGstarting at nodes. LetT B andT D denote the resultingBF Stree and\nDF Stree, respectively. Prove that ifT B =T D, thenGmust be a tree.\n(Hint: What happens ifGhas a cycle?)\n\nProblem 4\nA directed graph is calleduniquely connectedif for any two verticesu, v:\n1. There is at most one simple path fromutov.\n2. There is at most one simple path fromvtou.\nDescribe an algorithm that checks whether a given directed graph is uniquely\nconnected.\n\nProblem 5\nLetG= (V, E) be a directed, unweighted graph and lets∈Vbe a source vertex.\nA vertexv∈Vis calledunique-path reachablefromsif there exists\nexactly one shortest pathfromstov.\nDesign an algorithm to find all unique-path reachable vertices froms.\n\nProblem 6\nLetG= (V, E) be a directed graph, whereVis the set of vertices andEis\nthe set of directed edges. Given two verticesu, v∈V, design an algorithm that\ndetects whether there exists anon-simple pathfromutov. Anon-simple\npathis defined as a path in which at least one vertex is visited more than once\n(i.e., the path contains repeated vertices or cycles).\nInput:\n•A directed graphG= (V, E),\n•Two verticesu(start vertex) andv(end vertex).\nOutput:ReturnT rueif there exists a non-simple path fromutov. Otherwise,\nreturnF alse.",
+    "problem_preview": "Problem 1\nIn class, we discussed how to find the diameter of a tree using dynamic pro-\ngramming. In this exercise, we will explore an alternative algorithm that solves\nthe problem using Breadth-First Search (BF S).\nDescribe an algorithm to find the diameter of a tree usingBF S.\nHint: prove that given any vertexwin the tree, at least one ofuorv(the\nendpoints of the diameter) will be the vertex with the maximum distance from\nw.\n\nProblem 2\n1. For the algorithmBF Sshown in class, answerT rue/F alsef",
+    "pdf_sha256": "c29aff830bce8035f2799a56806bd2a640a629e0f3fd2f0fc311ac4deac67bec",
+    "problem_topics": {
+      "1": [
+        "breadth_first_search"
+      ],
+      "2": [
+        "breadth_first_search",
+        "depth_first_search",
+        "algorithm_analysis"
+      ],
+      "3": [
+        "breadth_first_search",
+        "depth_first_search"
+      ],
+      "4": [
+        "depth_first_search"
+      ],
+      "5": [
+        "breadth_first_search",
+        "unweighted_shortest_paths"
+      ],
+      "6": [
+        "depth_first_search"
+      ]
+    }
   },
   "hw_4": {
-    "week": 4,
+    "week": 8,
     "title": "Homework 4",
-    "problems": 3,
-    "description": "Graph algorithms - shortest paths and minimum spanning trees",
-    "topics": ["Dijkstra's algorithm", "Bellman-Ford", "Floyd-Warshall", "MST", "Prim's", "Kruskal's"],
-    "problem_preview": "Problem 1: Implement Dijkstra's algorithm and prove correctness. Problem 2: Find the minimum spanning tree using Prim's algorithm.",
-    "key_concepts": [
-      "Shortest path algorithms",
-      "Negative cycles",
-      "All-pairs shortest paths",
-      "Minimum spanning trees",
-      "Union-find data structure",
-      "Greedy correctness for MST"
+    "description": "Minimum spanning trees and shortest paths: nearest facilities, MST exchange, road costs and DAG shortest paths.",
+    "week_basis": "Aligned to the latest tutorial needed by the supplied assignment PDF topics.",
+    "problem_pdf": "material/Homework/HW4_ALGO.pdf",
+    "problems": 5,
+    "problem_statements": [
+      {
+        "number": 1,
+        "pages": [
+          1
+        ],
+        "text": "AnswerT rueorF alsefor the following claims, and justify your answer with a\nproof or a counterexample:\n1. In a graph with positive edge weights, any minimal-weight subset of edges\nthat connects all vertices in the graph is a tree.\n2. In a graph with arbitrary edge weights (which may include negative or zero\nweights), any minimal-weight subset of edges that connects all vertices in\nthe graph is a tree."
+      },
+      {
+        "number": 2,
+        "pages": [
+          1
+        ],
+        "text": "Input:G= (V, E) not directed graph. with positive values on the edges. The\nweight of the edges represent the distance it takes to drive the roade. In\naddition, we are given groupA⊂Vof Football fields. Output: For eachv∈V\nreturn the closest football field (closest = the smallest distance we travel)."
+      },
+      {
+        "number": 3,
+        "pages": [
+          1
+        ],
+        "text": "LetGbe a positively weighted graph, and letT 1 andT 2 be two minimum\nspanning trees ofG. Lete∈T 1 ande /∈T 2. Prove that there exists an edge\ne′∈T 2 such thatw(e) =w(e ′)."
+      },
+      {
+        "number": 4,
+        "pages": [
+          2
+        ],
+        "text": "LetG= (V, E, w) be a directed, non-negative weighted graph, which represents\na system of roads and intersections. The weights of the edges define the travel\ncost along the corresponding roads, and lets∈Vbe a given starting vertex.\nA subset of edgesF⊂Eis given, representing roads defined ascongestion\nroads.\n•Additionally, the constantsmandMare provided.\nThe travel cost in the road system for a pathais defined as follows:\n•Ifacontains no congestion roads, the travel cost is the sum of the weights\nof the edges in the path.\n•Ifacontains exactly one congestion road, the travel cost is the sum of the\nweights of the edges in the path plusm.\n•Ifacontains at least two congestion roads, the travel cost is the sum of\nthe weights of the edges in the path plusM.\nPropose an efficient algorithm to compute the minimum travel cost fromsto\nevery other vertex in the graph."
+      },
+      {
+        "number": 5,
+        "pages": [
+          2
+        ],
+        "text": "Given a Directed Acyclic GraphG= (V, E) and a vertexs, the goal is to\ncompute the shortest (with respect to edge weights) path fromsto all vertices\nin the graph.\nNote that the Bellman-Ford algorithm solves this problem inO(V·E). However,\nyou should find an algorithm with a lower time complexity."
+      }
     ],
-    "hint_sequence": [
-      "What property allows Dijkstra's to work correctly?",
-      "In what order should you process the vertices?",
-      "Why does the greedy choice (picking the nearest unvisited vertex) give the shortest path?",
-      "How can you adapt this algorithm for different graph structures?",
-      "What goes wrong if edges can have negative weights?"
-    ]
+    "full_problem_text": "Problem 1\nAnswerT rueorF alsefor the following claims, and justify your answer with a\nproof or a counterexample:\n1. In a graph with positive edge weights, any minimal-weight subset of edges\nthat connects all vertices in the graph is a tree.\n2. In a graph with arbitrary edge weights (which may include negative or zero\nweights), any minimal-weight subset of edges that connects all vertices in\nthe graph is a tree.\n\nProblem 2\nInput:G= (V, E) not directed graph. with positive values on the edges. The\nweight of the edges represent the distance it takes to drive the roade. In\naddition, we are given groupA⊂Vof Football fields. Output: For eachv∈V\nreturn the closest football field (closest = the smallest distance we travel).\n\nProblem 3\nLetGbe a positively weighted graph, and letT 1 andT 2 be two minimum\nspanning trees ofG. Lete∈T 1 ande /∈T 2. Prove that there exists an edge\ne′∈T 2 such thatw(e) =w(e ′).\n\nProblem 4\nLetG= (V, E, w) be a directed, non-negative weighted graph, which represents\na system of roads and intersections. The weights of the edges define the travel\ncost along the corresponding roads, and lets∈Vbe a given starting vertex.\nA subset of edgesF⊂Eis given, representing roads defined ascongestion\nroads.\n•Additionally, the constantsmandMare provided.\nThe travel cost in the road system for a pathais defined as follows:\n•Ifacontains no congestion roads, the travel cost is the sum of the weights\nof the edges in the path.\n•Ifacontains exactly one congestion road, the travel cost is the sum of the\nweights of the edges in the path plusm.\n•Ifacontains at least two congestion roads, the travel cost is the sum of\nthe weights of the edges in the path plusM.\nPropose an efficient algorithm to compute the minimum travel cost fromsto\nevery other vertex in the graph.\n\nProblem 5\nGiven a Directed Acyclic GraphG= (V, E) and a vertexs, the goal is to\ncompute the shortest (with respect to edge weights) path fromsto all vertices\nin the graph.\nNote that the Bellman-Ford algorithm solves this problem inO(V·E). However,\nyou should find an algorithm with a lower time complexity.",
+    "problem_preview": "Problem 1\nAnswerT rueorF alsefor the following claims, and justify your answer with a\nproof or a counterexample:\n1. In a graph with positive edge weights, any minimal-weight subset of edges\nthat connects all vertices in the graph is a tree.\n2. In a graph with arbitrary edge weights (which may include negative or zero\nweights), any minimal-weight subset of edges that connects all vertices in\nthe graph is a tree.\n\nProblem 2\nInput:G= (V, E) not directed graph. with positive values on the edges. The",
+    "pdf_sha256": "0e7cb1729a8f778d6c16fa390851fad5685c48e822b7e5d9639d64a1b44493a5",
+    "problem_topics": {
+      "1": [
+        "minimum_spanning_tree"
+      ],
+      "2": [
+        "dijkstra",
+        "weighted_shortest_paths"
+      ],
+      "3": [
+        "minimum_spanning_tree",
+        "cut_property"
+      ],
+      "4": [
+        "dijkstra",
+        "weighted_shortest_paths"
+      ],
+      "5": [
+        "topological_ordering",
+        "weighted_shortest_paths"
+      ]
+    }
   },
   "hw_5": {
-    "week": 5,
+    "week": 9,
     "title": "Homework 5",
-    "problems": 4,
-    "description": "Advanced topics - flow networks, NP-completeness intro",
-    "topics": ["Max flow", "Min cut", "Network flow", "Ford-Fulkerson", "NP-completeness"],
-    "problem_preview": "Problem 1: Find the maximum flow in a network using Ford-Fulkerson. Problem 2: Prove a problem is NP-complete via reduction.",
-    "key_concepts": [
-      "Flow networks and capacities",
-      "Augmenting paths",
-      "Max-flow min-cut theorem",
-      "Residual networks",
-      "Polynomial vs NP-complete problems",
-      "Reduction techniques"
+    "description": "Flow networks: rational capacities, regular bipartite edge coloring, minimum cuts, team assignment and image partitioning.",
+    "week_basis": "Aligned to the latest tutorial needed by the supplied assignment PDF topics.",
+    "problem_pdf": "material/Homework/HW5_ALGO.pdf",
+    "problems": 5,
+    "problem_statements": [
+      {
+        "number": 1,
+        "pages": [
+          1
+        ],
+        "text": "In class, we discussed the complexity of theFord−Fulkersonalgorithm under\nthe assumption that the capacities on edges are integers. In general, we want to\nanalyze its complexity for networks with rational capacities as well. Show how\nto do this."
+      },
+      {
+        "number": 2,
+        "pages": [
+          1
+        ],
+        "text": "Given a d-regular bipartite graphG= (V= (A,B),E) in which|A|=|B|.\nDesign an algorithm to color the edges of the graph using d colors such that no\ntwo adjacent edges (i.e., edges sharing the same endpoint) have the same color."
+      },
+      {
+        "number": 3,
+        "pages": [
+          1
+        ],
+        "text": "Given a flow networkN= (G,s,t,c), design an algorithm that finds all the\nedges that belong to every minimums−tcut."
+      },
+      {
+        "number": 4,
+        "pages": [
+          1,
+          2
+        ],
+        "text": "You are tasked with organizing a charity event for 3nvolunteers. To ensure\neffective teamwork, the volunteers need to be divided intonteams, each con-\nsisting of exactly 3 members.\nAmong the volunteers,nhave been pre-selected as team leaders based on their\n\nexperience.\nYour goal is to assign each volunteer to a team in such a way that:\n1. Every team has exactly one team leader and two additional volunteers.\n2. Each volunteer feels comfortable working with their team leader. This is\ndetermined by a given friendship matrix, where:\n(a)Friends[i,j] =Truemeans that thei-th team leader and thej-th\nvolunteer are friends.\n(b)Friends[i,j] =Falsemeans there is no friendship connection be-\ntween them.\nThe algorithm must check if it is possible to assign every volunteer to a team\nled by a team leader who is their friend. If it is possible, the algorithm should\nprovide a clear assignment of volunteers to their respective team leaders."
+      },
+      {
+        "number": 5,
+        "pages": [
+          2
+        ],
+        "text": "In this problem, we are interested in turning a colorful picture into black and\nwhite, assuming the following model:\n1. The picture hasnpixels.\n2. Each pixelvhas valuesw v, andb v, indicating the profit we get from\nsetting the pixel white/black.\n3. For each pair of pixelsu,v, there is a loss functionL(u,v), indicating the\nloss we get by settingu,vto be of different colors.\nUnder this model, we want to partition the set of pixelsV, into two sets,W\nandB, such that:\nϕ(W,B) =\nX\nu∈W\nwu +\nX\nv∈B\nbv−\nX\nu∈W\nX\nv∈B\nL(u,v) (1)\nis maximized. That is, the sum of profits by choosing the color, minus the\nsum of losses for choosing two pixels to be of a different color, is maximized.\nYou can assumew v,b v,L(u,v)≥0∀u,v.\nProvide an algorithm that partitionsVintoW∪B=V,W∩B=∅, with\nthe target function maximized. Justify correctness and prove running time."
+      }
     ],
-    "hint_sequence": [
-      "What is the maximum amount of flow that can go through each edge?",
-      "Can you find a path from source to sink where more flow can be pushed?",
-      "What happens when no more augmenting paths exist?",
-      "How does the value of the max flow relate to a cut?",
-      "Can you show the correspondence between your flow and a certificate of NP-completeness?"
-    ]
+    "full_problem_text": "Problem 1\nIn class, we discussed the complexity of theFord−Fulkersonalgorithm under\nthe assumption that the capacities on edges are integers. In general, we want to\nanalyze its complexity for networks with rational capacities as well. Show how\nto do this.\n\nProblem 2\nGiven a d-regular bipartite graphG= (V= (A,B),E) in which|A|=|B|.\nDesign an algorithm to color the edges of the graph using d colors such that no\ntwo adjacent edges (i.e., edges sharing the same endpoint) have the same color.\n\nProblem 3\nGiven a flow networkN= (G,s,t,c), design an algorithm that finds all the\nedges that belong to every minimums−tcut.\n\nProblem 4\nYou are tasked with organizing a charity event for 3nvolunteers. To ensure\neffective teamwork, the volunteers need to be divided intonteams, each con-\nsisting of exactly 3 members.\nAmong the volunteers,nhave been pre-selected as team leaders based on their\n\nexperience.\nYour goal is to assign each volunteer to a team in such a way that:\n1. Every team has exactly one team leader and two additional volunteers.\n2. Each volunteer feels comfortable working with their team leader. This is\ndetermined by a given friendship matrix, where:\n(a)Friends[i,j] =Truemeans that thei-th team leader and thej-th\nvolunteer are friends.\n(b)Friends[i,j] =Falsemeans there is no friendship connection be-\ntween them.\nThe algorithm must check if it is possible to assign every volunteer to a team\nled by a team leader who is their friend. If it is possible, the algorithm should\nprovide a clear assignment of volunteers to their respective team leaders.\n\nProblem 5\nIn this problem, we are interested in turning a colorful picture into black and\nwhite, assuming the following model:\n1. The picture hasnpixels.\n2. Each pixelvhas valuesw v, andb v, indicating the profit we get from\nsetting the pixel white/black.\n3. For each pair of pixelsu,v, there is a loss functionL(u,v), indicating the\nloss we get by settingu,vto be of different colors.\nUnder this model, we want to partition the set of pixelsV, into two sets,W\nandB, such that:\nϕ(W,B) =\nX\nu∈W\nwu +\nX\nv∈B\nbv−\nX\nu∈W\nX\nv∈B\nL(u,v) (1)\nis maximized. That is, the sum of profits by choosing the color, minus the\nsum of losses for choosing two pixels to be of a different color, is maximized.\nYou can assumew v,b v,L(u,v)≥0∀u,v.\nProvide an algorithm that partitionsVintoW∪B=V,W∩B=∅, with\nthe target function maximized. Justify correctness and prove running time.",
+    "problem_preview": "Problem 1\nIn class, we discussed the complexity of theFord−Fulkersonalgorithm under\nthe assumption that the capacities on edges are integers. In general, we want to\nanalyze its complexity for networks with rational capacities as well. Show how\nto do this.\n\nProblem 2\nGiven a d-regular bipartite graphG= (V= (A,B),E) in which|A|=|B|.\nDesign an algorithm to color the edges of the graph using d colors such that no\ntwo adjacent edges (i.e., edges sharing the same endpoint) have the same color.\n\nProble",
+    "pdf_sha256": "b7abc31e88788bd096185bf3ed5dabcc1a4edbab77c06367cec4b6cfbc8f0847",
+    "problem_topics": {
+      "1": [
+        "ford_fulkerson"
+      ],
+      "2": [
+        "bipartite_matching",
+        "hall_s_theorem"
+      ],
+      "3": [
+        "minimum_cut",
+        "residual_networks"
+      ],
+      "4": [
+        "bipartite_matching",
+        "flow_networks"
+      ],
+      "5": [
+        "minimum_cut",
+        "flow_networks"
+      ]
+    }
   }
 }

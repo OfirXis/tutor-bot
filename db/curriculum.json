@@ -1,0 +1,596 @@
+{
+  "version": 1,
+  "weeks": [
+    {
+      "week": 1,
+      "title": "Tutorial 1 — Intro to Algorithm Analysis",
+      "title_he": "תרגול 1 — מבוא לניתוח אלגוריתמים",
+      "source_pdf": "material/lectures/Tutorial 1 (2).pdf",
+      "topics": [
+        {
+          "id": "algorithm_analysis",
+          "name": "Algorithm analysis",
+          "aliases": [
+            "complexity analysis",
+            "asymptotic notation",
+            "big o"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "insertion_sort",
+          "name": "Insertion sort",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "selection_sort",
+          "name": "Selection sort",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "bubble_sort",
+          "name": "Bubble sort",
+          "aliases": [],
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "title": "Tutorial 2 — Divide and Conquer",
+      "title_he": "תרגול 2 — הפרד ומשול",
+      "source_pdf": "material/lectures/Tutorial 2 (2).pdf",
+      "topics": [
+        {
+          "id": "divide_and_conquer",
+          "name": "Divide and conquer",
+          "aliases": [
+            "divide & conquer",
+            "הפרד ומשול"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "master_theorem",
+          "name": "Master theorem",
+          "aliases": [
+            "משפט המאסטר"
+          ],
+          "prerequisites": [
+            "algorithm_analysis"
+          ]
+        },
+        {
+          "id": "merge_sort",
+          "name": "Merge sort",
+          "aliases": [
+            "mergesort",
+            "מיון מיזוג"
+          ],
+          "prerequisites": [
+            "divide_and_conquer"
+          ]
+        },
+        {
+          "id": "binary_search",
+          "name": "Binary search",
+          "aliases": [
+            "חיפוש בינארי"
+          ],
+          "prerequisites": [
+            "divide_and_conquer"
+          ]
+        },
+        {
+          "id": "karatsuba",
+          "name": "Karatsuba",
+          "aliases": [
+            "קרצובה"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "maximum_profit_problem",
+          "name": "Maximum profit problem",
+          "aliases": [],
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "title": "Tutorial 3 — Greedy Algorithms",
+      "title_he": "תרגול 3 — אלגוריתמים חמדניים",
+      "source_pdf": "material/lectures/Tutorial 3 (2).pdf",
+      "topics": [
+        {
+          "id": "greedy_algorithms",
+          "name": "Greedy algorithms",
+          "aliases": [
+            "greedy algorithm",
+            "אלגוריתם חמדני"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "activity_selection",
+          "name": "Activity selection",
+          "aliases": [
+            "interval scheduling"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "fractional_knapsack",
+          "name": "Fractional knapsack",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "0_1_knapsack",
+          "name": "0/1 knapsack",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "huffman_coding",
+          "name": "Huffman coding",
+          "aliases": [
+            "huffman",
+            "הופמן"
+          ],
+          "prerequisites": [
+            "greedy_algorithms"
+          ]
+        },
+        {
+          "id": "exchange_argument",
+          "name": "Exchange argument",
+          "aliases": [],
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "title": "Tutorial 4 — Dynamic Programming",
+      "title_he": "תרגול 4 — תכנות דינמי",
+      "source_pdf": "material/lectures/Tutorial 4 (2).pdf",
+      "topics": [
+        {
+          "id": "dynamic_programming",
+          "name": "Dynamic programming",
+          "aliases": [
+            "DP",
+            "תכנות דינמי",
+            "תכנון דינמי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "fibonacci",
+          "name": "Fibonacci",
+          "aliases": [
+            "פיבונאצ'י",
+            "פיבונצי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "rod_cutting",
+          "name": "Rod cutting",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "longest_common_subsequence",
+          "name": "Longest common subsequence",
+          "aliases": [
+            "LCS"
+          ],
+          "prerequisites": [
+            "dynamic_programming"
+          ]
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "title": "Tutorial 5 — Advanced DP",
+      "title_he": "תרגול 5 — תכנות דינמי מתקדם",
+      "source_pdf": "material/lectures/Tutorial algo 5.pdf",
+      "topics": [
+        {
+          "id": "coin_change",
+          "name": "Coin change",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "matrix_chain_multiplication",
+          "name": "Matrix chain multiplication",
+          "aliases": [],
+          "prerequisites": [
+            "dynamic_programming"
+          ]
+        },
+        {
+          "id": "edit_distance",
+          "name": "Edit distance",
+          "aliases": [
+            "levenshtein",
+            "מרחק עריכה"
+          ],
+          "prerequisites": [
+            "dynamic_programming"
+          ]
+        },
+        {
+          "id": "longest_increasing_subsequence",
+          "name": "Longest increasing subsequence",
+          "aliases": [
+            "LIS"
+          ],
+          "prerequisites": [
+            "dynamic_programming"
+          ]
+        },
+        {
+          "id": "minimum_vertex_cover",
+          "name": "Minimum vertex cover",
+          "aliases": [],
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "title": "Tutorial 6 — Dynamic Programming and Graph Traversal",
+      "title_he": "תרגול 6 — תכנות דינמי וסריקות גרפים",
+      "source_pdf": "material/lectures/Tutorial algo 6.pdf",
+      "topics": [
+        {
+          "id": "subset_sum",
+          "name": "Subset sum",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "partition_into_equal_subsets",
+          "name": "Partition into equal subsets",
+          "aliases": [
+            "partition problem"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "count_subsets",
+          "name": "Count subsets",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "grid_paths",
+          "name": "Grid paths",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "breadth_first_search",
+          "name": "Breadth-first search",
+          "aliases": [
+            "BFS",
+            "breadth first search",
+            "חיפוש לרוחב"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "depth_first_search",
+          "name": "Depth-first search",
+          "aliases": [
+            "DFS",
+            "depth first search",
+            "חיפוש לעומק"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "unweighted_shortest_paths",
+          "name": "Unweighted shortest paths",
+          "aliases": [
+            "unweighted shortest path"
+          ],
+          "prerequisites": [
+            "breadth_first_search"
+          ]
+        },
+        {
+          "id": "topological_ordering",
+          "name": "Topological ordering",
+          "aliases": [
+            "topological sort",
+            "מיון טופולוגי"
+          ],
+          "prerequisites": [
+            "directed_acyclic_graph"
+          ]
+        },
+        {
+          "id": "directed_acyclic_graph",
+          "name": "Directed acyclic graph",
+          "aliases": [
+            "DAG"
+          ],
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "title": "Tutorial 7 — Minimum Spanning Trees",
+      "title_he": "תרגול 7 — עצים פורשים מינימליים",
+      "source_pdf": "material/lectures/Tutorial algo 7.pdf",
+      "topics": [
+        {
+          "id": "minimum_spanning_tree",
+          "name": "Minimum spanning tree",
+          "aliases": [
+            "minimum spanning trees",
+            "MST",
+            "עץ פורש מינימלי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "kruskal",
+          "name": "Kruskal",
+          "aliases": [
+            "קרוסקל"
+          ],
+          "prerequisites": [
+            "minimum_spanning_tree",
+            "union_find"
+          ]
+        },
+        {
+          "id": "prim",
+          "name": "Prim",
+          "aliases": [
+            "פרים"
+          ],
+          "prerequisites": [
+            "minimum_spanning_tree",
+            "greedy_algorithms"
+          ]
+        },
+        {
+          "id": "union_find",
+          "name": "Union find",
+          "aliases": [
+            "disjoint set"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "cut_property",
+          "name": "Cut property",
+          "aliases": [],
+          "prerequisites": []
+        },
+        {
+          "id": "cycle_property",
+          "name": "Cycle property",
+          "aliases": [],
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "title": "Tutorial 8 — Shortest Paths",
+      "title_he": "תרגול 8 — מסלולים קצרים ביותר",
+      "source_pdf": "material/lectures/Tutorial algo 8.pdf",
+      "topics": [
+        {
+          "id": "weighted_shortest_paths",
+          "name": "Weighted shortest paths",
+          "aliases": [
+            "weighted shortest path",
+            "מסלול קצר ביותר בגרף ממושקל"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "dijkstra",
+          "name": "Dijkstra",
+          "aliases": [
+            "דייקסטרה",
+            "דיקסטרה"
+          ],
+          "prerequisites": [
+            "greedy_algorithms",
+            "breadth_first_search"
+          ]
+        },
+        {
+          "id": "bellman_ford",
+          "name": "Bellman Ford",
+          "aliases": [
+            "בלמן פורד"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "floyd_warshall",
+          "name": "Floyd Warshall",
+          "aliases": [
+            "פלויד וורשל"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "negative_cycle",
+          "name": "Negative cycle",
+          "aliases": [
+            "negative cycles",
+            "מעגל שלילי"
+          ],
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "title": "Tutorial 9 — Flow Networks and Maximum Flow",
+      "title_he": "תרגול 9 — רשתות זרימה וזרימה מקסימלית",
+      "source_pdf": "material/lectures/algo-maxflow-9-3.pdf",
+      "topics": [
+        {
+          "id": "maximum_flow",
+          "name": "Maximum flow",
+          "aliases": [
+            "max flow",
+            "maxflow",
+            "זרימה מקסימלית",
+            "זרימה מרבית"
+          ],
+          "prerequisites": [
+            "flow_networks"
+          ]
+        },
+        {
+          "id": "flow_networks",
+          "name": "Flow networks",
+          "aliases": [
+            "flow network",
+            "network flow",
+            "רשת זרימה",
+            "רשתות זרימה"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "residual_networks",
+          "name": "Residual networks",
+          "aliases": [
+            "residual network",
+            "residual graph",
+            "גרף שיורי",
+            "רשת שיורית"
+          ],
+          "prerequisites": [
+            "flow_networks"
+          ]
+        },
+        {
+          "id": "augmenting_paths",
+          "name": "Augmenting paths",
+          "aliases": [
+            "augmenting path",
+            "מסילה מגדילה",
+            "מסלול מגדיל"
+          ],
+          "prerequisites": [
+            "residual_networks"
+          ]
+        },
+        {
+          "id": "minimum_cut",
+          "name": "Minimum cut",
+          "aliases": [
+            "min cut",
+            "חתך מינימלי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "ford_fulkerson",
+          "name": "Ford-Fulkerson",
+          "aliases": [
+            "ford fulkerson",
+            "פורד פולקרסון",
+            "פורד פלקרסון"
+          ],
+          "prerequisites": [
+            "augmenting_paths"
+          ]
+        },
+        {
+          "id": "edmonds_karp",
+          "name": "Edmonds-Karp",
+          "aliases": [
+            "edmonds karp",
+            "אדמונדס קארפ"
+          ],
+          "prerequisites": [
+            "ford_fulkerson",
+            "breadth_first_search"
+          ]
+        },
+        {
+          "id": "bipartite_matching",
+          "name": "Bipartite matching",
+          "aliases": [
+            "maximum matching",
+            "perfect matching",
+            "זיווג מושלם",
+            "שידוך מקסימום"
+          ],
+          "prerequisites": [
+            "maximum_flow"
+          ]
+        },
+        {
+          "id": "menger_s_theorem",
+          "name": "Menger's theorem",
+          "aliases": [
+            "menger",
+            "משפט מנגר"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "hall_s_theorem",
+          "name": "Hall's theorem",
+          "aliases": [
+            "hall theorem",
+            "hall's marriage theorem",
+            "משפט הול"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "dilworth_s_theorem",
+          "name": "Dilworth's theorem",
+          "aliases": [
+            "dilworth",
+            "משפט דילוורת"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "konig_s_theorem",
+          "name": "König's theorem",
+          "aliases": [
+            "konig's theorem",
+            "konig theorem",
+            "משפט קוניג"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "minimum_chain_cover",
+          "name": "Minimum chain cover",
+          "aliases": [
+            "chain cover",
+            "כיסוי בשרשראות"
+          ],
+          "prerequisites": []
+        }
+      ]
+    }
+  ]
+}

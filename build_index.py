@@ -14,4 +14,4 @@ if __name__ == "__main__":
     ap.add_argument("--model", default=EMBED_MODEL, help="sentence-transformers model name")
     args = ap.parse_args()
     build_index(embed_model=args.model)
-    print("\nDone. Run:  streamlit run app.py")
+    print("\nDone. Run:  python run.py")

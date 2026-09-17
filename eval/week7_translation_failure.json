@@ -1,0 +1,9 @@
+{
+  "question": "ספר לי על הפרד ומשול",
+  "english_answer": "(Source 1 — Tutorial 2 — Divide & Conquer › Core Concepts)\n\nThe Divide and Conquer (D&C) algorithm design paradigm involves breaking a problem into smaller subproblems, solving each subproblem recursively, and then combining the solutions to solve the original problem. This approach is based on the idea that a complex problem can be divided into simpler subproblems, which can be solved independently, and then the solutions can be combined to solve the original problem.\n\nThe general recurrence relation for a D&C algorithm can be expressed as:\n\n\\[ T(n) = aT\\left(\\frac{n}{b}\\right) + f(n) \\]\n\nWhere:\n- \\( n \\) is the size of the problem,\n- \\( a \\) is the number of subproblems,\n- \\( b \\) is the factor by which the problem size is reduced,\n- \\( f(n) \\) is the cost of the work done outside the recursive calls.\n\nCheck-in question: What is the main idea behind the Divide and Conquer approach?",
+  "hebrew_answer": "(Source 1 — Tutorial 2 — Divide & Conquer › Core Concepts)\n\nהמודל לעיצוב האלגוריתם \"הפרד ומשול\" כולל פירוק בעיה לתת-בעיות קטנות יותר, פתרון של כל תת-בעיה באופן רקורסיבי, ולאחר מכן שילוב הפתרונות כדי לפתור את הבעיה המקורית. גישה זו מתבססת על הרעיון שאפשר לחלק בעיה מורכבת לתת-בעיות פשוטות יותר, אשר ניתן לפתור באופן עצמאי, ואז לשלב את הפתרונות כדי לפתור את הבעיה המקורית.\n\nהקשר הכללי לאלגוריתם \"הפרד ומשול\" יכול להתבטא כך:\n\n$$ T(n) = aT\\left(\\frac{n}{b}\\right) + f(n) $$\n\n- $ n $ מייצג את גודל הבעיה,\n- $ a $ מייצג את מספר הבעיות המשניות,\n- $ b $ מייצג את הגורם שבאמצעותו קטן גודל הבעיה,\n- $ f(n) $ מייצג את העלות של העבודה שנעשתה מחוץ לקריאות ההתערכתיות.\n\nשאלת בדיקה: מה היא הרעיון המרכזי מאחורי גישת \"הפרד ומשול\"?",
+  "translation_seconds": 2.292,
+  "week": 7,
+  "translation_model": "translategemma:4b",
+  "status": "passed"
+}

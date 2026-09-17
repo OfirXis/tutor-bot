@@ -1,5 +1,0 @@
-echo Hi There
-sleep 1 &
-echo Bye
-history
-exit

@@ -1,0 +1,53 @@
+{
+  "model": "llama3.2:3b",
+  "date": "2026-09-16",
+  "note": "Two local English smoke tests, not a model-quality benchmark. No external API or translation was used.",
+  "results": [
+    {
+      "question": "Find a shortest path in an unweighted graph without Dijkstra.",
+      "decision": "answer",
+      "answer": "We can use Breadth-First Search (BFS) to find a shortest path in an unweighted graph without Dijkstra. According to (Source 2), BFS explores by distance layers, which is suitable for unweighted graphs where distances count edges. We can start at a source vertex, place it in a FIFO queue, and discover each previously unseen neighbor with distance one greater than the current vertex. Vertices are processed in nondecreasing distance from the source. This approach ensures that we find the shortest path to all other vertices in the graph.\n\nCheck-in question: How does BFS handle undirected graphs, where an edge joins vertices on the same or adjacent BFS levels?",
+      "validation": "passed",
+      "sources": [
+        {
+          "id": "tutorial_6::015",
+          "section": "Tutorial 6 — Dynamic Programming and Graph Traversal › Graph Traversal — Supplement from Tutorial algo 6.pdf › Multiple Sources and Search Trees — PDF pages 48–51; HW3_ALGO.pdf pages 1–2"
+        },
+        {
+          "id": "tutorial_6::014",
+          "section": "Tutorial 6 — Dynamic Programming and Graph Traversal › Graph Traversal — Supplement from Tutorial algo 6.pdf › Breadth-First Search (BFS) — PDF pages 7–47"
+        },
+        {
+          "id": "tutorial_6::018",
+          "section": "Tutorial 6 — Dynamic Programming and Graph Traversal › Graph Traversal — Supplement from Tutorial algo 6.pdf › Even-Length Paths and Layered Graphs — PDF pages 96–112"
+        },
+        {
+          "id": "tutorial_6::017",
+          "section": "Tutorial 6 — Dynamic Programming and Graph Traversal › Graph Traversal — Supplement from Tutorial algo 6.pdf › Counting Paths in a DAG — PDF pages 87–95"
+        }
+      ],
+      "manual_review": "BFS stays within week 6 and the method exclusion; homework gives a modeling hint without a full reduction or solution."
+    },
+    {
+      "question": "Give me one small hint for problem 4. Do not give the full solution.",
+      "decision": "answer",
+      "answer": "To approach problem 4, consider the given friendship matrix as a bipartite graph, where team leaders are in one part and volunteers are in the other. (Source 1) Think about how this bipartite graph can be used to model the problem of assigning volunteers to team leaders.",
+      "validation": "passed",
+      "sources": [
+        {
+          "id": "tutorial_9::011",
+          "section": "Tutorial 9 — Flow Networks and Maximum Flow › Flow Modeling and Reductions › Bipartite Matching — PDF pages 77–80"
+        },
+        {
+          "id": "tutorial_9::010",
+          "section": "Tutorial 9 — Flow Networks and Maximum Flow › Flow Modeling and Reductions › Separating Vertex Groups — PDF pages 73–76"
+        },
+        {
+          "id": "tutorial_9::015",
+          "section": "Tutorial 9 — Flow Networks and Maximum Flow › Theorems and Applications › Monotone Subsequences and Regular Bipartite Graphs — PDF pages 153–171"
+        }
+      ],
+      "manual_review": "BFS stays within week 6 and the method exclusion; homework gives a modeling hint without a full reduction or solution."
+    }
+  ]
+}

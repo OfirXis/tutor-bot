@@ -95,7 +95,7 @@ Union(x, y):
 For any cut in a connected graph, the minimum weight edge crossing the cut is part of some minimum spanning tree.
 
 ### Theorem 2: Cycle Property
-For any cycle in a connected graph, the maximum weight edge in the cycle cannot be part of any minimum spanning tree.
+An edge that is strictly heavier than every other edge on a cycle cannot belong to any minimum spanning tree. The strictness condition matters: with tied maximum weights, an edge may belong to some MSTs. In that case there exists an MST excluding the chosen maximum-weight cycle edge; it need not be excluded from every MST.
 
 ## Worked Examples
 
@@ -131,15 +131,15 @@ Given a graph with edges and weights:
 **Solution**:
 1. Start with vertex 1, add edge \( (1, 3) \) (weight 1).
 2. Add edge \( (3, 2) \) (weight 2).
-3. Add edge \( (2, 4) \) (weight 5).
+3. Add edge \( (3, 4) \) (weight 3).
 
-**MST**: \( \{(1, 3), (3, 2), (2, 4)\} \) with total weight \( 1 + 2 + 5 = 8 \).
+**MST**: \( \{(1, 3), (3, 2), (3, 4)\} \) with total weight \( 1 + 2 + 3 = 6 \).
 
 ### Problem 2
 Prove that the cycle property holds for a graph with edges of distinct weights.
 
 **Solution**:
-Assume a cycle exists with the heaviest edge \( e \). If \( e \) is included in the MST, removing it would split the tree into two components. The lightest edge connecting these components must be lighter than \( e \), contradicting the assumption that \( e \) is the heaviest. Thus, \( e \) cannot be in the MST.
+Suppose an MST contains the strictly heaviest edge \( e \) of a cycle. Removing \( e \) splits the tree into two components. The rest of that cycle connects the endpoints of \( e \), so it contains another edge \( e\prime \) crossing these components. Since all cycle weights are distinct and \( e \) is heaviest, \( e\prime \) is lighter. Replacing \( e \) by \( e\prime \) gives a spanning tree with smaller total weight, contradicting minimality.
 
 ## Common Mistakes to Avoid
 - Confusing the cut and cycle properties; remember that the cut property applies to edges crossing a cut, while the cycle property applies to edges within a cycle.

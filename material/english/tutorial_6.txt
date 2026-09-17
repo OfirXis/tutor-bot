@@ -1,4 +1,4 @@
-# Tutorial 6 — Dynamic Programming: Subsets, Partition, Counting
+# Tutorial 6 — Dynamic Programming and Graph Traversal
 
 ## Core Concepts
 Dynamic Programming (DP) is a method for solving complex problems by breaking them down into simpler subproblems. It is particularly useful for optimization problems and problems involving combinatorial structures. In this tutorial, we focus on subset problems, partitioning sets into equal subsets, counting subsets, and grid path problems.
@@ -122,3 +122,20 @@ Dynamic Programming (DP) is a method for solving complex problems by breaking th
 4. **Off-by-One Errors**: Pay attention to array indexing, especially in DP tables.
 
 These notes provide a comprehensive overview of the concepts, algorithms, and problem-solving techniques related to dynamic programming in the context of subsets, partitions, and counting.
+## Graph Traversal — Supplement from Tutorial algo 6.pdf
+### Breadth-First Search (BFS) — PDF pages 7–47
+The supplied tutorial 6 slides also teach graphs and breadth-first search. BFS starts at a source with distance zero, places it in a FIFO queue, and discovers each previously unseen neighbor with distance one greater than the current vertex. Vertices are processed in nondecreasing distance from the source. Distances count edges in an unweighted graph. The discovery edges form a BFS tree; its levels are the shortest-path distances. For an undirected graph, an edge joins vertices on the same or adjacent BFS levels. With adjacency lists the traversal takes $O(|V|+|E|)$. Scanning every possible neighbor in an adjacency matrix can take $O(|V|^2)$.
+
+### Multiple Sources and Search Trees — PDF pages 48–51; HW3_ALGO.pdf pages 1–2
+To find unweighted distance from a set of sources, the tutorial adds a new source connected to every vertex in the set, runs BFS, and subtracts one from the computed distances. This construction preserves the intended edge-count metric.
+
+The supplied HW3 explicitly assumes that BFS and depth-first search (DFS) have been taught in class. DFS explores along a branch before backtracking, whereas BFS explores by distance layers. The assignment asks about tree diameter, representation-dependent runtimes, and properties of the two search trees. These are covered graph-traversal prerequisites at this point; guide the student to reason about tree edges and cycles without supplying the assignment proofs.
+
+### Directed Acyclic Graphs and Topological Ordering — PDF pages 55–70
+A DAG is a directed graph with no directed cycle. A topological ordering puts the tail of every edge before its head. The slides give an indegree-based algorithm: initialize a queue of zero-indegree vertices, remove one, output it, and decrease the indegrees of its outgoing neighbors. Enqueue newly zero-indegree vertices. With adjacency lists, each vertex and edge is processed once, taking $O(|V|+|E|)$. If vertices remain when the queue empties, no topological ordering exists for the whole graph.
+
+### Counting Paths in a DAG — PDF pages 87–95
+After topologically sorting a DAG, initialize $ways(u)=1$ at the chosen start and zero elsewhere. Process vertices in topological order and add $ways(v)$ to the count of each outgoing neighbor. An edge only leads to a later vertex, so all contributions to a vertex are available before it is processed. The tutorial uses this combination of graph order and dynamic programming to count directed paths.
+
+### Even-Length Paths and Layered Graphs — PDF pages 96–112
+To enforce an even number of edges in an unweighted walk, duplicate each vertex into parity states. Every original edge switches parity. Run BFS from the even state of the source to the even state of a target. Returning to the even layer means an even edge count; BFS finds the smallest such count. Prove correspondence in both directions between original walks and paths in the state graph. A repeated original vertex can occur with different states, so do not silently claim that the projected walk must be simple.

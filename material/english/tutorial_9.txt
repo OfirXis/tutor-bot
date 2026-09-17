@@ -1,0 +1,70 @@
+# Tutorial 9 — Flow Networks and Maximum Flow
+
+## Source and Scope
+These English notes summarize the supplied Hebrew slides `material/lectures/algo-maxflow-9-3.pdf`, titled "Flow Networks and Maximum Flow — Tutorial Nine". Page references below refer to PDF pages (1–181). Repeated animation slides are consolidated. This tutorial covers flow networks, cuts, Ford–Fulkerson, Edmonds–Karp, matching, and the stated applications of Menger's, Hall's and Dilworth's theorems. The slides do not introduce NP-completeness.
+
+## Core Concepts
+### Flow Networks and Feasible Flows — PDF pages 6–12
+A flow network is $N=(G,s,t,c)$: a directed graph $G=(V,E)$, a source $s$, a sink $t$, and nonnegative edge capacities $c$. A feasible flow satisfies $0 \le f(e) \le c(e)$ for every edge. At each internal vertex, total inflow equals total outflow (flow conservation). The flow value $|f|$ is the net flow leaving the source, equal to the net flow entering the sink. The slides use the standard source/sink convention without incoming flow at the source. Maximum flow asks for a feasible flow with the largest value, not the shortest route or the largest capacity of a single path.
+
+### Residual Networks and Augmenting Paths — PDF pages 13–17
+The residual graph describes how the current flow can change. An original edge $(u,v)$ contributes a forward residual edge with capacity $c(u,v)-f(u,v)$ and a reverse residual edge with capacity $f(u,v)$; retain only positive residual capacities. A reverse edge allows cancellation of previously sent flow. If both directions are original edges, track their residual contributions correctly.
+
+An augmenting path runs from $s$ to $t$ in the residual graph. Its bottleneck is the minimum residual capacity on the path. Augment by the bottleneck: increase original flow along forward steps and decrease it along reverse steps. The new flow remains feasible and its value increases by the bottleneck. Searching only unused original edges misses improvements that need reverse edges.
+
+### Cuts and the Max-Flow Min-Cut Theorem — PDF pages 18–22
+An $s$–$t$ cut partitions $V$ into $S$ and $V\setminus S$ with $s\in S$ and $t\notin S$. Its capacity is the sum of capacities of original edges directed from $S$ to $V\setminus S$. Reverse-direction crossing edges are not added to cut capacity.
+
+Every feasible flow value is at most every cut capacity. Three statements are equivalent: the flow is maximum; its value equals the capacity of some $s$–$t$ cut; and no augmenting path remains in the residual graph. After termination, vertices reachable from $s$ by positive residual edges form the source side of a minimum cut. Exhibiting equal flow value and cut capacity certifies optimality.
+
+## Algorithms and Complexity
+### Ford–Fulkerson Method — PDF pages 23–29
+Start with zero flow. Repeatedly find an augmenting path in the residual graph, compute its bottleneck, and update the flow and both residual directions. Stop when no augmenting path exists. The max-flow min-cut theorem then proves optimality.
+
+With nonnegative integer capacities, all augmentations are integral and each increases the flow value by at least one. A search and update takes $O(|V|+|E|)$, conventionally written $O(|E|)$ for the relevant network. The slide bound is $O(|E|\,|f_{max}|)$. This depends on the numerical maximum flow, not just the bit-length of the input: it is a pseudo-polynomial bound. Arbitrary augmenting-path choices can make only one unit of progress at a time even when large-capacity routes exist. Do not apply the integer bound unchanged to arbitrary capacities.
+
+### Residual-Network Exercise — PDF pages 30–41
+The slide exercise supplies a network and an existing flow. The tasks are to construct its residual network, find an augmenting path, update the original flow, and determine whether the result is maximum. For each original edge, check forward unused capacity and backward cancellable flow separately. After an update, check conservation and capacities. Certify a final maximum with a cut of equal capacity or the absence of an augmenting path. The exact edge labels belong to the PDF diagram; do not infer them from flattened PDF text.
+
+### Edmonds–Karp Algorithm — PDF pages 42–57
+Edmonds–Karp implements Ford–Fulkerson using BFS to choose an augmenting path with the fewest edges in the residual network. BFS distance is an edge count, not a capacity-weighted distance. Each augmentation still uses the path bottleneck.
+
+The proof shows that residual BFS distances from $s$ never decrease. When an edge becomes critical (a bottleneck edge is saturated), disappears, and later becomes critical again in the same direction, the distance to its tail has increased by at least two. Consequently each edge is critical $O(|V|)$ times. There are $O(|V||E|)$ augmentations and $O(|V||E|^2)$ total time. This is polynomial in graph size and does not depend on the numerical maximum-flow value.
+
+## Flow Modeling and Reductions
+### Prescribed Flow Value — PDF pages 58–62
+To test whether a flow of a specified value $M$ is possible, add a new source $s'$ with an edge to the old source $s$ of capacity $M$. Compute maximum flow from $s'$ to the original sink. The desired flow exists exactly when the new source edge can be saturated. The new edge both limits total flow and measures whether the target is attainable.
+
+### Vertex Capacities — PDF pages 63–66
+An edge-capacity network can model a capacity $c_v$ on a vertex by splitting it into $v_{in}$ and $v_{out}$, linked by an edge of capacity $c_v$. Redirect incoming edges to $v_{in}$ and outgoing edges from $v_{out}$. Every unit traversing the original vertex now crosses the internal edge, enforcing its capacity. Preserve the original edge capacities as well.
+
+### Increasing One Edge Capacity — PDF pages 67–72
+Given a maximum flow with integer capacities, increasing one edge capacity by one changes the maximum-flow value by either zero or one. The old flow remains feasible and an old minimum cut increases in capacity by at most one, giving the upper bound. Update the residual network and search for a single augmenting path. If it exists, one augmentation achieves the possible increase; otherwise the old flow is still maximum. An increase on an edge does not necessarily increase the maximum flow.
+
+### Separating Vertex Groups — PDF pages 73–76
+The slides reduce a graph separation problem between two vertex groups to a minimum cut. Contract each designated group to a terminal and assign unit capacities to edges when the objective is to minimize the number of removed edges. Compute maximum flow and use the corresponding minimum cut. Check that the graph direction and permitted deletions match the problem before applying the construction.
+
+### Bipartite Matching — PDF pages 77–80
+A bipartite graph has parts $A$ and $B$, with edges only between the parts. A matching contains edges with no shared endpoint; a maximum matching has the largest cardinality. Model it by a source connected to $A$, edges directed from $A$ to $B$, and edges from $B$ to a sink, all of capacity one. An integral flow chooses at most one partner at every vertex. Matching edges correspond to unit-flow edges between the two parts. A perfect matching covers every vertex. "Maximum" cardinality is stronger than merely "maximal" under adding another edge.
+
+## Theorems and Applications
+### Menger's Theorem — PDF pages 81–95
+The edge version equates the maximum number of pairwise edge-disjoint $s$–$t$ paths with the minimum number of edges whose removal separates $s$ from $t$. Unit edge capacities connect this statement to integral maximum flow and minimum cut.
+
+The vertex version uses internally vertex-disjoint paths and removal of vertices other than $s,t$. For nonadjacent terminals, the maximum number of such paths equals the minimum size of an internal vertex separator. Vertex splitting with unit internal capacity reduces this to flow. The terminal/nonadjacency condition matters: removing internal vertices cannot disconnect a direct $s$–$t$ edge. For the maze exercise on PDF pages 96–101, model only permitted moves and permitted blocked cells, and distinguish cutting a path segment from satisfying the full visit-through-the-princess requirement.
+
+### Hall's Marriage Theorem — PDF pages 102–114
+For a bipartite graph $G=(U\cup V,E)$ with $|U|=|V|=n$, let $\Gamma(A)$ be the neighbors in $V$ of $A\subseteq U$. A perfect matching exists if and only if $|\Gamma(A)|\ge |A|$ for every $A\subseteq U$. Necessity follows because distinct vertices in $A$ need distinct partners. The slide proof of sufficiency uses alternating paths from an unmatched vertex to show that a maximum non-perfect matching would produce a set violating the neighbor condition.
+
+### Dilworth's Theorem and Chain Covers — PDF pages 115–152
+In a finite partially ordered set, a chain consists of mutually comparable elements and an antichain of mutually incomparable elements. Dilworth's theorem states that the maximum antichain size equals the minimum number of chains needed to cover the set.
+
+The slides construct a bipartite graph with a left and a right copy of every element and an edge $x_L\to y_R$ when $x<y$. A matching joins successive elements into chains; because the relation is a strict partial order, these links cannot form a cycle. A matching of size $m$ gives a chain cover with $n-m$ chains. Thus maximum matching minimizes the chain count. The proof also uses the bipartite matching/vertex-cover equality (König's theorem) to obtain an antichain of matching size to the minimum chain cover. This is the bipartite vertex-cover theorem, not the earlier tree vertex-cover algorithm.
+
+### Monotone Subsequences and Regular Bipartite Graphs — PDF pages 153–171
+One exercise asks for a monotone subsequence of length $n+1$ in a sequence of length $n^2+1$, connecting comparable index/value pairs to chains and antichains. Respect the sequence's equality and monotonicity conventions when stating the result.
+
+Another application proves that a $d$-regular bipartite graph with equal-size parts and $d>0$ has a perfect matching. For any $A$ in one part, count its $d|A|$ incident edges. All end in $\Gamma(A)$, whose vertices can account for at most $d|\Gamma(A)|$ edges. Therefore $|A|\le |\Gamma(A)|$, so Hall's condition holds. The positive-degree assumption is necessary for dividing by $d$.
+
+### Nesting Boxes — PDF pages 172–181
+Each box has three dimensions and may be rotated by permuting them. Define a strict order when one box can fit inside another in a permitted orientation. A nesting group is a chain. Build the bipartite comparability graph, find a maximum matching, and recover a minimum chain cover, with the same $n-|M|$ count as in Dilworth's construction. Check the problem's strict-fit conditions instead of treating equal-sized boxes as strictly ordered.

@@ -1,0 +1,108 @@
+[
+  {
+    "question": "what is flow",
+    "homework": null,
+    "status": "answer",
+    "normalized": "what is flow",
+    "sources": [
+      "Tutorial 9 — Flow Networks and Maximum Flow › Core Concepts › Flow Networks and Feasible Flows — PDF pages 6–12",
+      "Tutorial 9 — Flow Networks and Maximum Flow › Algorithms and Complexity › Residual-Network Exercise — PDF pages 30–41",
+      "Tutorial 9 — Flow Networks and Maximum Flow › Flow Modeling and Reductions › Prescribed Flow Value — PDF pages 58–62"
+    ],
+    "english_answer": "(Source 1) In the context of flow networks and maximum flow, a flow is a function that assigns a nonnegative value to each edge in the graph, representing the amount of flow that can pass through that edge. The flow value is denoted by $f(e)$, where $e$ is an edge in the graph. The flow is said to be feasible if it satisfies the capacity constraints of the edges, i.e., $0 \\le f(e) \\le c(e)$ for every edge $e$.",
+    "seconds": 8.73
+  },
+  {
+    "question": "what is dp",
+    "homework": null,
+    "status": "answer",
+    "normalized": "what is Dynamic programming",
+    "sources": [
+      "Tutorial 5: Dynamic Programming (continued) › Core Concepts",
+      "Tutorial 4 — Dynamic Programming (DP) › Core Concepts",
+      "Tutorial 6 — Dynamic Programming and Graph Traversal › Core Concepts",
+      "Tutorial 4 — Dynamic Programming (DP) › Algorithms & Complexity › 1. Fibonacci Sequence"
+    ],
+    "english_answer": "Dynamic programming (DP) is a method for solving complex problems by breaking them down into simpler subproblems, storing the results of subproblems to avoid redundant calculations, and combining these results to solve the original problem. (Source 1)\n\nIn other words, dynamic programming is a technique that uses the following two key properties:\n\n1. **Overlapping Subproblems**: The problem can be broken down into subproblems that are reused multiple times.\n2. **Optimal Substructure**: An optimal solution to the problem can be constructed from optimal solutions of its subproblems.\n\nBy using dynamic programming, we can solve problems efficiently by avoiding redundant calculations and storing the results of subproblems, which is particularly useful for optimization problems and problems involving combinatorial structures.\n\nCheck-in question: Can you think of a real-world problem that can be solved using dynamic programming?",
+    "seconds": 1.62
+  },
+  {
+    "question": "give me a dc example",
+    "homework": null,
+    "status": "answer",
+    "normalized": "give me a Divide and conquer example",
+    "sources": [
+      "Tutorial 2 — Divide & Conquer › Worked Examples › Example 1: Merge Sort",
+      "Tutorial 2 — Divide & Conquer › Core Concepts",
+      "Tutorial 2 — Divide & Conquer › Algorithms & Complexity › 1. Merge Sort",
+      "Tutorial 2 — Divide & Conquer › Worked Examples › Example 2: Binary Search"
+    ],
+    "english_answer": "(Source 1) Given the array [38, 27, 43, 3, 9, 82, 10], apply Merge Sort: \n1. Split into [38, 27, 43] and [3, 9, 82, 10].\n2. Further split until single elements: [38], [27], [43], [3], [9], [82], [10].\n3. Merge back: [27, 38, 43], [3, 9, 10, 82].\n4. Final merge: [3, 9, 10, 27, 38, 43, 82].\n\nNow, let's analyze the recurrence relation for Merge Sort: $$T(n) = 2T\\left(\\frac{n}{2}\\right) + O(n)$$. What is the value of $a$ in this recurrence relation?",
+    "seconds": 1.8
+  },
+  {
+    "question": "מה זה זרימה?",
+    "homework": "hw_5",
+    "status": "answer",
+    "normalized": "Explain flow.",
+    "sources": [
+      "Tutorial 9 — Flow Networks and Maximum Flow › Algorithms and Complexity › Residual-Network Exercise — PDF pages 30–41",
+      "Tutorial 9 — Flow Networks and Maximum Flow › Core Concepts › Flow Networks and Feasible Flows — PDF pages 6–12",
+      "Tutorial 9 — Flow Networks and Maximum Flow › Core Concepts › Residual Networks and Augmenting Paths — PDF pages 13–17"
+    ],
+    "english_answer": "(Source 2) A flow in a flow network is a function $f$ that assigns a nonnegative value to each edge, representing the amount of flow sent through that edge. The flow value $|f|$ is the net flow leaving the source, equal to the net flow entering the sink. In other words, it measures the total amount of \"stuff\" being sent from the source to the sink through the network.",
+    "hebrew_answer": "(Source 2) זרימה ברשת זרימה היא פונקציה $f$ שמייחסת ערך לא שלילי לכל קשת, המייצג את כמות הזרימה שנשלחת דרך אותה קשת. ערך הזרימה $|f|$ הוא הזרימה הנטו היוצאת מהמקור, השווה לזרימה הנטו הנכנסת למטרה. במילים אחרות, היא מודדת את הכמות הכוללת של \"חומר\" שנשלחת מהמקור אל המטרה דרך הרשת.",
+    "seconds": 1.1,
+    "translation_fallback": true,
+    "final_translation_seconds": 2.47
+  },
+  {
+    "question": "מה זה dp?",
+    "homework": "hw_5",
+    "status": "answer",
+    "normalized": "Explain Dynamic programming.",
+    "sources": [
+      "Tutorial 4 — Dynamic Programming (DP) › Core Concepts",
+      "Tutorial 5: Dynamic Programming (continued) › Core Concepts",
+      "Tutorial 6 — Dynamic Programming and Graph Traversal › Core Concepts",
+      "Tutorial 4 — Dynamic Programming (DP) › Algorithms & Complexity › 1. Fibonacci Sequence"
+    ],
+    "english_answer": "(Source 1) Dynamic programming is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable when the problem exhibits two key properties: (1) **Overlapping Subproblems**: The problem can be broken down into subproblems that are reused multiple times, and (2) **Optimal Substructure**: An optimal solution to the problem can be constructed from optimal solutions of its subproblems.\n\nThis approach allows us to store the results of subproblems to avoid redundant calculations, reducing the time complexity of the algorithm. By breaking down the problem into smaller subproblems and solving each one only once, we can efficiently solve the original problem.",
+    "hebrew_answer": "(Source 1) תכנות דינמי הוא שיטה לפתרון בעיות מורכבות על ידי פירוקן לתת-בעיות פשוטות יותר. היא מתאימה כאשר הבעיה מציגה שני תכונות מפתח: (1) **תת-בעיות חופפות**: ניתן לפרק את הבעיה לתת-בעיות המשמשות מספר פעמים, ו-(2) **מבנה אופטימלי של תת-בעיות**: פתרון אופטימלי לבעיה יכול להיבנות מפתרונות אופטימליים של תת-הבעיות שלה.\n\nגישה זו מאפשרת לאחסן את התוצאות של תת-הבעיות כדי למנוע חישובים מיותרים, ובכך להפחית את מורכבות הזמן של האלגוריתם. על ידי פירוק הבעיה לתת-בעיות קטנות יותר ופתרון כל אחת מהן רק פעם אחת, ניתן לפתור ביעילות את הבעיה המקורית.",
+    "seconds": 2.96,
+    "translation_fallback": true,
+    "final_translation_seconds": 4.13
+  },
+  {
+    "question": "תן לי דוגמה להפרד ומשול",
+    "homework": "hw_5",
+    "status": "answer",
+    "normalized": "Give an example of Divide and conquer.",
+    "sources": [
+      "Tutorial 2 — Divide & Conquer › Worked Examples › Example 1: Merge Sort",
+      "Tutorial 2 — Divide & Conquer › Core Concepts",
+      "Tutorial 2 — Divide & Conquer › Algorithms & Complexity › 1. Merge Sort"
+    ],
+    "english_answer": "(Source 1 — Tutorial 2 — Divide & Conquer › Worked Examples › Example 1: Merge Sort)\n\nConsider the array [38, 27, 43, 3, 9, 82, 10]. We can apply Merge Sort to sort this array. The steps are as follows:\n\n1. Split into [38, 27, 43] and [3, 9, 82, 10].\n2. Further split until single elements: [38], [27], [43], [3], [9], [82], [10].\n3. Merge back: [27, 38, 43], [3, 9, 10, 82].\n4. Final merge: [3, 9, 10, 27, 38, 43, 82].\n\nThis example illustrates the basic idea of Divide and Conquer, where we break down a problem into smaller subproblems, solve each subproblem recursively, and then combine the solutions to solve the original problem.\n\nCheck-in question: What is the recurrence relation for Merge Sort, as described in (Source 2)?",
+    "translation_fallback": true,
+    "seconds": 11.73,
+    "hebrew_answer": "(Source 1 — Tutorial 2 — Divide & Conquer › Worked Examples › Example 1: Merge Sort)\n\nשקלו את המערך [38, 27, 43, 3, 9, 82, 10]. נוכל ליישם Merge Sort כדי למיין מערך זה. השלבים הם כדלקמן:\n\n1. פיצול ל-[38, 27, 43] ו-[3, 9, 82, 10].\n2. המשך לפצל עד אלמנטים בודדים: [38], [27], [43], [3], [9], [82], [10].\n3. מיזוג בחזרה: [27, 38, 43], [3, 9, 10, 82].\n4. המיזוג הסופי: [3, 9, 10, 27, 38, 43, 82].\n\nדוגמה זו ממחישה את הרעיון הבסיסי של הפרד ומשול, שבו אנו מפרקים בעיה לתת-בעיות קטנות יותר, פותרים כל תת-בעיה באופן רקורסיבי, ולאחר מכן משלבים את הפתרונות כדי לפתור את הבעיה המקורית.\n\nשאלה לבדיקה: מהי היחסה הרקורסיבית של מיון המיזוג, כפי שתוארה ב-(Source 2)?",
+    "final_translation_seconds": 5.84
+  },
+  {
+    "question": "תעזור לי עם שאלה 4",
+    "homework": "hw_5",
+    "status": "answer",
+    "normalized": "Help me with question 4.",
+    "sources": [
+      "Tutorial 9 — Flow Networks and Maximum Flow › Flow Modeling and Reductions › Separating Vertex Groups — PDF pages 73–76",
+      "Tutorial 9 — Flow Networks and Maximum Flow › Flow Modeling and Reductions › Bipartite Matching — PDF pages 77–80",
+      "Tutorial 3 — Greedy Algorithms › Practice Problems (with solutions) › Problem 1: Activity Selection"
+    ],
+    "english_answer": "(Assignment 1)\n\nYou are tasked with organizing a charity event for 3n volunteers. To ensure effective teamwork, the volunteers need to be divided into teams, each consisting of exactly 3 members.\n\nAmong the volunteers, n have been pre-selected as team leaders based on their experience.\n\nYour goal is to assign each volunteer to a team in such a way that:\n\n1. Every team has exactly one team leader and two additional volunteers.\n2. Each volunteer feels comfortable working with their team leader. This is determined by a given friendship matrix, where:\n(a)Friends[i,j] = True means that thei-th team leader and thej-th volunteer are friends.\n(b)Friends[i,j] = False means there is no friendship connection between them.\n\nTo begin, let's examine the problem statement. What does the problem statement mean by \"Each volunteer feels comfortable working with their team leader\"?",
+    "translation_fallback": true,
+    "seconds": 6.97,
+    "hebrew_answer": "(Assignment 1)\n\nאתם מתבקשים לארגן אירוע צדקה עבור 3n מתנדבים. כדי להבטיח עבודת צוות יעילה, המתנדבים צריכים להיות מחולקים לצוותים, שכל אחד מהם מורכב בדיוק מ-3 חברים.\n\nבין המתנדבים, n נבחרו מראש כמנהיגי הצוותים על סמך הניסיון שלהם.\n\nהמטרה היא להקצות כל מתנדב לצוות באופן שבו:\n1. לכל צוות יש בדיוק מנהיג צוות אחד ושני מתנדבים נוספים.\n2. כל מתנדב מרגיש בנוח לעבוד עם מנהיג הצוות שלו. זה נקבע על ידי מטריצת ידידות נתונה, כאשר: \n(a) Friends[i,j] = True פירושו שהמנהיג ה-i של הצוות והמתנדב ה-j הם חברים.\n(ב) Friends[i,j] = False פירושו שאין קשר ידידות בין השניים.\n\nכעת, נבחן את הצהרת הבעיה. מה משמעות הביטוי \"כל מתנדב מרגיש בנוח לעבוד עם מנהל הקבוצה שלו\" בהצהרת הבעיה?",
+    "final_translation_seconds": 4.58
+  }
+]

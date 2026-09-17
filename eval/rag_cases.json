@@ -1,0 +1,1134 @@
+{
+  "description": "Passage-level regression cases, not a held-out benchmark. Reviewed chunk IDs identify supporting evidence rather than a matching tutorial. Homework labels identify useful prerequisites, not finished solutions.",
+  "hebrew_note": "Offline cases use fixed reference translations. They do not measure live translation quality.",
+  "cases": [
+    {
+      "id": "course_01",
+      "category": "course",
+      "question": "What is the formal definition of Big-O notation?",
+      "week": 1,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_1::005"
+      ]
+    },
+    {
+      "id": "course_02",
+      "category": "course",
+      "question": "How do I figure out how fast a function grows compared to another one?",
+      "week": 1,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_1::006",
+        "tutorial_1::012",
+        "tutorial_1::014"
+      ]
+    },
+    {
+      "id": "course_03",
+      "category": "course",
+      "question": "What's the difference between decision and optimization algorithms?",
+      "week": 1,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_1::002"
+      ]
+    },
+    {
+      "id": "course_04",
+      "category": "course",
+      "question": "How many operations do nested loops cost?",
+      "week": 2,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_1::007",
+        "tutorial_1::011"
+      ]
+    },
+    {
+      "id": "course_05",
+      "category": "course",
+      "question": "State the Master Theorem cases.",
+      "week": 2,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_2::001"
+      ]
+    },
+    {
+      "id": "course_06",
+      "category": "course",
+      "question": "How does merge sort split and combine the array?",
+      "week": 2,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_2::002",
+        "tutorial_2::006"
+      ]
+    },
+    {
+      "id": "course_07",
+      "category": "course",
+      "question": "What's a faster way to multiply two big numbers than the school method?",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_2::004"
+      ]
+    },
+    {
+      "id": "course_08",
+      "category": "course",
+      "question": "Why does searching a sorted array only take logarithmic time?",
+      "week": 2,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_2::003",
+        "tutorial_2::007"
+      ]
+    },
+    {
+      "id": "course_09",
+      "category": "course",
+      "question": "What is the exchange argument used for in greedy proofs?",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_3::001"
+      ]
+    },
+    {
+      "id": "course_10",
+      "category": "course",
+      "question": "How do I pick the maximum number of non-overlapping activities?",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_3::002",
+        "tutorial_3::008",
+        "tutorial_3::010"
+      ]
+    },
+    {
+      "id": "course_11",
+      "category": "course",
+      "question": "When can I take fractions of items to maximize value in a knapsack?",
+      "week": 4,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_3::003",
+        "tutorial_3::009",
+        "tutorial_3::011"
+      ]
+    },
+    {
+      "id": "course_12",
+      "category": "course",
+      "question": "How are Huffman codes built from character frequencies?",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_3::005",
+        "tutorial_3::013"
+      ]
+    },
+    {
+      "id": "course_13",
+      "category": "course",
+      "question": "What are overlapping subproblems and optimal substructure?",
+      "week": 4,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_4::000",
+        "tutorial_4::001",
+        "tutorial_4::006"
+      ]
+    },
+    {
+      "id": "course_14",
+      "category": "course",
+      "question": "Compare memoization with the bottom-up table method.",
+      "week": 4,
+      "expected_status": "insufficient",
+      "relevant_chunks": [],
+      "annotation": "The current English excerpts do not explain the requested memoization/tabulation comparison; decline for missing evidence, not a future-week claim."
+    },
+    {
+      "id": "course_15",
+      "category": "course",
+      "question": "How do I compute the longest common subsequence of two strings?",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_4::004",
+        "tutorial_4::010"
+      ]
+    },
+    {
+      "id": "course_16",
+      "category": "course",
+      "question": "What's the DP recurrence for cutting a rod into pieces for max revenue?",
+      "week": 4,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_4::003",
+        "tutorial_4::007",
+        "tutorial_4::009"
+      ]
+    },
+    {
+      "id": "course_17",
+      "category": "course",
+      "question": "How do I count the minimum number of coins to make an amount?",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_5::002",
+        "tutorial_5::008",
+        "tutorial_5::010"
+      ]
+    },
+    {
+      "id": "course_18",
+      "category": "course",
+      "question": "What order should I multiply a chain of matrices to minimize work?",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_5::003"
+      ]
+    },
+    {
+      "id": "course_19",
+      "category": "course",
+      "question": "How many single-letter changes turn one word into another?",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_5::004",
+        "tutorial_5::009",
+        "tutorial_5::011"
+      ]
+    },
+    {
+      "id": "course_20",
+      "category": "course",
+      "question": "How do I find the longest increasing subsequence?",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_5::005",
+        "tutorial_5::012"
+      ]
+    },
+    {
+      "id": "course_21",
+      "category": "course",
+      "question": "Can a set of numbers be split into two halves with equal sums?",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::003",
+        "tutorial_6::010"
+      ]
+    },
+    {
+      "id": "course_22",
+      "category": "course",
+      "question": "How many ways can I reach the bottom-right cell of a grid moving only right and down?",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::005",
+        "tutorial_6::012"
+      ]
+    },
+    {
+      "id": "course_23",
+      "category": "course",
+      "question": "How do I check whether some subset of numbers sums to a target value?",
+      "week": 7,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::002",
+        "tutorial_6::007",
+        "tutorial_6::009"
+      ]
+    },
+    {
+      "id": "course_24",
+      "category": "course",
+      "question": "Explain the cut property for minimum spanning trees.",
+      "week": 7,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_7::005"
+      ]
+    },
+    {
+      "id": "course_25",
+      "category": "course",
+      "question": "How does Kruskal's algorithm avoid creating cycles?",
+      "week": 7,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_7::002"
+      ]
+    },
+    {
+      "id": "course_26",
+      "category": "course",
+      "question": "What data structure quickly tells me if two nodes are already connected?",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_7::004"
+      ]
+    },
+    {
+      "id": "course_27",
+      "category": "course",
+      "question": "Why can't Dijkstra handle negative edge weights?",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_8::011"
+      ]
+    },
+    {
+      "id": "course_28",
+      "category": "course",
+      "question": "Which algorithm finds shortest paths between every pair of vertices?",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_8::005",
+        "tutorial_8::012"
+      ]
+    },
+    {
+      "id": "course_29",
+      "category": "course",
+      "question": "How can I detect a negative cycle in a graph?",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_8::003",
+        "tutorial_8::010"
+      ]
+    },
+    {
+      "id": "course_30",
+      "category": "course",
+      "question": "What's the fastest way to find shortest paths in a graph with no cycles?",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_8::004"
+      ]
+    },
+    {
+      "id": "flow_1",
+      "category": "course",
+      "question": "What makes a flow feasible?",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::001"
+      ]
+    },
+    {
+      "id": "flow_2",
+      "category": "course",
+      "question": "Why do residual networks have reverse edges?",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::002"
+      ]
+    },
+    {
+      "id": "flow_3",
+      "category": "course",
+      "question": "Explain the max-flow min-cut theorem.",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::003"
+      ]
+    },
+    {
+      "id": "flow_4",
+      "category": "course",
+      "question": "Why does Ford-Fulkerson depend on the flow value?",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::004"
+      ]
+    },
+    {
+      "id": "flow_5",
+      "category": "course",
+      "question": "How does Edmonds-Karp choose an augmenting path?",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::006"
+      ]
+    },
+    {
+      "id": "flow_6",
+      "category": "course",
+      "question": "How do we model capacities on vertices?",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::008"
+      ]
+    },
+    {
+      "id": "flow_7",
+      "category": "course",
+      "question": "What does Hall's theorem say about perfect matching?",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::013"
+      ]
+    },
+    {
+      "id": "flow_8",
+      "category": "course",
+      "question": "Explain Dilworth's theorem and chain covers.",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::014"
+      ]
+    },
+    {
+      "id": "hw_1_p1",
+      "category": "homework",
+      "homework": "hw_1",
+      "question": "Give me a hint for problem 1",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_2::000",
+        "tutorial_2::001"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_1_p2",
+      "category": "homework",
+      "homework": "hw_1",
+      "question": "Give me a hint for problem 2",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_1::005",
+        "tutorial_1::014"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_1_p3",
+      "category": "homework",
+      "homework": "hw_1",
+      "question": "Give me a hint for problem 3",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_2::000",
+        "tutorial_2::003"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_1_p4",
+      "category": "homework",
+      "homework": "hw_1",
+      "question": "Give me a hint for problem 4",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_3::005"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_1_p5",
+      "category": "homework",
+      "homework": "hw_1",
+      "question": "Give me a hint for problem 5",
+      "week": 3,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_3::000",
+        "tutorial_3::001"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_2_p1",
+      "category": "homework",
+      "homework": "hw_2",
+      "question": "Give me a hint for problem 1",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_5::003"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_2_p2",
+      "category": "homework",
+      "homework": "hw_2",
+      "question": "Give me a hint for problem 2",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_4::001",
+        "tutorial_5::005"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_2_p3",
+      "category": "homework",
+      "homework": "hw_2",
+      "question": "Give me a hint for problem 3",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_4::001",
+        "tutorial_2::011"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_2_p4",
+      "category": "homework",
+      "homework": "hw_2",
+      "question": "Give me a hint for problem 4",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_4::001",
+        "tutorial_3::002"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_2_p5",
+      "category": "homework",
+      "homework": "hw_2",
+      "question": "Give me a hint for problem 5",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_4::001",
+        "tutorial_4::004"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_3_p1",
+      "category": "homework",
+      "homework": "hw_3",
+      "question": "Give me a hint for problem 1",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::014",
+        "tutorial_6::015"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_3_p2",
+      "category": "homework",
+      "homework": "hw_3",
+      "question": "Give me a hint for problem 2",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::014",
+        "tutorial_6::015"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_3_p3",
+      "category": "homework",
+      "homework": "hw_3",
+      "question": "Give me a hint for problem 3",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::015"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_3_p4",
+      "category": "homework",
+      "homework": "hw_3",
+      "question": "Give me a hint for problem 4",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::015",
+        "tutorial_6::016"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_3_p5",
+      "category": "homework",
+      "homework": "hw_3",
+      "question": "Give me a hint for problem 5",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::014"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_3_p6",
+      "category": "homework",
+      "homework": "hw_3",
+      "question": "Give me a hint for problem 6",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::015",
+        "tutorial_6::016"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_4_p1",
+      "category": "homework",
+      "homework": "hw_4",
+      "question": "Give me a hint for problem 1",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_7::000",
+        "tutorial_7::001"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_4_p2",
+      "category": "homework",
+      "homework": "hw_4",
+      "question": "Give me a hint for problem 2",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_8::002"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_4_p3",
+      "category": "homework",
+      "homework": "hw_4",
+      "question": "Give me a hint for problem 3",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_7::005",
+        "tutorial_7::006"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_4_p4",
+      "category": "homework",
+      "homework": "hw_4",
+      "question": "Give me a hint for problem 4",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_8::002",
+        "tutorial_6::018"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_4_p5",
+      "category": "homework",
+      "homework": "hw_4",
+      "question": "Give me a hint for problem 5",
+      "week": 8,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_8::004"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_5_p1",
+      "category": "homework",
+      "homework": "hw_5",
+      "question": "Give me a hint for problem 1",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::004"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_5_p2",
+      "category": "homework",
+      "homework": "hw_5",
+      "question": "Give me a hint for problem 2",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::011",
+        "tutorial_9::013",
+        "tutorial_9::015"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_5_p3",
+      "category": "homework",
+      "homework": "hw_5",
+      "question": "Give me a hint for problem 3",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::002",
+        "tutorial_9::003"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_5_p4",
+      "category": "homework",
+      "homework": "hw_5",
+      "question": "Give me a hint for problem 4",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::001",
+        "tutorial_9::011"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "hw_5_p5",
+      "category": "homework",
+      "homework": "hw_5",
+      "question": "Give me a hint for problem 5",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::003"
+      ],
+      "answer_review": [
+        "Addresses this problem only",
+        "Uses only covered methods",
+        "Gives a hint rather than the final solution"
+      ]
+    },
+    {
+      "id": "unsupported_1",
+      "category": "unsupported",
+      "question": "How do I bake chocolate cake?",
+      "week": 9,
+      "expected_status": "insufficient",
+      "relevant_chunks": []
+    },
+    {
+      "id": "unsupported_2",
+      "category": "unsupported",
+      "question": "Explain blockchain mining",
+      "week": 9,
+      "expected_status": "insufficient",
+      "relevant_chunks": []
+    },
+    {
+      "id": "unsupported_3",
+      "category": "unsupported",
+      "question": "Explain quantum entanglement",
+      "week": 9,
+      "expected_status": "insufficient",
+      "relevant_chunks": []
+    },
+    {
+      "id": "unsupported_4",
+      "category": "unsupported",
+      "question": "Who won the last football World Cup?",
+      "week": 9,
+      "expected_status": "insufficient",
+      "relevant_chunks": []
+    },
+    {
+      "id": "unsupported_5",
+      "category": "unsupported",
+      "question": "What is the capital of France?",
+      "week": 9,
+      "expected_status": "insufficient",
+      "relevant_chunks": []
+    },
+    {
+      "id": "unsupported_6",
+      "category": "unsupported",
+      "question": "How does backpropagation train a neural network?",
+      "week": 9,
+      "expected_status": "insufficient",
+      "relevant_chunks": []
+    },
+    {
+      "id": "unsupported_7",
+      "category": "unsupported",
+      "question": "Explain RSA key generation and encryption.",
+      "week": 9,
+      "expected_status": "insufficient",
+      "relevant_chunks": []
+    },
+    {
+      "id": "future_1",
+      "category": "future",
+      "question": "Explain Dijkstra",
+      "week": 6,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "future_2",
+      "category": "future",
+      "question": "Compare BFS and Dijkstra",
+      "week": 6,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "future_3",
+      "category": "future",
+      "question": "Why does Dijkstra not work with negative weights?",
+      "week": 6,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "future_4",
+      "category": "future",
+      "question": "Without Dijkstra, explain Bellman-Ford",
+      "week": 6,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "future_5",
+      "category": "future",
+      "question": "Explain maximum flow",
+      "week": 8,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "future_6",
+      "category": "future",
+      "question": "Explain BFS",
+      "week": 5,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "future_7",
+      "category": "future",
+      "question": "Do not use Dijkstra code, just explain its idea",
+      "week": 6,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "future_8",
+      "category": "future",
+      "question": "Without Dijkstra, teach dynamic programming",
+      "week": 3,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "exclusion_1",
+      "category": "exclusion",
+      "question": "Find a shortest path in an unweighted graph without Dijkstra",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::014"
+      ]
+    },
+    {
+      "id": "exclusion_2",
+      "category": "exclusion",
+      "question": "Do not use Dijkstra. Explain BFS.",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::014"
+      ]
+    },
+    {
+      "id": "exclusion_3",
+      "category": "exclusion",
+      "question": "Explain BFS without using Dijkstra or Bellman-Ford",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::014"
+      ]
+    },
+    {
+      "id": "clarify_1",
+      "category": "clarification",
+      "question": "Why does that work?",
+      "week": 6,
+      "expected_status": "clarify",
+      "relevant_chunks": []
+    },
+    {
+      "id": "clarify_2",
+      "category": "clarification",
+      "question": "Give me another example",
+      "week": 6,
+      "expected_status": "clarify",
+      "relevant_chunks": []
+    },
+    {
+      "id": "clarify_3",
+      "category": "clarification",
+      "question": "Explain it",
+      "week": 6,
+      "expected_status": "clarify",
+      "relevant_chunks": []
+    },
+    {
+      "id": "invalid_problem",
+      "category": "clarification",
+      "question": "Give me a hint for problem 99",
+      "homework": "hw_2",
+      "week": 5,
+      "expected_status": "clarify",
+      "relevant_chunks": []
+    },
+    {
+      "id": "missing_problem",
+      "category": "clarification",
+      "question": "Give me a hint",
+      "homework": "hw_2",
+      "week": 5,
+      "expected_status": "clarify",
+      "relevant_chunks": []
+    },
+    {
+      "id": "hebrew_1",
+      "category": "hebrew",
+      "question": "הסבר את אלגוריתם דייקסטרה",
+      "reference_translation": "Explain Dijkstra",
+      "week": 6,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "hebrew_2",
+      "category": "hebrew",
+      "question": "הסבר חיפוש לרוחב בלי להשתמש בדייקסטרה",
+      "reference_translation": "Explain BFS without using Dijkstra",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::014"
+      ]
+    },
+    {
+      "id": "hebrew_3",
+      "category": "hebrew",
+      "question": "מהו חתך מינימלי?",
+      "reference_translation": "What is a minimum cut?",
+      "week": 8,
+      "expected_status": "future",
+      "relevant_chunks": []
+    },
+    {
+      "id": "hebrew_4",
+      "category": "hebrew",
+      "question": "מהו חתך מינימלי?",
+      "reference_translation": "What is a minimum cut?",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::003"
+      ]
+    },
+    {
+      "id": "hebrew_5",
+      "category": "hebrew",
+      "question": "אפשר רמז לשאלה 1?",
+      "reference_translation": "Give me a hint for problem 1",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_5::003"
+      ],
+      "homework": "hw_2"
+    },
+    {
+      "id": "hebrew_6",
+      "category": "hebrew",
+      "question": "איך זה עובד?",
+      "reference_translation": "How does that work?",
+      "week": 6,
+      "expected_status": "clarify",
+      "relevant_chunks": []
+    },
+    {
+      "id": "hw_natural_1",
+      "category": "homework",
+      "question": "Give me one small hint for problem 4. Do not give the full solution.",
+      "homework": "hw_5",
+      "week": 9,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_9::001",
+        "tutorial_9::011"
+      ]
+    },
+    {
+      "id": "hw_natural_2",
+      "category": "homework",
+      "question": "I'm stuck on problem 1. Please give me a little guidance, not a complete answer.",
+      "homework": "hw_2",
+      "week": 5,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_5::003"
+      ]
+    },
+    {
+      "id": "hw_natural_3",
+      "category": "homework",
+      "question": "Can you help me understand problem 2? Just a small hint please.",
+      "homework": "hw_3",
+      "week": 6,
+      "expected_status": "answer",
+      "relevant_chunks": [
+        "tutorial_6::014",
+        "tutorial_6::015"
+      ]
+    }
+  ]
+}

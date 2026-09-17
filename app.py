@@ -13,9 +13,16 @@ import streamlit as st
 from dotenv import load_dotenv
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
-import rag_engine as rag
+load_dotenv(Path(__file__).parent / ".env")
 
-load_dotenv()
+import rag_engine as rag
+from local_models import HEBREW_MODELS, TRANSLATION_MODELS, TUTOR_MODELS, model_options, model_label, translation_fallback_model
+from homework_material import (
+    homework_pdf_path, homework_clarification, selected_statements,
+    problem_numbers, resolve_homework_followup, homework_content_request, homework_overview_answer,
+)
+from curriculum import CURRICULUM_FILE
+
 os.chdir(Path(__file__).parent)
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -86,6 +93,23 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
     width: 100%;
 }
 
+/* Hebrew chat content must align right even with English interface labels. */
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) {
+    direction: rtl !important; text-align: right !important;
+}
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) p,
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) li,
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) h1,
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) h2,
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) h3 {
+    direction: rtl !important; text-align: right !important;
+}
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) pre,
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) code,
+[data-testid="stMarkdownContainer"]:has(.hebrew-message) .katex {
+    direction: ltr !important; unicode-bidi: isolate;
+}
+
 /* code blocks */
 .main pre {
     background: #171717 !important;
@@ -93,16 +117,20 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
     border-radius: 10px !important;
     padding: 14px !important;
 }
-.main pre code { color: #e6e6e6 !important; font-size: .85rem !important; }
+.main pre, .main pre code {
+    direction: ltr !important; text-align: left !important;
+    unicode-bidi: isolate; color: #e6e6e6 !important; font-size: .85rem !important;
+}
 .main :not(pre) > code {
     background: rgba(255,255,255,.08) !important;
     color: #ffb98a !important;
     padding: 2px 6px; border-radius: 5px; font-size: .84em !important;
+    direction: ltr; unicode-bidi: isolate; display: inline-block;
 }
 
 /* KaTeX */
-.katex { color: var(--text) !important; font-size: 1.03em !important; }
-
+.katex { color: var(--text) !important; font-size: 1.03em !important;
+         direction: ltr; unicode-bidi: isolate; }
 /* tables */
 .main table { border-collapse: collapse; width: 100%; }
 .main td, .main th { border: 1px solid var(--border) !important; padding: 6px 12px !important; }
@@ -123,6 +151,8 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
     background: transparent !important;
     color: var(--text) !important;
     font-size: .96rem !important;
+    unicode-bidi: plaintext;
+    text-align: start;
 }
 [data-testid="stChatInput"] textarea::placeholder { color: var(--text-faint) !important; }
 [data-testid="stChatInput"] button {
@@ -209,12 +239,146 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
 </style>
 """, unsafe_allow_html=True)
 
+UI_TEXT = {
+    "en": {
+        "tagline": "Curriculum-gated hybrid RAG",
+        "language": "Language / שפה",
+        "mode": "Mode",
+        "learn": "📖 Learn",
+        "homework": "💪 Homework",
+        "tutorial": "Week / tutorial",
+        "assignment": "Assignment",
+        "download_homework": "Download assignment PDF",
+        "homework_unavailable": "The assignment PDF is unavailable. Restore its file in material/Homework before asking questions.",
+        "week_assignment": "Week {week} · {title}",
+        "model_heading": "Model",
+        "provider": "Provider",
+        "model": "Model",
+        "ollama_down": "Ollama isn't running — start it or pick another provider.",
+        "github_token": "GitHub token",
+        "openai_key": "OpenAI key",
+        "translation_fallback": "Hebrew translation will use the selected tutoring model. Configure an OpenAI key for more reliable Hebrew terminology.",
+        "retrieval": "⚙️ Retrieval",
+        "passages": "Passages",
+        "retrieval_mode": "Mode",
+        "show_sources": "Show sources",
+        "clear": "🗑  Clear conversation",
+        "index_stats": "Embeddings: `{model}` · index: {count} chunks",
+        "hero_homework": "Socratic guidance — hints and questions, never the final answer.",
+        "hero_learn": "Grounded in your course material, week by week.",
+        "week_scope": "week {week} scope",
+        "sources": "📚 {count} sources",
+        "score": "score",
+        "ask": "Ask about {name}…",
+        "searching": "🔍 Searching week ≤ {week} course material…",
+        "translating_question": "🌐 Translating question…",
+        "found": "Found {count} candidate sections in the allowed material.",
+        "checking_scope": "🛡️ Checking curriculum scope…",
+        "future_match": "Question matches material from tutorial {tutorial} — not covered yet.",
+        "outside_scope": "⛔ Outside this week's scope",
+        "formulating": "✍️ Formulating answer from course material…",
+        "translating_answer": "🌐 Translating answer…",
+        "answered": "✓ Answered from {count} course sections (week ≤ {week})",
+        "translation_failed": "⚠️ Translation failed",
+        "translation_failed_answer": "⚠️ I couldn't translate this question. See the reason below.",
+        "answer_translation_failed": "⚠️ I found the answer, but couldn't translate it. See the reason below.",
+        "translation_invalid": "The translator's output failed validation; this does not mean the model is missing.",
+        "translation_timeout": "The translator exceeded its time limit.",
+        "translation_missing": "The selected translation model was not found on the Ollama server.",
+        "translation_connection": "Could not connect to the translation server. Check that it is running.",
+        "translation_unknown": "The translation request failed. Details are available below.",
+        "insufficient_evidence": "Not enough supporting material",
+        "clarify_question": "Which algorithm, statement, or example do you mean? Please name it so I can answer your exact question.",
+        "choose_problem": "Which problem number in this assignment would you like help with?",
+        "unknown_problem": "That problem number isn't in this assignment. Available problems: {numbers}.",
+        "evidence_failed": "I couldn't verify the answer's source references. Please try again or provide the relevant passage.",
+        "no_material": "I couldn't find supporting course material for this question through week {week}. Please add the relevant concept, problem number, or passage.",
+        "scope_failed": "⚠️ I couldn't verify the course-week restriction. Please try again.",
+        "scope_refusal": "🔒 This material is more advanced than your current course week (week {week}). You'll learn it later in the course, in week {tutorial}. For now, I can help with topics covered so far.",
+        "model_error": "⚠️ Model error",
+        "model_error_answer": "⚠️ **Model error:** {error}",
+    },
+    "he": {
+        "tagline": "מורה אלגוריתמים המבוסס על חומר הקורס",
+        "language": "שפה / Language",
+        "mode": "מצב",
+        "learn": "📖 למידה",
+        "homework": "💪 שיעורי בית",
+        "tutorial": "שבוע / תרגול",
+        "assignment": "מטלה",
+        "download_homework": "הורדת המטלה כ־PDF",
+        "homework_unavailable": "קובץ המטלה אינו זמין. יש להחזיר אותו לתיקיית material/Homework לפני שאפשר לשאול שאלות.",
+        "week_assignment": "שבוע {week} · {title}",
+        "model_heading": "מודל",
+        "provider": "ספק",
+        "model": "מודל",
+        "ollama_down": "Ollama אינו פועל — הפעילו אותו או בחרו ספק אחר.",
+        "github_token": "אסימון GitHub",
+        "openai_key": "מפתח OpenAI",
+        "translation_fallback": "התרגום לעברית ישתמש במודל ההוראה שנבחר. מומלץ להגדיר מפתח OpenAI למונחים מקצועיים אמינים יותר.",
+        "retrieval": "⚙️ אחזור מידע",
+        "passages": "מספר קטעים",
+        "retrieval_mode": "שיטה",
+        "show_sources": "הצגת מקורות",
+        "clear": "🗑  ניקוי השיחה",
+        "index_stats": "הטמעות: `{model}` · אינדקס: {count} קטעים",
+        "hero_homework": "הכוונה סוקרטית — רמזים ושאלות, בלי למסור את התשובה הסופית.",
+        "hero_learn": "תשובות המבוססות על חומר הקורס, שבוע אחר שבוע.",
+        "week_scope": "חומר עד שבוע {week}",
+        "sources": "📚 {count} מקורות",
+        "score": "דמיון",
+        "ask": "אפשר לשאול על {name}…",
+        "searching": "🔍 חיפוש בחומר הקורס עד שבוע {week}…",
+        "translating_question": "🌐 תרגום השאלה…",
+        "found": "נמצאו {count} קטעים מתאימים בחומר המותר.",
+        "checking_scope": "🛡️ בדיקת גבולות חומר הקורס…",
+        "future_match": "השאלה מתאימה לחומר מתרגול {tutorial}, שעדיין לא נלמד.",
+        "outside_scope": "⛔ מחוץ לחומר שנלמד השבוע",
+        "formulating": "✍️ ניסוח תשובה מתוך חומר הקורס…",
+        "translating_answer": "🌐 תרגום התשובה…",
+        "answered": "✓ התשובה מבוססת על {count} קטעים מחומר הקורס (עד שבוע {week})",
+        "translation_failed": "⚠️ התרגום נכשל",
+        "translation_invalid": "התרגום שהמודל החזיר לא עבר אימות. אין פירוש הדבר שהמודל אינו מותקן.",
+        "translation_timeout": "מודל התרגום חרג ממגבלת הזמן.",
+        "translation_missing": "מודל התרגום שנבחר לא נמצא בשרת Ollama.",
+        "translation_connection": "לא ניתן להתחבר לשרת התרגום. בדקו שהוא פועל.",
+        "translation_unknown": "בקשת התרגום נכשלה. פרטי השגיאה מופיעים בהמשך.",
+        "translation_failed_answer": "⚠️ לא הצלחתי לתרגם את השאלה. הסיבה מופיעה בהמשך.",
+        "answer_translation_failed": "⚠️ מצאתי תשובה, אך לא הצלחתי לתרגם אותה. הסיבה מופיעה בהמשך.",
+        "insufficient_evidence": "אין מספיק חומר תומך",
+        "clarify_question": "לאיזה אלגוריתם, משפט או דוגמה הכוונה? כדאי לציין את הנושא כדי שאוכל לענות על השאלה המדויקת שלך.",
+        "choose_problem": "באיזה מספר שאלה במטלה הזאת נדרשת עזרה?",
+        "unknown_problem": "מספר השאלה הזה אינו מופיע במטלה. השאלות הזמינות: {numbers}.",
+        "evidence_failed": "לא הצלחתי לאמת את ההפניות למקורות בתשובה. אפשר לנסות שוב או לצרף את הקטע הרלוונטי.",
+        "no_material": "לא מצאתי מספיק חומר קורס התומך בתשובה לשאלה עד שבוע {week}. אפשר לציין מושג, מספר שאלה או קטע רלוונטי.",
+        "scope_failed": "⚠️ לא הצלחתי לבדוק שהשאלה מתאימה לשבוע הנוכחי. נסו שוב.",
+        "scope_refusal": "🔒 החומר הזה מתקדם יותר מהשבוע הנוכחי שלך בקורס (שבוע {week}). נלמד אותו בהמשך הקורס, בשבוע {tutorial}. בינתיים אפשר לשאול על נושאים שכבר נלמדו.",
+        "model_error": "⚠️ שגיאת מודל",
+        "model_error_answer": "⚠️ **שגיאת מודל:** {error}",
+    },
+}
+
+
+HEBREW_TITLES = {
+    **{key: value['display_name_he'] for key, value in rag.load_meta().items()},
+    **{f"hw_{number}": f"שיעורי בית {number}" for number in range(1, 6)},
+}
+
+
+def ui_text(language: str, key: str, **values) -> str:
+    return UI_TEXT[language][key].format(**values)
+
+
+def localized_title(identifier: str, default: str, language: str) -> str:
+    return HEBREW_TITLES.get(identifier, default) if language == "he" else default
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Cached resources
 # ─────────────────────────────────────────────────────────────────────────────
 
 @st.cache_resource(show_spinner="Loading retrieval index…")
-def get_retriever():
+def get_retriever(index_revision: int):
     return rag.HybridRetriever()
 
 
@@ -231,11 +395,11 @@ def get_llm_cached(provider: str, model: str):
 
 
 @st.cache_data(ttl=30)
-def ollama_models() -> list[str]:
+def ollama_models(base_url: str | None = None) -> list[str]:
     try:
         import urllib.request
         import json as _json
-        url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434") + "/api/tags"
+        url = (base_url or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")).rstrip("/") + "/api/tags"
         with urllib.request.urlopen(url, timeout=2) as r:
             return sorted(m["name"] for m in _json.load(r)["models"])
     except Exception:
@@ -254,7 +418,7 @@ def render_md(target, content: str, rtl: bool = False) -> None:
     The blank lines around content keep it a CommonMark HTML block only for the
     div tags themselves, so markdown/KaTeX inside still parses normally."""
     if rtl:
-        target.markdown(f'<div dir="rtl">\n\n{content}\n\n</div>', unsafe_allow_html=True)
+        target.markdown(f'<div class="hebrew-message" dir="rtl" style="text-align:right">\n\n{content}\n\n</div>', unsafe_allow_html=True)
     else:
         target.markdown(content)
 
@@ -288,12 +452,12 @@ if not rag.INDEX_DIR.exists() or not rag.CHUNKS_FILE.exists():
         "<p>The course index hasn't been built yet.</p></div>",
         unsafe_allow_html=True,
     )
-    st.code("python build_index.py", language="powershell")
+    st.code("python build_index.py", language="text")
     st.stop()
 
 meta = rag.load_meta()
 homework = rag.load_homework()
-retriever = get_retriever()
+retriever = get_retriever(rag.CHUNKS_FILE.stat().st_mtime_ns)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Sidebar
@@ -301,95 +465,236 @@ retriever = get_retriever()
 
 with st.sidebar:
     st.markdown("### 🎓 Course Tutor")
-    st.caption("Curriculum-gated hybrid RAG")
+
+    configured_ui = os.getenv("UI_LANGUAGE", "en").lower()
+    if configured_ui not in UI_TEXT:
+        configured_ui = "en"
+    ui_lang = st.selectbox(
+        "Language / שפה",
+        ["en", "he"],
+        index=["en", "he"].index(configured_ui),
+        format_func={"en": "English", "he": "עברית"}.get,
+    )
+    t = lambda key, **values: ui_text(ui_lang, key, **values)
+    ui_is_he = ui_lang == "he"
+
+    if ui_is_he:
+        st.markdown(
+            """
+            <style>
+            [data-testid="stSidebar"] { direction: rtl; }
+            [data-testid="stSidebar"] label,
+            [data-testid="stSidebar"] p,
+            [data-testid="stSidebar"] h1,
+            [data-testid="stSidebar"] h2,
+            [data-testid="stSidebar"] h3 { text-align: right; }
+            [data-testid="stChatInput"] textarea {
+                direction: rtl !important;
+                text-align: right !important;
+            }
+            .hero { direction: rtl; }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    st.caption(t("tagline"))
     st.divider()
 
-    mode = st.radio("Mode", ["📖 Learn", "💪 Homework"], label_visibility="collapsed")
-    is_hw = "Homework" in mode
+    mode = st.radio(
+        t("mode"),
+        ["learn", "homework"],
+        format_func=lambda value: t(value),
+        label_visibility="collapsed",
+    )
+    is_hw = mode == "homework"
 
     if not is_hw:
         tut_ids = sorted(meta, key=rag.tutorial_week)
         sel = st.selectbox(
-            "Week / tutorial", tut_ids,
-            format_func=lambda t: meta[t].get("display_name", t),
-            index=len(tut_ids) - 1,
+            t("tutorial"),
+            tut_ids,
+            format_func=lambda tutorial: localized_title(
+                tutorial,
+                meta[tutorial].get("display_name", tutorial),
+                ui_lang,
+            ),
+            index=0,
         )
         week = rag.tutorial_week(sel)
-        display_name = meta[sel].get("display_name", sel)
-        topics = meta[sel].get("topics", [])
+        display_name = localized_title(sel, meta[sel].get("display_name", sel), ui_lang)
+        topics = rag.covered_topics(week)
     else:
-        hw_ids = sorted(homework, key=lambda k: homework[k].get("week", 0))
+        hw_ids = sorted(homework, key=lambda key: homework[key].get("week", 0))
         sel = st.selectbox(
-            "Assignment", hw_ids,
-            format_func=lambda k: f"Week {homework[k].get('week', '?')} · {homework[k].get('title', k)}",
+            t("assignment"),
+            hw_ids,
+            format_func=lambda key: t(
+                "week_assignment",
+                week=homework[key].get("week", "?"),
+                title=localized_title(
+                    key,
+                    homework[key].get("title", key),
+                    ui_lang,
+                ),
+            ),
         )
         week = homework[sel].get("week", 1)
-        display_name = homework[sel].get("title", sel)
-        topics = sorted({
-            t for k, v in homework.items() if v.get("week", 0) <= week for t in v.get("topics", [])
-        })
+        display_name = localized_title(sel, homework[sel].get("title", sel), ui_lang)
+        topics = rag.covered_topics(week)
+        if homework[sel].get("source_error"):
+            st.error(t("homework_unavailable"))
+        else:
+            pdf_path = homework_pdf_path(homework[sel])
+            st.download_button(t("download_homework"), pdf_path.read_bytes(),
+                               file_name=pdf_path.name, mime="application/pdf")
 
     st.divider()
-    st.markdown("**Model**")
+    st.markdown(f"**{t('model_heading')}**")
 
     providers = ["ollama", "github", "openai"]
+    provider_labels = {
+        "ollama": "Ollama (מקומי · חינם)" if ui_is_he else "Ollama (local · free)",
+        "github": "GitHub Models (חינם)" if ui_is_he else "GitHub Models (free)",
+        "openai": "OpenAI (בתשלום)" if ui_is_he else "OpenAI (paid)",
+    }
     provider = st.selectbox(
-        "Provider", providers,
+        t("provider"),
+        providers,
         index=providers.index(os.getenv("LLM_PROVIDER", "ollama"))
         if os.getenv("LLM_PROVIDER", "ollama") in providers else 0,
-        format_func={"ollama": "Ollama (local · free)", "github": "GitHub Models (free)",
-                     "openai": "OpenAI (paid)"}.get,
+        format_func=provider_labels.get,
     )
 
     if provider == "ollama":
         local = ollama_models()
-        if local:
-            default = os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b")
-            model = st.selectbox("Model", local,
-                                 index=local.index(default) if default in local else 0)
-        else:
-            st.error("Ollama isn't running — start it or pick another provider.")
-            model = os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b")
+        default = os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b")
+        options = model_options(local)
+        if default in TRANSLATION_MODELS:
+            default = options[0]
+        if default not in options:
+            options.insert(0, default)
+        model = st.selectbox(t("model"), options, index=options.index(default),
+                             format_func=model_label)
+        if model in HEBREW_MODELS:
+            st.caption(HEBREW_MODELS[model][1])
+            if model not in local:
+                st.caption("Download before testing / הורידו לפני בדיקה")
+                st.code(f'ollama pull {model}', language="bash")
     elif provider == "github":
-        model = st.selectbox("Model", ["gpt-4o-mini", "gpt-4o", "Phi-3.5-mini-instruct",
-                                       "Meta-Llama-3.1-8B-Instruct"])
+        model = st.selectbox(
+            t("model"),
+            ["gpt-4o-mini", "gpt-4o", "Phi-3.5-mini-instruct", "Meta-Llama-3.1-8B-Instruct"],
+        )
         if not os.getenv("GITHUB_TOKEN"):
-            tok = st.text_input("GitHub token", type="password", placeholder="github_pat_… / ghp_…")
+            tok = st.text_input(
+                t("github_token"),
+                type="password",
+                placeholder="github_pat_… / ghp_…",
+            )
             if tok:
                 os.environ["GITHUB_TOKEN"] = tok
     else:
-        model = st.selectbox("Model", ["gpt-4o-mini", "gpt-4o"])
+        model = st.selectbox(t("model"), ["gpt-4o-mini", "gpt-4o"])
         if not os.getenv("OPENAI_API_KEY"):
-            key = st.text_input("OpenAI key", type="password", placeholder="sk-…")
+            key = st.text_input(t("openai_key"), type="password", placeholder="sk-…")
             if key:
                 os.environ["OPENAI_API_KEY"] = key
 
-    with st.expander("⚙️ Retrieval"):
-        k_val = st.slider("Passages", 2, 8, 4)
-        modes = ["dense", "hybrid", "hybrid+rerank"]
-        ret_mode = st.selectbox(
-            "Mode", modes,
-            index=modes.index(rag.RETRIEVAL_MODE) if rag.RETRIEVAL_MODE in modes else 0,
-            format_func={"dense": "Dense (benchmark winner · fast)",
-                         "hybrid": "Hybrid (dense + BM25)",
-                         "hybrid+rerank": "Hybrid + rerank (thorough · slow)"}.get,
+    with st.expander("🌐 Hebrew / עברית"):
+        st.caption("מודלי תרגום מקומיים זמינים לבדיקה" if ui_is_he
+                   else "Local translation candidates")
+        for candidate, info in TRANSLATION_MODELS.items():
+            st.caption(info[0])
+        st.caption("בחרו Ollama כדי לבחור מודל מקומי" if ui_is_he
+                   else "Select Ollama below to choose a local translation model.")
+        translation_choices = ["auto", "ollama", "tutor", "openai"]
+        configured_translation = os.getenv("TRANSLATION_PROVIDER", "auto")
+        translation_provider = st.selectbox(
+            "מודל תרגום" if ui_is_he else "Translation provider",
+            translation_choices,
+            index=translation_choices.index(configured_translation)
+            if configured_translation in translation_choices else 0,
+            format_func=lambda value: {
+                "auto": "Automatic / אוטומטי", "ollama": "Ollama (local / מקומי)",
+                "tutor": "Tutoring model / מודל ההוראה", "openai": "OpenAI"}[value],
         )
-        show_sources = st.toggle("Show sources", value=True)
+        translation_model = None
+        local_fallback_model = None
+        if translation_provider == "ollama":
+            installed_translation_models = ollama_models(os.getenv("TRANSLATION_OLLAMA_BASE_URL"))
+            translation_options = model_options(installed_translation_models, role="translation")
+            configured_model = os.getenv("TRANSLATION_OLLAMA_MODEL", next(iter(TRANSLATION_MODELS)))
+            if configured_model in TUTOR_MODELS:
+                configured_model = next(iter(TRANSLATION_MODELS))
+            if configured_model not in translation_options:
+                translation_options.insert(0, configured_model)
+            translation_choice = st.selectbox(
+                "מודל מקומי לתרגום" if ui_is_he else "Local translation model",
+                [*translation_options, "custom"],
+                index=translation_options.index(configured_model),
+                format_func=lambda value: "Custom / מותאם" if value == "custom" else model_label(value))
+            translation_model = (st.text_input("Ollama model name", value=configured_model)
+                                 if translation_choice == "custom" else translation_choice)
+            if translation_model in HEBREW_MODELS:
+                st.caption(HEBREW_MODELS[translation_model][1])
+            candidate_fallback = translation_fallback_model(translation_model, installed_translation_models)
+            if candidate_fallback and st.checkbox(
+                "נסה את מודל 12B המותקן אם התרגום נכשל" if ui_is_he else
+                "Retry failed translations with the installed 12B model", value=True):
+                local_fallback_model = candidate_fallback
+            if translation_model not in installed_translation_models:
+                st.caption("Download before testing / הורידו לפני בדיקה")
+                st.code(f'ollama pull {translation_model}', language="bash")
+        elif translation_provider == "openai":
+            translation_model = st.text_input(
+                "מודל תרגום OpenAI" if ui_is_he else "OpenAI translation model",
+                value=os.getenv("TRANSLATION_MODEL", "gpt-4o-mini"))
+        if translation_provider in {"auto", "openai"} and not os.getenv("OPENAI_API_KEY"):
+            translation_key = st.text_input(t("openai_key"), type="password",
+                                            key="translation_openai_key")
+            if translation_key:
+                os.environ["OPENAI_API_KEY"] = translation_key
+        st.caption("עברית → English → tutor → English → עברית")
+
+    with st.expander(t("retrieval")):
+        k_val = st.slider(t("passages"), 2, 8, 4)
+        modes = ["dense", "hybrid", "hybrid+rerank"]
+        retrieval_labels = {
+            "dense": "צפוף (מהיר · מוביל בבדיקה)" if ui_is_he else "Dense (benchmark winner · fast)",
+            "hybrid": "משולב (צפוף + BM25)" if ui_is_he else "Hybrid (dense + BM25)",
+            "hybrid+rerank": "משולב + דירוג מחדש" if ui_is_he else "Hybrid + rerank (thorough · slow)",
+        }
+        ret_mode = st.selectbox(
+            t("retrieval_mode"),
+            modes,
+            index=modes.index(rag.RETRIEVAL_MODE) if rag.RETRIEVAL_MODE in modes else 0,
+            format_func=retrieval_labels.get,
+        )
+        show_sources = st.toggle(t("show_sources"), value=True)
 
     st.divider()
-    if st.button("🗑  Clear conversation", use_container_width=True):
+    if st.button(t("clear"), use_container_width=True):
         st.session_state.pop("history", None)
         st.session_state.pop("display", None)
+        st.session_state.pop("active_homework_problems", None)
         st.rerun()
-    st.caption(f"Embeddings: `{rag.EMBED_MODEL.split('/')[-1]}` · index: "
-               f"{len(retriever.chunks)} chunks")
+    st.caption(
+        t(
+            "index_stats",
+            model=rag.EMBED_MODEL.split("/")[-1],
+            count=len(retriever.chunks),
+        )
+    )
 
 # Reset chat when the context changes
-ctx_key = f"{mode}|{sel}"
+ctx_key = (mode, sel, tuple(topics), CURRICULUM_FILE.stat().st_mtime_ns,
+           homework[sel].get("pdf_sha256") if is_hw else None)
 if st.session_state.get("ctx") != ctx_key:
     st.session_state.ctx = ctx_key
     st.session_state.history = []
     st.session_state.display = []
+    st.session_state.active_homework_problems = []
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Hero + suggestions (empty chat)
@@ -398,8 +703,7 @@ if st.session_state.get("ctx") != ctx_key:
 pending = None
 
 if not st.session_state.get("display"):
-    subtitle = ("Socratic guidance — hints and questions, never the final answer."
-                if is_hw else "Grounded in your course material, week by week.")
+    subtitle = t("hero_homework") if is_hw else t("hero_learn")
     st.markdown(
         f"<div class='hero'><div class='logo'>{'💪' if is_hw else '🎓'}</div>"
         f"<h1>{display_name}</h1><p>{subtitle}</p></div>",
@@ -407,17 +711,29 @@ if not st.session_state.get("display"):
     )
     st.markdown(
         f"<div style='text-align:center;margin-bottom:1.3rem'><span class='pill'>"
-        f"<span class='dot'></span>{rag.llm_label()} · week {week} scope</span></div>",
+        f"<span class='dot'></span>{rag.llm_label()} · "
+        f"{t('week_scope', week=week)}</span></div>",
         unsafe_allow_html=True,
     )
 
-    if is_hw:
+    if ui_is_he:
+        chips = (
+            ["מאיפה כדאי להתחיל?", "איזו שיטה מתאימה לבעיה?",
+             "אפשר לבדוק את דרך החשיבה שלי?", "תן לי רמז קטן."]
+            if is_hw
+            else ["הסבר את הנושא המרכזי של השבוע", "תן לי דוגמה",
+                  "מה חשוב לזכור?", "בחן אותי על חומר השבוע"]
+        )
+    elif is_hw:
         chips = ["Where should I start?", "What technique fits this problem?",
                  "Can you check my reasoning so far?", "Give me a small hint."]
     else:
         pool = topics[-8:] if len(topics) > 8 else topics
-        chips = [f"Explain: {t}" for t in pool[:2]] + [f"Give me an example of {t.lower()}" for t in pool[2:3]]
-        chips.append("Quiz me on this week's material")
+        chips = (
+            [f"Explain: {topic}" for topic in pool[:2]]
+            + [f"Give me an example of {topic.lower()}" for topic in pool[2:3]]
+            + ["Quiz me on this week's material"]
+        )
 
     cols = st.columns(2)
     for i, chip in enumerate(chips[:4]):
@@ -431,110 +747,263 @@ if not st.session_state.get("display"):
 for m in st.session_state.get("display", []):
     with st.chat_message(m["role"], avatar="🧑‍🎓" if m["role"] == "user" else "🎓"):
         render_md(st, m["content"], rtl=m.get("rtl", False))
+        if m.get("translation_error"):
+            with st.expander("Translation error / שגיאת תרגום"):
+                st.text(m["translation_error"])
         if m.get("sources") and show_sources:
-            with st.expander(f"📚 {len(m['sources'])} sources"):
-                for s in m["sources"]:
-                    st.markdown(f"<div class='src-line'><b>{s['section']}</b> · score {s['score']:.2f}</div>",
-                                unsafe_allow_html=True)
+            with st.expander(t("sources", count=len(m["sources"]))):
+                for source in m["sources"]:
+                    score_text = (f" · {t('score')} {source['score']:.2f}"
+                                  if source.get('score') is not None else "")
+                    st.markdown(
+                        f"<div class='src-line'><b>{source['section']}</b>{score_text}</div>",
+                        unsafe_allow_html=True,
+                    )
 
-user_input = st.chat_input(f"Ask about {display_name}…")
+user_input = st.chat_input(t("ask", name=display_name),
+                           disabled=is_hw and bool(homework[sel].get("source_error")))
 question = pending or user_input
 
-if question:
+if question and not (is_hw and homework[sel].get("source_error")):
     q_is_he = rag.is_hebrew(question)
+    message_lang = "he" if q_is_he else ui_lang
+    mt = lambda key, **values: ui_text(message_lang, key, **values)
     llm = get_llm_cached(provider, model)
-    # Translation is deliberately decoupled from the tutoring model: it uses
-    # OpenAI gpt-4o-mini when a key is configured (reliable Hebrew CS
-    # terminology, verified untrustworthy on free local 3B models — see
-    # rag.get_translation_llm), falling back to the tutoring LLM otherwise
-    # so Hebrew mode still works with zero paid dependencies.
-    translate_llm = rag.get_translation_llm() or llm
+
+    try:
+        dedicated_translation_llm = None if not q_is_he else (rag.get_translation_llm()
+            if translation_provider == "auto" else
+            rag.get_translation_llm(translation_provider, translation_model))
+        translator_setup_error = None
+    except Exception as exc:
+        dedicated_translation_llm = None
+        translator_setup_error = exc
+    primary_translation_llm = dedicated_translation_llm or llm
+    fallback_translation_llm = (
+        llm if translation_provider == "auto" and dedicated_translation_llm is not None
+        and provider != "openai" else None
+    )
+
+    if q_is_he and local_fallback_model:
+        fallback_translation_llm = rag.get_translation_llm('ollama', local_fallback_model)
 
     with st.chat_message("user", avatar="🧑‍🎓"):
         render_md(st, question, rtl=q_is_he)
 
+    history_ready = False
+    translation_diagnostic = None
+
     with st.chat_message("assistant", avatar="🎓"):
-        status = st.status(f"🔍 Searching week ≤ {week} course material…", expanded=False)
+        status = st.status(mt("searching", week=week), expanded=False)
+        query_en = question
+        interpreted_question = question
+        translation_error = translator_setup_error if q_is_he else None
+        hits = []
+        assignment_sources = []
+        active_problems = st.session_state.get("active_homework_problems", []) if is_hw else []
+        contextual_question = rag.expand_course_abbreviations(question)
+        contextual_question = resolve_homework_followup(contextual_question, active_problems) if is_hw else contextual_question
+        fut_tut = rag.named_future_topic(contextual_question, week)
+        is_future = bool(fut_tut)
+        scope_error = None
+        clarification = "clarify_question" if rag.clarification_needed(contextual_question) else None
+        if is_hw:
+            clarification = homework_clarification(homework[sel], contextual_question) or clarification
+
         with status:
-            if q_is_he:
-                status.update(label="🌐 Translating question…")
-                query_en = rag.translate(question, "en", translate_llm)
-            else:
-                query_en = question
+            if q_is_he and translation_error is None and not is_future and not clarification:
+                status.update(label=mt("translating_question"))
+                try:
+                    query_en = rag.translate_with_fallback(
+                        question,
+                        "en",
+                        primary_translation_llm,
+                        fallback_translation_llm,
+                        on_fallback=lambda: status.update(label=(
+                            "מנסה מודל תרגום חלופי…" if q_is_he else "Retrying with fallback translator…")),
+                        progress=lambda chars, seconds: status.update(
+                            label=mt("translating_question") + f" · {seconds}s · {chars} chars"),
+                    )
+                except Exception as exc:
+                    translation_error = exc
 
-            status.update(label=f"🔍 Searching week ≤ {week} course material…")
-            hits = retriever.retrieve(query_en, max_tutorial=week, k=k_val, mode=ret_mode)
-            st.write(f"Found {len(hits)} candidate sections in the allowed material.")
-            status.update(label="🛡️ Checking curriculum scope…")
-            is_future, fut_tut = retriever.scope_check(query_en, week)
+            if translation_error is None and not is_future and not clarification:
+                status.update(label=mt("checking_scope"))
+                try:
+                    retrieval_question = rag.expand_course_abbreviations(query_en)
+                    retrieval_question = resolve_homework_followup(retrieval_question, active_problems) if is_hw else retrieval_question
+                    decision = rag.prepare_retrieval(
+                        retrieval_question, week, retriever, homework[sel] if is_hw else None,
+                        k=k_val, mode=ret_mode, normalization_llm=llm)
+                    interpreted_question = decision.normalized_question or query_en
+                    is_future, fut_tut = decision.status == "future", decision.future_week
+                    clarification = decision.clarification
+                    hits = decision.hits
+                    if is_hw and decision.status == "answer":
+                        assignment_sources = selected_statements(homework[sel], interpreted_question)
+                    st.write(mt("found", count=len(hits)))
+                except Exception as exc:
+                    scope_error = exc
             if is_future:
-                st.write(f"Question matches material from tutorial {fut_tut} — not covered yet.")
-            else:
-                for h in hits:
-                    st.write(f"• {h.chunk.section}")
+                st.write(mt("future_match", tutorial=fut_tut))
 
-        if is_future:
-            status.update(label="⛔ Outside this week's scope", state="complete", expanded=False)
-            fut_name = meta.get(f"tutorial_{fut_tut}", {}).get("display_name", f"Tutorial {fut_tut}")
-            suggest = "\n".join(f"- {t}" for t in topics[-3:]) if topics else ""
-            answer_en = (
-                f"That question touches material from **{fut_name}**, which you haven't "
-                f"reached yet — we'll get there! 🔒\n\n"
-                f"To keep you on track, I only answer from what the course has covered so far "
-                f"(week ≤ {week}). From what you already know, I can help with:\n{suggest}\n\n"
-                "Ask me anything about those and I'm all yours."
-            )
-            answer = rag.translate(answer_en, "he", translate_llm) if q_is_he else answer_en
-            render_md(st, answer, rtl=q_is_he)
+        if translation_error is not None:
+            status.update(label=mt("translation_failed"), state="error", expanded=False)
+            answer_en = "The question could not be translated."
+            from translation_support import translation_error_kind, translation_error_details
+            translation_diagnostic = translation_error_details(translation_error)
+            answer = mt("translation_failed_answer") + "\n\n" + mt("translation_" + translation_error_kind(translation_error))
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+            sources = []
+        elif scope_error is not None:
+            status.update(label=mt("checking_scope"), state="error", expanded=False)
+            answer = mt("scope_failed")
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+            sources = []
+        elif is_future:
+            status.update(label=mt("outside_scope"), state="complete", expanded=False)
+            answer = mt("scope_refusal", week=week, tutorial=fut_tut)
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+            sources = []
+        elif clarification:
+            status.update(label=mt("insufficient_evidence"), state="complete", expanded=False)
+            numbers = ", ".join(str(p['number']) for p in homework[sel]['problem_statements']) if is_hw else ""
+            answer = mt(clarification, numbers=numbers)
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+            sources = []
+        elif not hits and not assignment_sources:
+            status.update(label=mt("insufficient_evidence"), state="complete", expanded=False)
+            answer = mt("no_material", week=week)
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
             sources = []
         else:
             context = rag.format_context(hits)
             if is_hw:
-                sys_prompt = rag.homework_system_prompt(homework[sel], week, topics, context)
+                sys_prompt = rag.homework_system_prompt(homework[sel], week, topics, context, interpreted_question)
             else:
                 sys_prompt = rag.tutor_system_prompt(week, display_name, topics, context)
 
-            messages = ([SystemMessage(sys_prompt)]
-                        + trimmed_history(st.session_state.history)
-                        + [HumanMessage(query_en)])
+            messages = (
+                [SystemMessage(sys_prompt)]
+                + trimmed_history(st.session_state.history)
+                + [HumanMessage(rag.question_message(query_en, interpreted_question))]
+            )
 
-            status.update(label="✍️ Formulating answer from course material…")
+            status.update(label=mt("formulating"))
             slot = st.empty()
+            generation_error = None
+            evidence_error = None
+            blocked_tutorial = 0
             try:
-                if q_is_he:
-                    # Skip live token streaming here — the model generates in
-                    # English, and streaming English then swapping to a
-                    # Hebrew translation once done reads as broken/flickering
-                    # for a Hebrew-only reader. Show the status spinner
-                    # instead and reveal the finished Hebrew answer at once.
-                    buf = "".join(chunk.content for chunk in llm.stream(messages))
-                    answer_en = fix_math(buf)
-                    status.update(label="🌐 Translating answer…")
-                    answer = rag.translate(answer_en, "he", translate_llm)
-                    render_md(slot, answer, rtl=True)
+                if is_hw and homework_content_request(interpreted_question):
+                    answer_en = homework_overview_answer(homework[sel], interpreted_question)
+                    rag.validate_citations(answer_en, len(hits), len(assignment_sources))
                 else:
-                    buf = ""
-                    for chunk in llm.stream(messages):
-                        buf += chunk.content
-                        slot.markdown(buf + " ▌")
-                    answer_en = fix_math(buf)
-                    answer = answer_en
-                    slot.markdown(answer)
-                status.update(label=f"✓ Answered from {len(hits)} course sections (week ≤ {week})",
-                              state="complete", expanded=False)
+                    answer_en = fix_math(rag.generate_scoped_answer(
+                        llm, messages, retriever, week, len(hits), len(assignment_sources),
+                        retry_citations=True))
+            except rag.FutureMaterialError as exc:
+                blocked_tutorial = exc.tutorial
+            except rag.EvidenceError as exc:
+                evidence_error = exc
             except Exception as exc:
-                answer_en = answer = f"⚠️ **Model error:** {exc}"
+                generation_error = exc
+                answer_en = f"Model error: {exc}"
+
+            if blocked_tutorial:
+                answer = mt("scope_refusal", week=week, tutorial=blocked_tutorial)
+                render_md(slot, answer, rtl=rag.is_hebrew(answer))
+                status.update(label=mt("outside_scope"), state="complete", expanded=False)
+            elif evidence_error is not None:
+                answer = mt("evidence_failed")
+                render_md(slot, answer, rtl=rag.is_hebrew(answer))
+                status.update(label=mt("insufficient_evidence"), state="error", expanded=False)
+            elif generation_error is not None:
+                answer = mt("model_error_answer", error=generation_error)
+                render_md(slot, answer, rtl=rag.is_hebrew(answer))
+                status.update(label=mt("model_error"), state="error", expanded=False)
+            elif q_is_he:
+                status.update(label=mt("translating_answer"))
+                try:
+                    answer = rag.translate_with_fallback(
+                        answer_en,
+                        "he",
+                        primary_translation_llm,
+                        fallback_translation_llm,
+                        on_fallback=lambda: status.update(label=(
+                            "מנסה מודל תרגום חלופי…" if q_is_he else "Retrying with fallback translator…")),
+                        progress=lambda chars, seconds: status.update(
+                            label=mt("translating_answer") + f" · {seconds}s · {chars} chars"),
+                    )
+                    translated_future = rag.named_future_topic(answer, week)
+                    if translated_future:
+                        raise rag.FutureMaterialError(translated_future)
+                    rag.validate_citations(answer, len(hits), len(assignment_sources))
+                    render_md(slot, answer, rtl=True)
+                    history_ready = True
+                    status.update(
+                        label=mt("answered", count=len(hits), week=week),
+                        state="complete",
+                        expanded=False,
+                    )
+                except rag.FutureMaterialError as exc:
+                    blocked_tutorial = exc.tutorial
+                    answer = mt("scope_refusal", week=week, tutorial=blocked_tutorial)
+                    render_md(slot, answer, rtl=rag.is_hebrew(answer))
+                    status.update(label=mt("outside_scope"), state="complete", expanded=False)
+                except rag.EvidenceError:
+                    answer = mt("evidence_failed")
+                    render_md(slot, answer, rtl=rag.is_hebrew(answer))
+                    status.update(label=mt("insufficient_evidence"), state="error", expanded=False)
+                except Exception as exc:
+                    from translation_support import translation_error_kind, translation_error_details
+                    translation_diagnostic = translation_error_details(exc)
+                    answer = mt("answer_translation_failed") + "\n\n" + mt("translation_" + translation_error_kind(exc))
+                    render_md(slot, answer, rtl=rag.is_hebrew(answer))
+                    status.update(label=mt("translation_failed"), state="error", expanded=False)
+            else:
+                answer = answer_en
                 slot.markdown(answer)
-                status.update(label="⚠️ Model error", state="error", expanded=False)
+                status.update(
+                    label=mt("answered", count=len(hits), week=week),
+                    state="complete",
+                    expanded=False,
+                )
+                history_ready = True
 
-            sources = [{"section": h.chunk.section, "score": h.score} for h in hits]
+            sources = ([
+                {"section": f"Source {i} — {hit.chunk.section}", "score": hit.similarity}
+                for i, hit in enumerate(hits, 1)
+            ] + [
+                {"section": f"Assignment {i} — {Path(homework[sel]['problem_pdf']).name}, "
+                            f"Problem {p['number']}, PDF pages {', '.join(map(str, p['pages']))}",
+                 "score": None}
+                for i, p in enumerate(assignment_sources, 1)
+            ]) if history_ready else []
 
-    # History sent back to the LLM stays English (matches the grounded
-    # material/prompts); only the display copy carries the Hebrew shown to
-    # the student.
-    st.session_state.history += [HumanMessage(query_en), AIMessage(answer_en)]
+    # Only successful interactions enter the English history used by the LLM.
+    if history_ready:
+        if is_hw:
+            selected = problem_numbers(interpreted_question)
+            if selected:
+                st.session_state.active_homework_problems = sorted(selected)
+            elif assignment_sources:
+                st.session_state.active_homework_problems = []
+        history_answer = answer_en
+        if is_hw and homework_content_request(interpreted_question):
+            shown = ', '.join(str(p['number']) for p in assignment_sources)
+            history_answer = (f"Displayed the exact PDF statements for problems {shown} "
+                              "of the selected assignment and offered to work through them.")
+        st.session_state.history += [
+            HumanMessage(rag.question_message(query_en, interpreted_question)), AIMessage(history_answer)]
     st.session_state.display += [
         {"role": "user", "content": question, "rtl": q_is_he},
-        {"role": "assistant", "content": answer, "sources": sources, "rtl": q_is_he},
+        {
+            "role": "assistant",
+            "content": answer,
+            "sources": sources,
+            "rtl": rag.is_hebrew(answer),
+            "translation_error": translation_diagnostic,
+        },
     ]
     st.rerun()
