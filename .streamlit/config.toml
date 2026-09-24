@@ -8,3 +8,9 @@ font = "sans serif"
 
 [browser]
 gatherUsageStats = false
+
+[client]
+# Any uncaught exception renders as a generic message instead of a full
+# traceback — a traceback exposes local file paths (e.g. C:\Users\<name>\...)
+# directly in the chat UI, which is not something to show a student.
+showErrorDetails = "none"

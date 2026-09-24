@@ -42,7 +42,7 @@ def test_homework_context_contains_only_selected_assignment_and_problem():
 
 
 def test_extractor_preserves_explicit_week_limits(tmp_path, monkeypatch):
-    metadata = json.loads(rag.HOMEWORK_FILE.read_text())
+    metadata = json.loads(rag.HOMEWORK_FILE.read_text(encoding="utf-8"))
     metadata['hw_1']['week'] = 2
     target = tmp_path / 'homework.json'
     target.write_text(json.dumps(metadata))

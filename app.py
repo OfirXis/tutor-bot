@@ -292,11 +292,16 @@ UI_TEXT = {
         "choose_problem": "Which problem number in this assignment would you like help with?",
         "unknown_problem": "That problem number isn't in this assignment. Available problems: {numbers}.",
         "evidence_failed": "I couldn't verify the answer's source references. Please try again or provide the relevant passage.",
+        "solution_leak_answer": "I want to help you work through this rather than just hand you the answer. What have you tried so far, or where are you stuck?",
         "no_material": "I couldn't find supporting course material for this question through week {week}. Please add the relevant concept, problem number, or passage.",
+        "greeting_reply": "👋 Hi there! I'm your algorithms course tutor. What would you like to learn today?",
+        "wrong_mode_reply": "📋 That sounds like a homework question — switch to **Homework** mode in the sidebar to work on your assignment. This Learn mode is for the tutorial material only.",
+        "overview_reply": "Here's what we've covered so far in **{name}** (week ≤ {week}):\n\n{topics}\n\nAsk me about any of these, or say \"quiz me\" to test your knowledge!",
         "scope_failed": "⚠️ I couldn't verify the course-week restriction. Please try again.",
         "scope_refusal": "🔒 This material is more advanced than your current course week (week {week}). You'll learn it later in the course, in week {tutorial}. For now, I can help with topics covered so far.",
         "model_error": "⚠️ Model error",
         "model_error_answer": "⚠️ **Model error:** {error}",
+        "missing_credentials": "The selected provider is missing an API key. Add it in the sidebar or switch providers.",
     },
     "he": {
         "tagline": "מורה אלגוריתמים המבוסס על חומר הקורס",
@@ -350,11 +355,16 @@ UI_TEXT = {
         "choose_problem": "באיזה מספר שאלה במטלה הזאת נדרשת עזרה?",
         "unknown_problem": "מספר השאלה הזה אינו מופיע במטלה. השאלות הזמינות: {numbers}.",
         "evidence_failed": "לא הצלחתי לאמת את ההפניות למקורות בתשובה. אפשר לנסות שוב או לצרף את הקטע הרלוונטי.",
+        "solution_leak_answer": "אני רוצה לעזור לך לעבוד על השאלה ולא סתם למסור את התשובה. מה כבר ניסית, או איפה נתקעת?",
         "no_material": "לא מצאתי מספיק חומר קורס התומך בתשובה לשאלה עד שבוע {week}. אפשר לציין מושג, מספר שאלה או קטע רלוונטי.",
+        "greeting_reply": "👋 היי! אני המורה הפרטי שלך לאלגוריתמים. במה תרצו להתמקד היום?",
+        "wrong_mode_reply": "📋 זו נשמעת כמו שאלה על שיעורי הבית — יש לעבור למצב **שיעורי בית** בסרגל הצד כדי לעבוד על המטלה. מצב הלמידה הזה מיועד רק לחומר התרגול.",
+        "overview_reply": "הנה מה שכיסינו עד כה ב**{name}** (עד שבוע {week}):\n\n{topics}\n\nאפשר לשאול על כל אחד מהנושאים האלה, או לבקש \"תבחן אותי\" כדי לתרגל!",
         "scope_failed": "⚠️ לא הצלחתי לבדוק שהשאלה מתאימה לשבוע הנוכחי. נסו שוב.",
         "scope_refusal": "🔒 החומר הזה מתקדם יותר מהשבוע הנוכחי שלך בקורס (שבוע {week}). נלמד אותו בהמשך הקורס, בשבוע {tutorial}. בינתיים אפשר לשאול על נושאים שכבר נלמדו.",
         "model_error": "⚠️ שגיאת מודל",
         "model_error_answer": "⚠️ **שגיאת מודל:** {error}",
+        "missing_credentials": "לספק שנבחר חסר מפתח API. יש להוסיף אותו בסרגל הצד או לבחור ספק אחר.",
     },
 }
 
@@ -406,9 +416,29 @@ def ollama_models(base_url: str | None = None) -> list[str]:
         return []
 
 
+_BACKTICK_SPAN_RE = re.compile(r"(?<!`)`(?!`)([^`\n]+?)(?<!`)`(?!`)")
+_LOOKS_LIKE_MATH_RE = re.compile(r"\\[a-zA-Z]|\^|\bf_?\d*\s*\([^()\n]*\)\s*=")
+
+
 def fix_math(text: str) -> str:
+    """Normalize the model's math formatting to KaTeX delimiters.
+
+    Beyond the \\(\\)/\\[\\] LaTeX delimiters the prompt explicitly forbids,
+    the model sometimes wraps math (e.g. `f_1(n) = 10n`, `n^{1.3}`,
+    `\\log_2 n`) in single backticks like inline code instead of $...$ —
+    prompt instructions alone don't reliably stop this, so this catches it
+    mechanically. Leaves real inline code (plain identifiers) and fenced
+    ```code blocks``` untouched — only spans that look mathy (a LaTeX
+    command, a caret exponent, or an f(n)= style definition) get converted.
+    """
     text = re.sub(r"\\\[(.+?)\\\]", r"$$\1$$", text, flags=re.DOTALL)
-    return re.sub(r"\\\((.+?)\\\)", r"$\1$", text, flags=re.DOTALL)
+    text = re.sub(r"\\\((.+?)\\\)", r"$\1$", text, flags=re.DOTALL)
+
+    def _convert(m: re.Match) -> str:
+        inner = m.group(1)
+        return f"${inner}$" if _LOOKS_LIKE_MATH_RE.search(inner) else m.group(0)
+
+    return _BACKTICK_SPAN_RE.sub(_convert, text)
 
 
 def render_md(target, content: str, rtl: bool = False) -> None:
@@ -766,9 +796,23 @@ question = pending or user_input
 
 if question and not (is_hw and homework[sel].get("source_error")):
     q_is_he = rag.is_hebrew(question)
-    message_lang = "he" if q_is_he else ui_lang
+    # Canned/status replies always match the language the student actually
+    # typed, never the sidebar's chrome-only Language selector — otherwise
+    # an English question can come back with a Hebrew status message (or
+    # vice versa) whenever the two disagree. The sidebar setting still
+    # controls the static UI text (labels, buttons, placeholders) via t().
+    message_lang = "he" if q_is_he else "en"
     mt = lambda key, **values: ui_text(message_lang, key, **values)
-    llm = get_llm_cached(provider, model)
+
+    try:
+        llm = get_llm_cached(provider, model)
+    except Exception:
+        with st.chat_message("user", avatar="🧑‍🎓"):
+            render_md(st, question, rtl=q_is_he)
+        with st.chat_message("assistant", avatar="🎓"):
+            answer = mt("model_error_answer", error=mt("missing_credentials"))
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+        st.stop()
 
     try:
         dedicated_translation_llm = None if not q_is_he else (rag.get_translation_llm()
@@ -800,18 +844,21 @@ if question and not (is_hw and homework[sel].get("source_error")):
         translation_error = translator_setup_error if q_is_he else None
         hits = []
         assignment_sources = []
+        decision_status = None
         active_problems = st.session_state.get("active_homework_problems", []) if is_hw else []
         contextual_question = rag.expand_course_abbreviations(question)
         contextual_question = resolve_homework_followup(contextual_question, active_problems) if is_hw else contextual_question
-        fut_tut = rag.named_future_topic(contextual_question, week)
+        wrong_mode = not is_hw and rag.references_homework(contextual_question)
+        fut_tut = rag.named_future_topic(contextual_question, week) if not wrong_mode else 0
         is_future = bool(fut_tut)
         scope_error = None
-        clarification = "clarify_question" if rag.clarification_needed(contextual_question) else None
+        clarification = ("clarify_question" if not wrong_mode and rag.clarification_needed(contextual_question)
+                         else None)
         if is_hw:
             clarification = homework_clarification(homework[sel], contextual_question) or clarification
 
         with status:
-            if q_is_he and translation_error is None and not is_future and not clarification:
+            if q_is_he and translation_error is None and not is_future and not clarification and not wrong_mode:
                 status.update(label=mt("translating_question"))
                 try:
                     query_en = rag.translate_with_fallback(
@@ -827,7 +874,7 @@ if question and not (is_hw and homework[sel].get("source_error")):
                 except Exception as exc:
                     translation_error = exc
 
-            if translation_error is None and not is_future and not clarification:
+            if translation_error is None and not is_future and not clarification and not wrong_mode:
                 status.update(label=mt("checking_scope"))
                 try:
                     retrieval_question = rag.expand_course_abbreviations(query_en)
@@ -836,6 +883,7 @@ if question and not (is_hw and homework[sel].get("source_error")):
                         retrieval_question, week, retriever, homework[sel] if is_hw else None,
                         k=k_val, mode=ret_mode, normalization_llm=llm)
                     interpreted_question = decision.normalized_question or query_en
+                    decision_status = decision.status
                     is_future, fut_tut = decision.status == "future", decision.future_week
                     clarification = decision.clarification
                     hits = decision.hits
@@ -860,6 +908,11 @@ if question and not (is_hw and homework[sel].get("source_error")):
             answer = mt("scope_failed")
             render_md(st, answer, rtl=rag.is_hebrew(answer))
             sources = []
+        elif wrong_mode:
+            status.update(label=mt("answered", count=0, week=week), state="complete", expanded=False)
+            answer = mt("wrong_mode_reply")
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+            sources = []
         elif is_future:
             status.update(label=mt("outside_scope"), state="complete", expanded=False)
             answer = mt("scope_refusal", week=week, tutorial=fut_tut)
@@ -869,6 +922,22 @@ if question and not (is_hw and homework[sel].get("source_error")):
             status.update(label=mt("insufficient_evidence"), state="complete", expanded=False)
             numbers = ", ".join(str(p['number']) for p in homework[sel]['problem_statements']) if is_hw else ""
             answer = mt(clarification, numbers=numbers)
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+            sources = []
+        elif decision_status == "wrong_mode":
+            status.update(label=mt("answered", count=0, week=week), state="complete", expanded=False)
+            answer = mt("wrong_mode_reply")
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+            sources = []
+        elif decision_status == "greeting":
+            status.update(label=mt("answered", count=0, week=week), state="complete", expanded=False)
+            answer = mt("greeting_reply")
+            render_md(st, answer, rtl=rag.is_hebrew(answer))
+            sources = []
+        elif decision_status == "overview":
+            status.update(label=mt("answered", count=0, week=week), state="complete", expanded=False)
+            topics_list = "\n".join(f"- {t}" for t in topics) if topics else ""
+            answer = mt("overview_reply", name=display_name, week=week, topics=topics_list)
             render_md(st, answer, rtl=rag.is_hebrew(answer))
             sources = []
         elif not hits and not assignment_sources:
@@ -894,6 +963,7 @@ if question and not (is_hw and homework[sel].get("source_error")):
             generation_error = None
             evidence_error = None
             blocked_tutorial = 0
+            solution_leaked = False
             try:
                 if is_hw and homework_content_request(interpreted_question):
                     answer_en = homework_overview_answer(homework[sel], interpreted_question)
@@ -901,9 +971,11 @@ if question and not (is_hw and homework[sel].get("source_error")):
                 else:
                     answer_en = fix_math(rag.generate_scoped_answer(
                         llm, messages, retriever, week, len(hits), len(assignment_sources),
-                        retry_citations=True))
+                        retry_citations=True, is_homework=is_hw))
             except rag.FutureMaterialError as exc:
                 blocked_tutorial = exc.tutorial
+            except rag.SolutionLeakError:
+                solution_leaked = True
             except rag.EvidenceError as exc:
                 evidence_error = exc
             except Exception as exc:
@@ -914,6 +986,10 @@ if question and not (is_hw and homework[sel].get("source_error")):
                 answer = mt("scope_refusal", week=week, tutorial=blocked_tutorial)
                 render_md(slot, answer, rtl=rag.is_hebrew(answer))
                 status.update(label=mt("outside_scope"), state="complete", expanded=False)
+            elif solution_leaked:
+                answer = mt("solution_leak_answer")
+                render_md(slot, answer, rtl=rag.is_hebrew(answer))
+                status.update(label=mt("insufficient_evidence"), state="complete", expanded=False)
             elif evidence_error is not None:
                 answer = mt("evidence_failed")
                 render_md(slot, answer, rtl=rag.is_hebrew(answer))
