@@ -373,7 +373,7 @@ def test_native_math_repair_rejects_changed_formula():
 def test_hebrew_wording_is_not_restricted_to_curriculum_alias_list():
     from translation_support import validate_translation
     validate_translation('Divide and conquer solves subproblems.', 'פיצול הבעיה ופתרון רקורסיבי של תת הבעיות.', 'he')
-    with pytest.raises(ValueError, match='different algorithmic paradigm'):
+    with pytest.raises(ValueError, match='different course concept'):
         validate_translation('Divide and conquer solves subproblems.', 'תכנות דינמי פותר בעיות.', 'he')
     with pytest.raises(ValueError, match='lost the requested course term'):
         validate_translation('הסבר הפרד ומשול', 'Explain dynamic programming', 'en')

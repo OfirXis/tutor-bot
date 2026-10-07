@@ -7,7 +7,20 @@ import unicodedata
 from functools import lru_cache
 from pathlib import Path
 
-CURRICULUM_FILE = Path(__file__).resolve().parent / 'db' / 'curriculum.json'
+from course_paths import CURRICULUM_FILE
+
+# Course-level settings; every value can be overridden by the "course" block of curriculum.json.
+COURSE_DEFAULTS = {
+    'name': 'Course',
+    'name_he': '',
+    'subject': 'course',
+    'unit_label': 'Week',
+    'source_language': 'en',
+    'glossary': {},
+    'translation_fixes': [],
+    'confusable_topics': [],
+    'evidence_synonyms': {},
+}
 
 
 @lru_cache(maxsize=4)
@@ -21,17 +34,36 @@ def _read_curriculum(path: str, modified: int) -> dict:
         for topic in week['topics']:
             if topic['id'] in topics:
                 raise ValueError(f"Duplicate curriculum topic: {topic['id']}")
-            topics[topic['id']] = {**topic, 'week': week['week']}
+            topics[topic['id']] = {'aliases': [], 'prerequisites': [], **topic, 'week': week['week']}
     for topic in topics.values():
         for dep in topic['prerequisites']:
             if dep not in topics or topics[dep]['week'] > topic['week']:
                 raise ValueError(f"Invalid prerequisite {dep} for {topic['id']}")
     data['topics_by_id'] = topics
+    data['course'] = {**COURSE_DEFAULTS, **data.get('course', {})}
     return data
 
 
 def load_curriculum() -> dict:
     return _read_curriculum(str(CURRICULUM_FILE), CURRICULUM_FILE.stat().st_mtime_ns)
+
+
+def course_info() -> dict:
+    return load_curriculum()['course']
+
+
+def course_name(language: str = 'en') -> str:
+    course = course_info()
+    return (course['name_he'] or course['name']) if language == 'he' else course['name']
+
+
+def glossary_hint(text: str = '', limit: int = 12) -> str:
+    """Preferred English = Hebrew term pairs, favouring those that occur in the text."""
+    glossary = course_info()['glossary']
+    relevant = [(en, he) for en, he in glossary.items()
+                if re.search(r'(?<!\w)' + re.escape(en) + r'(?!\w)', text, re.I) or he in text]
+    chosen = relevant or list(glossary.items())
+    return '; '.join(f'{en} = {he}' for en, he in chosen[:limit])
 
 
 def covered_topics(week: int) -> list[str]:
@@ -45,8 +77,8 @@ def topic_names(ids: list[str]) -> list[str]:
 
 def tutorial_metadata() -> dict:
     return {f"tutorial_{w['week']}": {
-        'display_name': w['title'], 'display_name_he': w['title_he'],
-        'source_pdf': w['source_pdf'], 'topics': covered_topics(w['week']),
+        'display_name': w['title'], 'display_name_he': w.get('title_he') or w['title'],
+        'source_pdf': w.get('source_pdf', ''), 'topics': covered_topics(w['week']),
     } for w in load_curriculum()['weeks']}
 
 

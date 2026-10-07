@@ -1,7 +1,7 @@
 """Validation and conservative fast paths for local Hebrew translation."""
 from __future__ import annotations
 import re
-from curriculum import load_curriculum
+from curriculum import course_info, load_curriculum
 
 
 def course_question_translation(text: str) -> str | None:
@@ -13,8 +13,6 @@ def course_question_translation(text: str) -> str | None:
     example = match[1].startswith(('תן', 'תני'))
     if example:
         topic_text = re.sub(r'^ל(?=[א-תA-Za-z])', '', topic_text)
-    if topic_text == 'זרימה':
-        return 'Give an example of a flow.' if example else 'Explain flow.'
     from query_normalization import expand_course_abbreviations
     topic_text = expand_course_abbreviations(topic_text)
     for topic in load_curriculum()['topics_by_id'].values():
@@ -23,6 +21,9 @@ def course_question_translation(text: str) -> str | None:
                 prefix = ('Give an example of {}.' if example else
                           'How does {} work?' if match[1].startswith('איך') else 'Explain {}.')
                 return prefix.format(topic['name'])
+    english = {he: en for en, he in course_info()['glossary'].items()}.get(topic_text)
+    if english:
+        return f'Give an example of {english}.' if example else f'Explain {english}.'
     return None
 
 
@@ -47,27 +48,36 @@ def validate_translation(source: str, translated: str, target: str) -> None:
     # may legitimately spell out prose numbers (one -> אחד).
     if target == 'en' and sorted(re.findall(r'\d+(?:[.,]\d+)?', source)) != sorted(re.findall(r'\d+(?:[.,]\d+)?', plain)):
         raise ValueError('Translator changed numbers in the text')
-    for topic in load_curriculum()['topics_by_id'].values():
+    topics = load_curriculum()['topics_by_id']
+    confusable = [pair for pair in course_info()['confusable_topics'] if set(pair) <= set(topics)]
+
+    def english_names(topic):
+        return [alias for alias in (topic['name'], *topic['aliases']) if not re.search(r'[א-ת]', alias)]
+
+    def contains(names, text):
+        patterns = []
+        for name in names:
+            pattern = re.escape(name)
+            if re.search(r'[א-ת]', name):
+                pattern = '[ובכלמשה]{0,2}' + pattern.replace(r'\ ', r'\s+[ובכלמשה]{0,2}')
+            patterns.append(r'(?<!\w)' + pattern + r'(?!\w)')
+        return any(re.search(pattern, text, re.I) for pattern in patterns)
+
+    for topic in topics.values():
         hebrew = [alias for alias in topic['aliases'] if re.search(r'[א-ת]', alias)]
-        english = [alias for alias in (topic['name'], *topic['aliases']) if not re.search(r'[א-ת]', alias)]
-        def contains(names, text):
-            patterns = []
-            for name in names:
-                pattern = re.escape(name)
-                if re.search(r'[א-ת]', name):
-                    pattern = '[ובכלמשה]{0,2}' + pattern.replace(r'\ ', r'\s+[ובכלמשה]{0,2}')
-                patterns.append(r'(?<!\w)' + pattern + r'(?!\w)')
-            return any(re.search(pattern, text, re.I) for pattern in patterns)
+        english = english_names(topic)
         expected = english if target == 'en' else [*hebrew, *english]
         original = hebrew if target == 'en' else english
         # An alias list is not a complete Hebrew dictionary. Enforce explicit
         # topic preservation on the English retrieval query, not exact wording
-        # in a Hebrew answer. Still reject swapping the two common paradigms.
+        # in a Hebrew answer. Still reject swapping configured confusable topics.
         if target == 'he':
-            if topic['id'] in {'dynamic_programming', 'divide_and_conquer'}:
-                other = 'divide and conquer' if topic['id'] == 'dynamic_programming' else 'dynamic programming'
-                if contains([other], source) and not contains(english, source) and contains(expected, translated):
-                    raise ValueError('Translator introduced a different algorithmic paradigm')
+            for pair in confusable:
+                for other_id in pair:
+                    if topic['id'] in pair and other_id != topic['id'] and contains(
+                            english_names(topics[other_id]), source) and not contains(
+                            english, source) and contains(expected, translated):
+                        raise ValueError('Translator introduced a different course concept')
             continue
         if contains(original, source) and not contains(expected, translated):
             raise ValueError(f'Translator lost the requested course term: {topic["name"]}')
@@ -86,19 +96,21 @@ def translategemma_prompt(text: str, target: str) -> str:
 
 
 def normalize_translation_terms(source: str, translated: str, target: str) -> str:
-    """Normalize known literal translations only for explicit source concepts."""
+    """Normalize known literal translations only for explicit source concepts.
+
+    Course-specific fixes come from the course "translation_fixes" setting:
+    {"en": English term, "variants": [wrong Hebrew renderings], "he": preferred term}.
+    """
     if target != 'he':
         return translated
-    terms = [
-        (r'\bdivide\s+(?:and|&)\s+conquer\b',
-         r'חלוק ושליטה|חלוק וכבוש|חלק וכבוש|חלוקה וכיבוש|הפרדה וכיבוש|חלק והשג|חלק והשליט', 'הפרד ומשול'),
-        (r'\bmerge sort\b', r'מיזוג ממוין', 'מיון מיזוג'),
-        (r'\brecurrence relation\b', r'הקשר ההפוך', 'נוסחת הנסיגה'),
-        (r'\bcheck-in question\b', r'שאלת רישום', 'שאלת בדיקה'),
-    ]
-    for source_pattern, variants, preferred in terms:
-        if re.search(source_pattern, source, re.I):
-            translated = re.sub(r'(?<![א-ת])(?:' + variants + r')(?![א-ת])', preferred, translated)
+    fixes = [*course_info()['translation_fixes'],
+             {'en': 'check-in question', 'variants': ['שאלת רישום'], 'he': 'שאלת בדיקה'}]
+    for fix in fixes:
+        english = r'\s+'.join(r'(?:and|&)' if word.casefold() == 'and' else re.escape(word)
+                              for word in fix['en'].split())
+        if fix['variants'] and re.search(r'\b' + english + r'\b', source, re.I):
+            variants = '|'.join(re.escape(variant) for variant in fix['variants'])
+            translated = re.sub(r'(?<![א-ת])(?:' + variants + r')(?![א-ת])', fix['he'], translated)
     return translated
 
 

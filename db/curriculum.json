@@ -1,5 +1,67 @@
 {
   "version": 1,
+  "course": {
+    "name": "Algorithms",
+    "name_he": "אלגוריתמים",
+    "subject": "algorithms",
+    "unit_label": "Tutorial",
+    "source_language": "he",
+    "glossary": {
+      "flow": "זרימה",
+      "flow network": "רשת זרימה",
+      "flow value": "ערך הזרימה",
+      "feasible flow": "זרימה חוקית",
+      "flow conservation": "שימור זרימה",
+      "sink": "יעד",
+      "edge": "קשת",
+      "vertex": "קודקוד",
+      "heap": "ערימה",
+      "relaxation": "הרפיה",
+      "dynamic programming": "תכנות דינמי",
+      "divide and conquer": "הפרד ומשול"
+    },
+    "translation_fixes": [
+      {
+        "en": "divide and conquer",
+        "he": "הפרד ומשול",
+        "variants": [
+          "חלוק ושליטה",
+          "חלוק וכבוש",
+          "חלק וכבוש",
+          "חלוקה וכיבוש",
+          "הפרדה וכיבוש",
+          "חלק והשג",
+          "חלק והשליט"
+        ]
+      },
+      {
+        "en": "merge sort",
+        "he": "מיון מיזוג",
+        "variants": [
+          "מיזוג ממוין"
+        ]
+      },
+      {
+        "en": "recurrence relation",
+        "he": "נוסחת הנסיגה",
+        "variants": [
+          "הקשר ההפוך"
+        ]
+      }
+    ],
+    "confusable_topics": [
+      [
+        "dynamic_programming",
+        "divide_and_conquer"
+      ]
+    ],
+    "evidence_synonyms": {
+      "word": "string",
+      "letter": "character",
+      "change": "edit",
+      "multiply": "multiplication"
+    }
+  },
   "weeks": [
     {
       "week": 1,
@@ -50,7 +112,12 @@
             "divide & conquer",
             "הפרד ומשול"
           ],
-          "prerequisites": []
+          "prerequisites": [],
+          "abbreviations": [
+            "DC",
+            "D&C",
+            "DnC"
+          ]
         },
         {
           "id": "master_theorem",
