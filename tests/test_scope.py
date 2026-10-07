@@ -78,8 +78,8 @@ def app_env(monkeypatch, tmp_path):
     monkeypatch.setenv('TRANSLATION_PROVIDER', 'auto')
     monkeypatch.setenv('LLM_PROVIDER', 'ollama')
     monkeypatch.setattr(rag, 'HybridRetriever', lambda: retriever)
-    monkeypatch.setattr(rag, 'get_llm', lambda: llm)
-    monkeypatch.setattr(rag, 'get_translation_llm', lambda: None)
+    monkeypatch.setattr(rag, 'get_llm', lambda **kwargs: llm)
+    monkeypatch.setattr(rag, 'get_translation_llm', lambda *args, **kwargs: None)
     monkeypatch.setattr('urllib.request.urlopen', lambda *a, **kw:
                         io.BytesIO(b'{"models": [{"name": "llama3.2:3b"}]}'))
     app = AppTest.from_file(str(rag.HERE / 'app.py')).run()
@@ -112,7 +112,8 @@ def test_future_content_in_answer_is_withheld(app_env):
     llm.answer = 'An algorithm uses steps. For example Dijkstra relaxes edges.'
     app.chat_input[0].set_value('What is an algorithm?').run()
     assert not app.exception
-    assert llm.calls == 1
+    # One rewrite without the later topic is attempted before refusing.
+    assert llm.calls == 2
     assert '🔒' in app.session_state.display[-1]['content']
     assert app.session_state.history == []
     assert not any('relaxes edges' in m.value for m in app.markdown)
@@ -248,7 +249,7 @@ def test_ambiguous_follow_up_asks_instead_of_rewriting(app_env):
     app.chat_input[0].set_value('Why does that work?').run()
     assert not app.exception
     assert llm.calls==0
-    assert 'Which algorithm' in app.session_state.display[-1]['content']
+    assert 'Which concept' in app.session_state.display[-1]['content']
     assert app.session_state.history==[]
 
 
@@ -356,7 +357,7 @@ def test_dedicated_local_translation_keeps_english_internal_and_hebrew_visible(a
     app, llm, _ = app_env
     translator = object()
     calls = []
-    monkeypatch.setattr(rag, 'get_translation_llm', lambda *args: translator)
+    monkeypatch.setattr(rag, 'get_translation_llm', lambda *args, **kwargs: translator)
     def translate(text, target, primary, fallback, **kwargs):
         assert primary is translator
         assert fallback is None
@@ -370,10 +371,12 @@ def test_dedicated_local_translation_keeps_english_internal_and_hebrew_visible(a
     assert llm.messages[-1].content == 'What is an algorithm?'
     assert app.session_state.history[-2].content == 'What is an algorithm?'
     assert app.session_state.display[-1]['content'] == 'אלגוריתם הוא סדרת צעדים. (מקור 1)'
-    hebrew_messages = [m.value for m in app.markdown if 'class="hebrew-message"' in m.value]
-    assert any('מהו אלגוריתם?' in m for m in hebrew_messages)
-    assert any('אלגוריתם הוא סדרת צעדים' in m and 'text-align:right' in m for m in hebrew_messages)
-    assert any(':has(.hebrew-message)' in m.value for m in app.markdown)
+    rtl_markdown = [m.value for m in app.markdown]
+    assert 'מהו אלגוריתם?' in rtl_markdown
+    assert any('אלגוריתם הוא סדרת צעדים' in m for m in rtl_markdown)
+    # Hebrew is laid out by CSS on keyed containers, never by raw HTML around user text.
+    assert not any('class="hebrew-message"' in m.value for m in app.markdown)
+    assert any('st-key-rtl-' in m.value for m in app.markdown)
     assert not any(llm.answer in item.value for item in app.markdown)
 
 
@@ -432,7 +435,7 @@ def test_installed_large_translator_can_back_up_small_model(app_env, monkeypatch
     monkeypatch.setattr('urllib.request.urlopen', lambda *args, **kwargs:
         io.BytesIO(json.dumps({'models': [{'name': name} for name in [small, large, 'llama3.2:3b']]}).encode()))
     instances = {small: object(), large: object()}
-    monkeypatch.setattr(rag, 'get_translation_llm', lambda provider, model: instances[model])
+    monkeypatch.setattr(rag, 'get_translation_llm', lambda provider, model, **kwargs: instances[model])
     seen = []
     def translate(text, target, primary, fallback, **kwargs):
         assert primary is instances[small]

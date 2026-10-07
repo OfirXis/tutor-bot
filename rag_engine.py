@@ -67,6 +67,7 @@ def _prefix_for(model_name: str, table: dict) -> str:
 from curriculum import (
     covered_topics, named_future_topic, scope_comparison_text,
     tutorial_metadata, clarification_needed, topic_mentions, course_info, glossary_hint,
+    load_curriculum,
 )
 
 EVIDENCE_MIN_SIMILARITY = float(os.getenv("EVIDENCE_MIN_SIMILARITY", "0.60"))
@@ -188,7 +189,7 @@ def classify_intent(question: str, week: int, llm) -> str:
         "Output EXACTLY one of: GREETING, COVERED, OFFTOPIC. No punctuation, no explanation."
     )
     from langchain_core.messages import HumanMessage, SystemMessage
-    user_prompt = f'MESSAGE TO CLASSIFY:\n"""\n{question}\n"""'
+    user_prompt = f'MESSAGE TO CLASSIFY:\n"""\n{question.replace(chr(34) * 3, chr(34))}\n"""'
     try:
         resp = llm.invoke([SystemMessage(sys_prompt), HumanMessage(user_prompt)])
         label = resp.content.strip().upper().split()[0].strip(".,!") if resp.content.strip() else ""
@@ -213,6 +214,38 @@ def references_homework(question: str) -> bool:
     return bool(_HOMEWORK_REFERENCE_RE.search(question))
 
 
+_QUIZ_RE = re.compile(r"\b(?:quiz|test)\s+me\b|\bpractice\s+(?:questions?|problems?|exercises?)\b|"
+                      r"בחן אותי|תבחן אותי|שאלות תרגול", re.I)
+_SUMMARY_RE = re.compile(r"\bsummar(?:y|i[sz]e)\b|\boverview\b|\bmain (?:topic|idea)s?\b|"
+                         r"\bwhat (?:did|do|have) we (?:learn|cover)|\bwhat is (?:this|the) week about\b|"
+                         r"\bwhat (?:is|was) important\b|סכם|סיכום|הנושא המרכזי|מה חשוב לזכור", re.I)
+
+
+def week_material_intent(question: str) -> str | None:
+    """'quiz' or 'summary' for requests about the week's material as a whole."""
+    if _QUIZ_RE.search(question):
+        return "quiz"
+    if _SUMMARY_RE.search(question):
+        return "summary"
+    return None
+
+
+def week_material_hits(retriever, week: int, intent: str, k: int = 4) -> list[Hit]:
+    """The current week's own passages: its scope summary first for a summary,
+    a varied sample of concepts and examples for a quiz."""
+    import random
+
+    chunks = [c for c in retriever.chunks.values() if c.tutorial == week]
+    scope = [c for c in chunks if "source and scope" in c.section.casefold()]
+    body = [c for c in chunks if c not in scope]
+    if intent == "summary":
+        chosen = scope[:1] + body[:k - len(scope[:1])]
+    else:
+        preferred = [c for c in body if re.search(r"example|concept|theorem", c.section, re.I)]
+        chosen = random.sample(preferred or body, min(k, len(preferred or body)))
+    return [Hit(chunk, 1.0) for chunk in chosen]
+
+
 def prepare_retrieval(question: str, week: int, retriever, homework: dict | None = None,
                       k: int = 4, mode: str = "dense", normalization_llm=None) -> RetrievalDecision:
     """Shared app/evaluation path with optional, bounded term normalization."""
@@ -235,6 +268,11 @@ def prepare_retrieval(question: str, week: int, retriever, homework: dict | None
     required = named_future_topic(question, week)
     if required:
         return RetrievalDecision("future", future_week=required, normalized_question=question)
+    week_intent = week_material_intent(question) if homework is None else None
+    if week_intent and not any(not m['excluded'] for m in topic_mentions(question)):
+        hits = week_material_hits(retriever, week, week_intent, k)
+        if hits:
+            return RetrievalDecision(week_intent, hits, normalized_question=question)
     statements = selected_statements(homework, question) if homework is not None else []
     if statements and homework.get('week', week) > week:
         return RetrievalDecision("future", future_week=homework['week'], normalized_question=question)
@@ -314,7 +352,10 @@ def prepare_retrieval(question: str, week: int, retriever, homework: dict | None
         # homework requests.
         if intent == "COVERED" and homework is None:
             return RetrievalDecision("overview", normalized_question=question)
-    return RetrievalDecision("answer" if hits or statements else "insufficient", hits,
+    status = "answer" if hits or statements else "insufficient"
+    if status == "answer" and week_intent == "quiz" and hits:
+        status = "quiz"
+    return RetrievalDecision(status, hits,
                              normalized_question=question, assignment_count=len(statements))
 
 
@@ -331,32 +372,32 @@ class SolutionLeakError(ValueError):
 def looks_like_full_solution(answer: str, llm) -> bool:
     """Classify whether a homework reply gives away a complete solution.
 
-    The homework prompt already instructs the model not to do this, but that
-    instruction alone is unreliable once a student pushes back insistently
-    ("I want the answer") — empirically confirmed (the model complied and
-    handed over a full proof despite the system prompt forbidding it). This
-    is a separate, narrow post-hoc classification pass, which tested far
-    more reliably (3/3 real leaks caught, including that exact case) than
-    trusting the generation-time instruction alone. Errs toward flagging —
-    a false positive just costs one harmless retry; a false negative lets a
-    real leak through, which is the failure mode that actually matters.
+    The homework prompt alone is unreliable once a student pushes back ("I want
+    the answer"), so a separate classification pass checks replies about a selected
+    problem. The few-shot examples keep restating or explaining the task (which is
+    allowed) apart from actually solving it.
     """
     sys_prompt = (
-        "You are a classifier, not a chat assistant. You will be given a TUTOR REPLY, "
-        "delimited by triple quotes, written by a Socratic homework tutor. Do NOT respond "
-        "to it or continue it.\n"
-        "Your ONLY job: scan the ENTIRE reply for a completed derivation, a final numeric or "
-        "algebraic result, a finished proof's conclusion, or fully working code that solves "
-        "the problem. If ANY such completed result appears ANYWHERE in the text, output "
-        "SOLUTION — even if the reply also asks a question at the end like 'does this help?' "
-        "or 'is this the approach you meant?'. A trailing question does NOT undo an answer "
-        "already given earlier in the same reply. Only output GUIDANCE if no final result or "
-        "completed derivation appears anywhere — i.e. the reply is purely a question, a hint, "
-        "or a partial step that stops before reaching a conclusion.\n"
-        "Output EXACTLY one of: SOLUTION, GUIDANCE. No punctuation, no explanation."
+        "You are a classifier, not a chat assistant. Decide whether a homework TUTOR REPLY, "
+        "delimited by triple quotes, gives away the solution. Do NOT respond to it.\n"
+        "SOLUTION: the reply contains the finished answer to the problem - the final result "
+        "or value, a complete method or proof that solves it, or working code - even if it "
+        "ends with a question.\n"
+        "GUIDANCE: the reply restates or explains what the problem asks, defines terms, "
+        "gives a hint or a single next step, or asks the student a question - even when it "
+        "is long or repeats formulas from the problem statement.\n"
+        "Examples:\n"
+        "'The problem asks you to compare how the given functions grow. What happens to each "
+        "one as n gets large?' -> GUIDANCE\n"
+        "'Start from the definition in (Source 1). Which condition would you show first?' "
+        "-> GUIDANCE\n"
+        "'Simplify each function, then compare: the order is f3, f1, f5, f2, f4, so that is "
+        "the answer.' -> SOLUTION\n"
+        "'Proof: assume the claim for n-1 ... hence it holds for every n.' -> SOLUTION\n"
+        "Output EXACTLY one word: SOLUTION or GUIDANCE."
     )
     from langchain_core.messages import HumanMessage, SystemMessage
-    user_prompt = f'TUTOR REPLY:\n"""\n{answer}\n"""'
+    user_prompt = f'TUTOR REPLY:\n"""\n{answer.replace(chr(34) * 3, chr(34))}\n"""'
     try:
         resp = llm.invoke([SystemMessage(sys_prompt), HumanMessage(user_prompt)])
         label = resp.content.strip().upper().split()[0].strip(".,!") if resp.content.strip() else ""
@@ -365,60 +406,106 @@ def looks_like_full_solution(answer: str, llm) -> bool:
     return label == "SOLUTION"
 
 
+GENERATION_DEADLINE_SECONDS = float(os.getenv("LLM_DEADLINE_SECONDS", "180"))
+
+
+def _generate(llm, messages: list) -> str:
+    """Collect a streamed reply, bounded in wall-clock time."""
+    started, parts = time.monotonic(), []
+    for chunk in llm.stream(messages):
+        parts.append(chunk.content if isinstance(chunk.content, str) else "")
+        if time.monotonic() - started > GENERATION_DEADLINE_SECONDS:
+            raise TimeoutError("The model took too long to answer")
+    return "".join(parts)
+
+
+def attribute_sources(answer: str, evidence: dict[str, str]) -> list[str]:
+    """Labels of supplied passages that share enough content words with the answer."""
+    words = _evidence_words(answer)
+    minimum = min(3, max(1, len(words) // 4))
+    return [label for label, text in evidence.items()
+            if len(words & _evidence_words(text)) >= minimum]
+
+
 def generate_scoped_answer(llm, messages: list, retriever, week: int,
                            source_count: int | None = None, assignment_count: int = 0,
-                           retry_citations: bool = False, is_homework: bool = False) -> str:
+                           retry_citations: bool = False, is_homework: bool = False,
+                           evidence: dict[str, str] | None = None) -> str:
     """Buffer and validate generation; callers must never display unchecked tokens.
 
-    Scope-check failures propagate so the UI fails closed rather than displaying
-    an answer whose curriculum scope could not be checked.
+    Each check gets one corrective regeneration before failing: later-week material
+    is rewritten away, then refused; a missing citation is requested again, then
+    attributed to the supplied passages the answer demonstrably uses (by shared
+    content words), else withheld; a homework reply that solves the selected
+    problem is rewritten as guidance, then withheld. Scope-check failures propagate
+    so the UI fails closed.
     """
     from langchain_core.messages import AIMessage, HumanMessage
 
-    attempts = 2 if (assignment_count or retry_citations) and source_count is not None else 1
-    for attempt in range(attempts):
-        answer = "".join(chunk.content for chunk in llm.stream(messages))
-        is_future, tutorial = retriever.scope_check(answer, week)
+    def checked(candidate_messages):
+        reply = _generate(llm, candidate_messages)
+        return reply, retriever.scope_check(reply, week)
+
+    answer, (is_future, tutorial) = checked(messages)
+    if is_future:
+        names = list(dict.fromkeys(m['name'] for m in topic_mentions(answer)
+                                   if m['week'] > week and not m['excluded']))
+        messages = messages + [AIMessage(answer), HumanMessage(
+            "Your reply used material the student has not learned yet"
+            + (f" ({', '.join(names)}). Do not mention it" if names else "")
+            + ". Answer again using only the covered topics and the supplied excerpts.")]
+        answer, (is_future, tutorial) = checked(messages)
         if is_future:
             raise FutureMaterialError(tutorial)
-        if source_count is not None:
-            try:
-                validate_citations(answer, source_count, assignment_count)
-            except EvidenceError:
-                if attempt + 1 == attempts or _CITATION_RE.search(answer):
-                    raise
-                # Ask the model to ground a new reply; never attach a citation to
-                # an unchecked claim ourselves. The retry is scope-checked too.
+
+    if source_count is not None:
+        try:
+            validate_citations(answer, source_count, assignment_count)
+        except EvidenceError:
+            if _CITATION_RE.search(answer):
+                raise
+            if retry_citations or assignment_count:
                 allowed = []
                 if assignment_count:
                     allowed.append(f"Assignment 1 through {assignment_count}")
                 if source_count:
                     allowed.append(f"Source 1 through {source_count}")
                 example = "Assignment 1" if assignment_count else "Source 1"
-                messages = messages + [AIMessage(answer), HumanMessage(
+                revised, (is_future, tutorial) = checked(messages + [AIMessage(answer), HumanMessage(
                     "Revise your reply using only the supplied evidence. Start the first "
                     f"substantive sentence with a valid citation, for example ({example}). "
                     f"Allowed IDs: {'; '.join(allowed)}. Explain the task or give a grounded next step; "
                     "do not invent a solution. Preserve the PDF problem numbers: "
                     "subquestions are not separate problems."
-                )]
-                continue
-        if is_homework:
-            for leak_attempt in range(2):
-                if not looks_like_full_solution(answer, llm):
-                    break
-                if leak_attempt == 1:
-                    raise SolutionLeakError()
-                leak_messages = messages + [AIMessage(answer), HumanMessage(
-                    "Your reply gave away too much of the solution. Rewrite it as Socratic "
-                    "guidance only: a single hint, a clarifying question, or the next step — "
-                    "never the final answer, a complete derivation, or a finished proof."
-                )]
-                answer = "".join(chunk.content for chunk in llm.stream(leak_messages))
-                is_future, tutorial = retriever.scope_check(answer, week)
+                )])
                 if is_future:
                     raise FutureMaterialError(tutorial)
-        return answer
+                answer = revised
+            try:
+                validate_citations(answer, source_count, assignment_count)
+            except EvidenceError:
+                if _CITATION_RE.search(answer):
+                    raise
+                labels = attribute_sources(answer, evidence or {})
+                if not labels:
+                    raise
+                answer = answer.rstrip() + "\n\nBased on " + ", ".join(f"({l})" for l in labels) + "."
+
+    if is_homework and assignment_count:
+        for leak_attempt in range(2):
+            if not looks_like_full_solution(answer, llm):
+                break
+            if leak_attempt == 1:
+                raise SolutionLeakError()
+            answer, (is_future, tutorial) = checked(messages + [AIMessage(answer), HumanMessage(
+                "Your reply gave away too much of the solution. Rewrite it as Socratic "
+                "guidance only: a single hint, a clarifying question, or the next step — "
+                "never the final answer, a complete derivation, or a finished proof. "
+                "Keep the (Assignment N) or (Source N) citation."
+            )])
+            if is_future:
+                raise FutureMaterialError(tutorial)
+    return answer
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -688,8 +775,8 @@ class HybridRetriever:
 # Index build
 # ─────────────────────────────────────────────────────────────────────────────
 
-def course_material_digest(material_dir: Path = MATERIAL_DIR) -> str:
-    digest = hashlib.sha256()
+def course_material_digest(material_dir: Path = MATERIAL_DIR, embed_model: str = EMBED_MODEL) -> str:
+    digest = hashlib.sha256(embed_model.encode())
     for path in sorted(material_dir.glob("tutorial_*.txt")):
         digest.update(path.name.encode())
         digest.update(path.read_bytes())
@@ -741,7 +828,7 @@ def build_index(embed_model: str = EMBED_MODEL, index_dir: Path = INDEX_DIR,
     temp_chunks.write_text("".join(json.dumps(asdict(c), ensure_ascii=False) + "\n" for c in chunks),
                            encoding="utf-8")
     temp_chunks.replace(chunks_file)
-    stamp.write_text(course_material_digest() + "\n")
+    stamp.write_text(course_material_digest(embed_model=embed_model) + "\n")
     if not quiet:
         per_tut: dict[int, int] = {}
         for c in chunks:
@@ -756,49 +843,63 @@ def build_index(embed_model: str = EMBED_MODEL, index_dir: Path = INDEX_DIR,
 # LLM factory — swap providers with env vars, no code changes
 # ─────────────────────────────────────────────────────────────────────────────
 
-def get_llm(streaming: bool = True):
-    """LLM_PROVIDER: ollama (default) | github | openai | compatible."""
-    provider = os.getenv("LLM_PROVIDER", "ollama").lower()
+def get_llm(streaming: bool = True, provider: str | None = None, model: str | None = None,
+            api_key: str | None = None, max_tokens: int | None = None,
+            timeout: float | None = None):
+    """LLM_PROVIDER: ollama (default) | github | openai | compatible.
+
+    Every call is bounded: an output-token cap stops runaway generations and the
+    request timeout stops a stalled server from hanging the UI.
+    """
+    provider = (provider or os.getenv("LLM_PROVIDER", "ollama")).lower()
     temperature = float(os.getenv("LLM_TEMPERATURE", "0.2"))
+    max_tokens = max_tokens or int(os.getenv("LLM_MAX_TOKENS", "1200"))
+    timeout = timeout or float(os.getenv("LLM_TIMEOUT_SECONDS", "120"))
 
     if provider == "ollama":
         from langchain_ollama import ChatOllama
         return ChatOllama(
-            model=os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b"),
+            model=model or os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b"),
             base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
             temperature=temperature,
             num_ctx=int(os.getenv("OLLAMA_NUM_CTX", "8192")),
+            num_predict=max_tokens,
+            client_kwargs={"timeout": timeout},
         )
 
     from langchain_openai import ChatOpenAI
+    common = dict(temperature=temperature, streaming=streaming, max_tokens=max_tokens,
+                  timeout=timeout, max_retries=1)
     if provider == "github":
         return ChatOpenAI(
-            model=os.getenv("GITHUB_MODEL", "openai/gpt-4o-mini"),
-            api_key=os.getenv("GITHUB_TOKEN", ""),
-            base_url="https://models.github.ai/inference",
-            temperature=temperature, streaming=streaming,
+            model=model or os.getenv("GITHUB_MODEL", "openai/gpt-4o-mini"),
+            api_key=api_key or os.getenv("GITHUB_TOKEN", ""),
+            base_url="https://models.github.ai/inference", **common,
         )
     if provider == "compatible":
         return ChatOpenAI(
-            model=os.getenv("LLM_MODEL", ""),
-            api_key=os.getenv("LLM_API_KEY", "not-needed"),
-            base_url=os.getenv("LLM_BASE_URL", "http://localhost:1234/v1"),
-            temperature=temperature, streaming=streaming,
+            model=model or os.getenv("LLM_MODEL", ""),
+            api_key=api_key or os.getenv("LLM_API_KEY", "not-needed"),
+            base_url=os.getenv("LLM_BASE_URL", "http://localhost:1234/v1"), **common,
         )
     return ChatOpenAI(  # provider == "openai"
-        model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-        temperature=temperature, streaming=streaming,
+        model=model or os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+        **({"api_key": api_key} if api_key else {}), **common,
     )
 
 
-def llm_label() -> str:
-    provider = os.getenv("LLM_PROVIDER", "ollama").lower()
-    return {
-        "ollama": f"Ollama · {os.getenv('OLLAMA_LLM_MODEL', 'llama3.2:3b')}",
-        "github": f"GitHub Models · {os.getenv('GITHUB_MODEL', 'openai/gpt-4o-mini')}",
-        "openai": f"OpenAI · {os.getenv('OPENAI_MODEL', 'gpt-4o-mini')}",
-        "compatible": f"Custom · {os.getenv('LLM_MODEL', '?')}",
-    }.get(provider, provider)
+def llm_label(provider: str | None = None, model: str | None = None) -> str:
+    provider = (provider or os.getenv("LLM_PROVIDER", "ollama")).lower()
+    defaults = {
+        "ollama": ("Ollama", os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b")),
+        "github": ("GitHub Models", os.getenv("GITHUB_MODEL", "openai/gpt-4o-mini")),
+        "openai": ("OpenAI", os.getenv("OPENAI_MODEL", "gpt-4o-mini")),
+        "compatible": ("Custom", os.getenv("LLM_MODEL", "?")),
+    }
+    if provider not in defaults:
+        return provider
+    name, default_model = defaults[provider]
+    return f"{name} · {model or default_model}"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -832,17 +933,18 @@ def is_hebrew(text: str) -> bool:
 
 
 def get_translation_llm(provider: str | None = None, model: str | None = None,
-                        base_url: str | None = None):
+                        base_url: str | None = None, api_key: str | None = None):
     """Independent translator: auto | ollama | openai | tutor.
 
     Auto preserves the previous OpenAI-if-configured behavior. Explicit local
     selection never uses a paid provider. None means use the tutoring model.
     """
     provider = (provider or os.getenv("TRANSLATION_PROVIDER", "auto")).lower()
+    api_key = api_key or os.getenv("OPENAI_API_KEY", "")
     if provider == "tutor":
         return None
     if provider == "auto":
-        provider = "openai" if os.getenv("OPENAI_API_KEY") else "tutor"
+        provider = "openai" if api_key else "tutor"
         if provider == "tutor":
             return None
     if provider == "ollama":
@@ -862,11 +964,12 @@ def get_translation_llm(provider: str | None = None, model: str | None = None,
                     "required": ["translation"], "additionalProperties": False},
         )
     if provider == "openai":
-        if not os.getenv("OPENAI_API_KEY"):
+        if not api_key:
             raise ValueError("OpenAI translation requires OPENAI_API_KEY")
         from langchain_openai import ChatOpenAI
         return ChatOpenAI(model=model or os.getenv("TRANSLATION_MODEL", "gpt-4o-mini"),
-                          temperature=0)
+                          temperature=0, api_key=api_key,
+                          timeout=float(os.getenv("TRANSLATION_TIMEOUT_SECONDS", "45")))
     raise ValueError(f"Unknown translation provider: {provider}")
 
 
@@ -1030,7 +1133,7 @@ def _translate_local(text: str, target: str, llm, progress=None) -> str:
                 validate_translation(_CITATION_RE.sub('', prose),
                     _CITATION_RE.sub('', re.sub(r'⟦[^⟧]+⟧', '', translated)), target)
                 break
-            except ValueError as error:
+            except ValueError:
                 if not repair_available:
                     raise
                 repair_available = False
@@ -1059,7 +1162,7 @@ def _translate_local(text: str, target: str, llm, progress=None) -> str:
     return answer
 
 
-def _translate_once(text: str, target: str, llm, progress=None) -> str:
+def _translate_once(text: str, target: str, llm, progress=None, feedback: str = "") -> str:
     """Translate text to 'en' or 'he' using the given chat LLM.
 
     Fenced code, inline code and KaTeX are pulled out and restored verbatim
@@ -1095,7 +1198,7 @@ def _translate_once(text: str, target: str, llm, progress=None) -> str:
         "opaque placeholders — copy them through EXACTLY unchanged, never translate or "
         "alter them. Use the standard Hebrew terminology of the course subject "
         f"({course_info()['subject']}) rather than inventing new words or leaving terms in "
-        "English. " + _terms_instruction(text)
+        "English. " + _terms_instruction(text) + (f" {feedback}" if feedback else "")
     )
     from langchain_core.messages import HumanMessage, SystemMessage
     user_prompt = f'TEXT TO TRANSLATE:\n"""\n{protected}\n"""'
@@ -1125,13 +1228,25 @@ def translate(text: str, target: str, llm, progress=None) -> str:
     local = getattr(llm, 'format', None) is not None and getattr(llm, 'model', None) is not None
     if target not in {'en', 'he'}:
         raise ValueError("target must be 'en' or 'he'")
-    if local and target == 'en':
+    if target == 'en':
         from translation_support import course_question_translation
         exact = course_question_translation(text)
         if exact:
             return exact
     if local:
         return _translate_local(text, target, llm, progress)
+    if target == 'en':
+        # A general chat model may garble course terms (e.g. a name into a common word);
+        # retrieval depends on them, so check and give the model one corrective retry.
+        from translation_support import validate_translation
+        english = _translate_once(text, target, llm, progress)
+        try:
+            validate_translation(text, english, 'en', allow_source_script=True)
+        except ValueError as error:
+            english = _translate_once(text, target, llm, progress,
+                                      feedback=f"A previous attempt was rejected: {error}.")
+            validate_translation(text, english, 'en', allow_source_script=True)
+        return english
     try:
         return _translate_once(text, target, llm, progress)
     except ValueError as error:
@@ -1235,6 +1350,32 @@ def tutor_system_prompt(week: int, display_name: str, topics: list[str], context
         "Answer the student's exact request in a few sentences, citing (Source N) from the "
         "first sentence. Do not add an unsolicited example or code."
     )
+
+
+def quiz_system_prompt(week: int, display_name: str, topics: list[str], context: str) -> str:
+    return tutor_system_prompt(week, display_name, topics, context) + (
+        "\n\nQUIZ MODE: the student wants to be quizzed. If their latest message answers your "
+        "previous question, first say briefly whether it is right according to the excerpts "
+        "(cite them). Then ask exactly ONE new question that the excerpts can answer, cite "
+        "the excerpt it comes from as (Source N), and do NOT reveal its answer.")
+
+
+def suggestion_chips(week: int, homework_mode: bool, language: str = "en") -> list[str]:
+    """Starter prompts drawn from the topics introduced in the selected week."""
+    if homework_mode:
+        return (["מאיפה כדאי להתחיל?", "איזו שיטה מתאימה לבעיה?",
+                 "אפשר לבדוק את דרך החשיבה שלי?", "תן לי רמז קטן."] if language == "he" else
+                ["Where should I start?", "What technique fits this problem?",
+                 "Can you check my reasoning so far?", "Give me a small hint."])
+    current = [t for t in load_curriculum()['topics_by_id'].values() if t['week'] == week][:3]
+    if language == "he":
+        def label(topic):
+            return next((a for a in topic['aliases'] if re.search(r'[\u0590-\u05FF]', a)), topic['name'])
+        return ([f"הסבר את {label(t)}" for t in current[:2]]
+                + [f"תן לי דוגמה ל{label(t)}" for t in current[2:3]] + ["בחן אותי על חומר השבוע"])
+    return ([f"Explain: {t['name']}" for t in current[:2]]
+            + [f"Give me an example of {t['name']}" for t in current[2:3]]
+            + ["Quiz me on this week's material"])
 
 
 def homework_system_prompt(hw: dict, week: int, known_topics: list[str], context: str,

@@ -2,15 +2,23 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 from functools import lru_cache
 from pathlib import Path
 
 from curriculum import topic_names, topic_mentions
+from course_paths import COURSE_ROOT as ROOT, HOMEWORK_DIR
 
-ROOT = Path(__file__).resolve().parent
-HOMEWORK_DIR = ROOT / 'material' / 'Homework'
-PROBLEM_HEADING = re.compile(r'^\s*Problem\s+(\d+)\s*:?\s*$', re.IGNORECASE | re.MULTILINE)
+# Numbered problem headings, tried in order: English, Hebrew, then Hebrew extracted in
+# visual order ("2 שאלה"); finally English headings followed by text on the same line.
+PROBLEM_HEADINGS = (
+    re.compile(r'^\s*(?:Problem|Question|Exercise|Task)\s*(?:No\.?\s*)?(\d+)\s*[:.)]?\s*$', re.I | re.M),
+    re.compile(r'^\s*(?:שאלה|תרגיל|בעיה)\s*(?:מס\S*\s*)?(\d+)\s*[:.)]?\s*$', re.M),
+    re.compile(r'^\s*[:.)]?\s*(\d+)\s*(?:שאלה|תרגיל|בעיה)\s*$', re.M),
+    re.compile(r'^\s*(?:Problem|Question|Exercise|Task)\s+(\d+)\s*[:.)]\s*(?=\S)', re.I | re.M),
+)
+PROBLEM_HEADING = PROBLEM_HEADINGS[0]
 
 
 def homework_pdf_path(entry: dict) -> Path:
@@ -25,13 +33,25 @@ def extract_problem_statements(path: Path) -> list[dict]:
     """Keep every problem and its page references; never guess a solution split."""
     from pypdf import PdfReader
 
-    statements: list[dict] = []
-    current = None
+    pages = []
     for page_number, page in enumerate(PdfReader(path).pages, 1):
         text = page.extract_text() or ''
         # Remove only the PDF page footer, preserving numbers inside mathematics.
-        text = re.sub(r'\n\s*' + str(page_number) + r'\s*$', '', text)
-        matches = list(PROBLEM_HEADING.finditer(text))
+        pages.append(re.sub(r'\n\s*' + str(page_number) + r'\s*$', '', text))
+    errors = []
+    for heading in PROBLEM_HEADINGS:
+        try:
+            return _split_problems(pages, heading, path.name)
+        except ValueError as error:
+            errors.append(str(error))
+    raise ValueError(errors[0])
+
+
+def _split_problems(pages: list[str], heading: re.Pattern, name: str) -> list[dict]:
+    statements: list[dict] = []
+    current = None
+    for page_number, text in enumerate(pages, 1):
+        matches = list(heading.finditer(text))
         if current is not None:
             continuation = text[:matches[0].start()] if matches else text
             if continuation.strip():
@@ -46,24 +66,33 @@ def extract_problem_statements(path: Path) -> list[dict]:
             }
             statements.append(current)
     if not statements or any(not p['text'] for p in statements):
-        raise ValueError(f'Could not extract complete problem statements from {path.name}')
+        raise ValueError(f'Could not extract complete problem statements from {name}')
     numbers = [p['number'] for p in statements]
     if numbers != list(range(1, len(numbers) + 1)):
-        raise ValueError(f'Unexpected problem numbering in {path.name}: {numbers}')
+        raise ValueError(f'Unexpected problem numbering in {name}: {numbers}')
     return statements
 
 
 @lru_cache(maxsize=16)
-def _pdf_content(path: str, modified_ns: int, size: int) -> dict:
+def _pdf_content(path: str, modified_ns: int, size: int,
+                 stored_sha256: str = '', stored_json: str = '') -> dict:
     pdf = Path(path)
-    statements = extract_problem_statements(pdf)
+    digest = hashlib.sha256(pdf.read_bytes()).hexdigest()
+    try:
+        statements = extract_problem_statements(pdf)
+    except ValueError:
+        # The course builder may have segmented this PDF with an LLM; trust it only for
+        # the exact PDF it was produced from.
+        if not stored_json or stored_sha256 != digest:
+            raise
+        statements = json.loads(stored_json)
     full_text = '\n\n'.join(f"Problem {p['number']}\n{p['text']}" for p in statements)
     return {
         'problems': len(statements),
         'problem_statements': statements,
         'full_problem_text': full_text,
         'problem_preview': full_text[:500],
-        'pdf_sha256': hashlib.sha256(pdf.read_bytes()).hexdigest(),
+        'pdf_sha256': digest,
     }
 
 
@@ -71,7 +100,11 @@ def with_pdf_content(entry: dict) -> dict:
     """JSON controls the week/title; the mapped PDF supplies the actual questions."""
     path = homework_pdf_path(entry)
     stat = path.stat()
-    result = {**entry, **_pdf_content(str(path), stat.st_mtime_ns, stat.st_size)}
+    stored = entry.get('problem_statements') if entry.get('statements_source') == 'llm' else None
+    content = _pdf_content(str(path), stat.st_mtime_ns, stat.st_size,
+                           entry.get('pdf_sha256', '') if stored else '',
+                           json.dumps(stored, ensure_ascii=False) if stored else '')
+    result = {**entry, **content}
     ids = [topic for topics in result.get('problem_topics', {}).values() for topic in topics]
     result['topics'] = topic_names(ids)
     result['key_concepts'] = result['topics']
@@ -148,6 +181,8 @@ def homework_clarification(hw: dict, question: str) -> str | None:
     if not numbers and (re.search(r'(?:\bproblem\b|\bquestion\b|שאלה|תרגיל)', question, re.I)
                         or re.fullmatch(r'(?:give me (?:a |a small )?hint[.!]?|where should i start[?]?|'
                                         r'תן לי רמז קטן[.]?|מאיפה כדאי להתחיל[?]?|(?:please )?(?:help|guide)(?: me)?[.!]?|'
+                                        r'(?:can you )?check my (?:reasoning|work|answer|solution|proof)(?: so far)?[?.!]?|'
+                                        r'אפשר לבדוק את דרך החשיבה שלי[?]?|'
                                         r'(?:i am |i.m )?stuck[.!]?|(?:help me )?solve (?:it|this)[.!]?|עזרה|תעזור לי|תנחה אותי)', question, re.I)):
         return 'choose_problem'
     return None

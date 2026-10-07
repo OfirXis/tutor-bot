@@ -23,9 +23,8 @@ COURSE_DEFAULTS = {
 }
 
 
-@lru_cache(maxsize=4)
-def _read_curriculum(path: str, modified: int) -> dict:
-    data = json.loads(Path(path).read_text(encoding='utf-8'))
+def validate_curriculum(data: dict) -> dict:
+    """Check schedule rules and return topics by id (each topic tagged with its week)."""
     weeks = [w['week'] for w in data['weeks']]
     if len(set(weeks)) != len(weeks) or any(w < 1 for w in weeks):
         raise ValueError('Curriculum weeks must be unique positive integers')
@@ -39,7 +38,13 @@ def _read_curriculum(path: str, modified: int) -> dict:
         for dep in topic['prerequisites']:
             if dep not in topics or topics[dep]['week'] > topic['week']:
                 raise ValueError(f"Invalid prerequisite {dep} for {topic['id']}")
-    data['topics_by_id'] = topics
+    return topics
+
+
+@lru_cache(maxsize=4)
+def _read_curriculum(path: str, modified: int) -> dict:
+    data = json.loads(Path(path).read_text(encoding='utf-8'))
+    data['topics_by_id'] = validate_curriculum(data)
     data['course'] = {**COURSE_DEFAULTS, **data.get('course', {})}
     return data
 
@@ -58,11 +63,20 @@ def course_name(language: str = 'en') -> str:
 
 
 def glossary_hint(text: str = '', limit: int = 12) -> str:
-    """Preferred English = Hebrew term pairs, favouring those that occur in the text."""
+    """Preferred English = Hebrew term pairs, favouring those that occur in the text.
+
+    Topic names whose Hebrew alias appears in the text come first, then glossary terms.
+    """
+    pairs = {}
+    for topic in load_curriculum()['topics_by_id'].values():
+        hebrew = next((a for a in topic['aliases'] if re.search(r'[\u0590-\u05FF]', a) and a in text), None)
+        if hebrew:
+            pairs.setdefault(topic['name'], hebrew)
     glossary = course_info()['glossary']
-    relevant = [(en, he) for en, he in glossary.items()
-                if re.search(r'(?<!\w)' + re.escape(en) + r'(?!\w)', text, re.I) or he in text]
-    chosen = relevant or list(glossary.items())
+    for en, he in glossary.items():
+        if re.search(r'(?<!\w)' + re.escape(en) + r'(?!\w)', text, re.I) or he in text:
+            pairs.setdefault(en, he)
+    chosen = list(pairs.items()) or list(glossary.items())
     return '; '.join(f'{en} = {he}' for en, he in chosen[:limit])
 
 

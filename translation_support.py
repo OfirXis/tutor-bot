@@ -3,6 +3,9 @@ from __future__ import annotations
 import re
 from curriculum import course_info, load_curriculum
 
+# Code and math are restored verbatim, so they are excluded from prose checks.
+_PROTECTED_SPANS = re.compile(r'```[\s\S]*?```|`[^`]*`|\$\$[\s\S]*?\$\$|\$[^$\n]*\$')
+
 
 def course_question_translation(text: str) -> str | None:
     """Translate only a complete, unambiguous short course-topic request."""
@@ -27,7 +30,8 @@ def course_question_translation(text: str) -> str | None:
     return None
 
 
-def validate_translation(source: str, translated: str, target: str) -> None:
+def validate_translation(source: str, translated: str, target: str,
+                         allow_source_script: bool = False) -> None:
     """Reject visible corruption and lost explicit topic names, not prove fidelity."""
     if not translated.strip():
         raise ValueError('Translator returned an empty answer')
@@ -39,14 +43,14 @@ def validate_translation(source: str, translated: str, target: str) -> None:
         raise ValueError('Translator produced garbled letter sequences')
     if re.search(r'(?:התרגומים אינם מדויקים|להלן התרגום|here is the translation|translations are not accurate)', translated, re.I):
         raise ValueError('Translator added commentary instead of a translation')
-    plain = re.sub(r'```[\s\S]*?```|`[^`]*`|\$\$[\s\S]*?\$\$|\$[^$\n]*\$', '', translated)
+    plain = _PROTECTED_SPANS.sub('', translated)
     if target == 'he' and re.search(r'[A-Za-zא-ת]{3}', source) and not re.search(r'[א-ת]', plain):
         raise ValueError('Translator did not produce Hebrew prose')
-    if target == 'en' and re.search(r'[א-ת]', plain):
+    if target == 'en' and not allow_source_script and re.search(r'[א-ת]', plain):
         raise ValueError('Translator left Hebrew text in the English question')
     # Keep assignment/problem references exact before retrieval. Hebrew output
     # may legitimately spell out prose numbers (one -> אחד).
-    if target == 'en' and sorted(re.findall(r'\d+(?:[.,]\d+)?', source)) != sorted(re.findall(r'\d+(?:[.,]\d+)?', plain)):
+    if target == 'en' and sorted(re.findall(r'\d+(?:[.,]\d+)?', _PROTECTED_SPANS.sub('', source))) != sorted(re.findall(r'\d+(?:[.,]\d+)?', plain)):
         raise ValueError('Translator changed numbers in the text')
     topics = load_curriculum()['topics_by_id']
     confusable = [pair for pair in course_info()['confusable_topics'] if set(pair) <= set(topics)]
