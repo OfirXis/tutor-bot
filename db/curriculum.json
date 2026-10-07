@@ -7,6 +7,215 @@
     "unit_label": "Tutorial",
     "source_language": "he",
     "glossary": {
+      "algorithm definition and categories": "מהו אלגוריתם",
+      "pseudo-code": "פסודו-קוד",
+      "proving algorithm correctness": "הוכחת נכונות",
+      "problem-solving tips": "טיפים לפתרון בעיות",
+      "running time complexity and asymptotic notation": "סיבוכיות זמן ריצה",
+      "running time comparison table": "השוואת זמני ריצה",
+      "maximum input size within one hour": "גודל הקלט המקסימלי",
+      "ordering functions by asymptotic growth": "סדרו את הפונקציות",
+      "stirling's approximation": "קירוב סטרלינג",
+      "diners problem": "בעיית הסועדים",
+      "merged median problem": "בעיית החציון הממוזג",
+      "directed and undirected graphs": "גרף מכוון",
+      "pursuit-evasion game": "משחק רדיפה",
+      "divide and conquer": "הפרד ומשול",
+      "merge sort": "מיון מיזוג",
+      "recursion tree": "עץ הרקורסיה",
+      "maximum profit problem": "בעיית הרווח המקסימלי",
+      "fast exponentiation": "חזקה מהירה",
+      "majority element": "בעיית האיבר המרובה",
+      "prefix-free codes": "קודים חסרי רישא",
+      "huffman coding": "קידוד הופמן",
+      "exchange argument": "טיעון ההחלפה",
+      "maximum subarray": "תת מערך גדול ביותר",
+      "greedy algorithms": "אלגוריתמים חמדניים",
+      "greedy stays ahead argument": "טיעון ההשוואה",
+      "coin change": "בעיית המטבעות",
+      "interval partitioning": "בעיית שיבוץ הסועדים",
+      "interval scheduling": "שיבוץ הסועדים בשולחן בודד",
+      "set cover": "קירוב לכיסוי בקבוצות",
+      "minimum vertex cover on trees": "כיסוי מינימלי בצמתים על עצים",
+      "carpenter problem": "בעיית הנגר",
+      "dynamic programming": "תכנות דינמי",
+      "fibonacci sequence": "סדרת פיבונאצ'י",
+      "heaviest path in a grid": "מסלול כבד ביותר בלוח",
+      "longest increasing subsequence": "תת סדרה עולה ארוכה ביותר",
+      "maximum-weight independent set in a path graph": "קבוצה בלתי תלויה כבדה ביותר בגרף מסלולי",
+      "path graph": "גרף מסלולי",
+      "independent set": "קבוצה בלתי תלויה",
+      "directed acyclic graph": "גרף מכוון חסר מעגלים",
+      "longest path in a dag": "מסלול ארוך ביותר בגרף מכוון וחסר מעגלים",
+      "edit distance": "מרחק עריכה",
+      "counting 2×n tilings with l and i tiles": "בעיית ריצוף האריחים",
+      "tree diameter": "קוטר בעץ",
+      "counting equal-sum splits": "חלוקה לשתי קבוצות שסכומן שווה",
+      "graph representations": "מטריצת שכנויות",
+      "breadth-first search": "חיפוש לרוחב",
+      "depth-first search": "חיפוש לעומק",
+      "topological ordering": "מיון טופולוגי",
+      "spanning tree": "עץ פורש",
+      "minimum spanning tree": "עץ פורש מינימלי",
+      "cycle property": "תכונת המעגל",
+      "cut property": "תכונת החתך",
+      "cut in a graph": "חתך בגרף",
+      "kruskal's algorithm": "קרוסקל",
+      "prim's algorithm": "פרים",
+      "maximum spanning tree": "עץ פורש מקסימלי",
+      "minimum-product spanning tree": "עץ פורש עם מכפלה מינימלית",
+      "uniqueness of the minimum spanning tree": "יחודיות של העץ הפורש המינימלי",
+      "weighted shortest paths": "מסלול קל ביותר",
+      "lightest paths through a given edge": "מסלולים קלים ביותר המשתמשים בקשת מסויימת",
+      "bellman-ford algorithm": "בלמן-פורד",
+      "lightest path with integer weights 1 to 10": "מסלול הכי קל עם משקלים 1...10",
+      "dijkstra's algorithm": "דייקסטרא",
+      "all-pairs shortest paths": "מסלולים קצרים ביותר בין כל הזוגות",
+      "boolean matrix multiplication via apsp": "כפל מטריצות בינאריות באמצעות APSP",
+      "lightest path with a half-price coupon": "מסלול קל ביותר עם קופון",
+      "shortest alternating-color (zigzag) path": "מסלול מזגזג הכי קצר",
+      "lightest path with an edge-weight limit": "מסלול הכי קל עם קשתות במשקל מוגבל",
+      "maximum flow": "זרימה מקסימלית",
+      "flow networks": "רשת זרימה",
+      "residual networks": "גרף שיורי",
+      "augmenting paths": "מסילה מגדילה",
+      "minimum cut": "חתך מינימלי",
+      "ford-fulkerson": "פורד פולקרסון",
+      "edmonds-karp": "אדמונדס קארפ",
+      "bipartite matching": "זיווג מושלם",
+      "menger's theorem": "משפט מנגר",
+      "hall's theorem": "משפט הול",
+      "dilworth's theorem": "משפט דילוורת",
+      "könig's theorem": "משפט קוניג",
+      "minimum chain cover": "כיסוי בשרשראות",
+      "algorithm": "אלגוריתם",
+      "only with deterministic algorithms": "אלגוריתמים דטרמיניסטיים",
+      "decision algorithms": "אלגוריתמי הכרעה",
+      "optimization algorithms": "אלגוריתמי אופטימיזציה",
+      "describe an algorithm": "תיאור אלגוריתם",
+      "arbitrary input": "הוכחה ישירה — על קלט אלמוני",
+      "star or a path": "חוט",
+      "many divide-and-conquer": "הפרד ומשול",
+      "dynamic-programming": "תכנות דינאמי",
+      "try to build observations": "הבחנות",
+      "running-time complexity": "סיבוכיות זמן ריצה",
+      "limit-based equivalent definitions": "הגדרות שקולות",
+      "describe an asymptotic relation": "יחס אסימפטוטי",
+      "running-time comparison table": "השוואת זמני ריצה",
+      "comparing the asymptotic growth": "גדילה אסימפטוטית",
+      "graph": "גרף",
+      "light introduction to graphs": "הקדמה קלה לגרפים",
+      "graph is called directed": "מכוון",
+      "undirected graph": "גרף לא מכוון",
+      "builds a bipartite graph": "גרף דו-צדדי",
+      "full solution": "הפתרון המלא",
+      "correctness": "הוכחת נכונות",
+      "trivial solution": "הפתרון הטריוויאלי",
+      "optimal solution": "הפתרון האופטימלי",
+      "bipartite graph": "גרף דו-צדדי",
+      "solution": "הפתרון",
+      "game graph black": "צומת שחורה",
+      "winning-state algorithm": "הפתרון — אלגוריתם",
+      "first exercise": "תרגיל ראשון",
+      "maximum input size": "גודל הקלט המקסימלי",
+      "second exercise": "תרגיל שני",
+      "third exercise": "תרגיל שלישי",
+      "rami and dina": "רמי ודינה",
+      "first observation": "אבחנה ראשונה",
+      "condition of the recursion": "תנאי העצירה",
+      "mapped to binary trees": "עצים בינאריים",
+      "frequency": "תדירות",
+      "objective function": "פונקציית המטרה",
+      "divide step": "הפרד",
+      "conquer step": "משול",
+      "implemented with a min-heap": "ערמת מינימום",
+      "another implementation": "מימוש נוסף",
+      "improved solution": "הפתרון המשופר",
+      "majority element problem": "בעיית האיבר המרובה",
+      "encoding examples": "דוגמאות לקידודים",
+      "maximum subarray problem": "בעיית תת מערך גדול ביותר",
+      "subarray the heaviest interval": "האינטרוול הכבד ביותר",
+      "first solution": "פתרון ראשון",
+      "correctness proof": "הוכחת נכונות",
+      "claim": "טענה",
+      "codes are uniquely decodable": "ניתנים לפענוח יחיד",
+      "three observations": "שלוש אבחנות",
+      "simple exchange argument": "טיעון החלפה",
+      "optimality of huffman coding": "אופטימליות הפתרון",
+      "greedy algorithm": "אלגוריתם חמדן",
+      "setting of optimization problems": "בעיות אופטימיזציה",
+      "comparison argument": "טיעון ההשוואה",
+      "depth": "עומק",
+      "maximum depth": "העומק המקסימלי",
+      "vertex cover": "כיסוי בצמתים",
+      "minimum vertex cover": "כיסוי מינימלי בצמתים",
+      "computational models course": "מודלים חישוביים",
+      "set cover problem": "בעיית הכיסוי בקבוצות",
+      "greedy approximation": "קירוב חמדני",
+      "diner-seating problem": "בעיית שיבוץ הסועדים",
+      "single table": "שיבוץ הסועדים בשולחן בודד",
+      "greedy set cover approximation": "קירוב חמדני",
+      "vertex cover on trees": "כיסוי מינימלי בצמתים על עצים",
+      "coin change problem": "בעיית המטבעות",
+      "technique called dynamic programming": "תכנון דינאמי",
+      "auxiliary claim": "טענת עזר",
+      "set cover analysis": "בעיית הכיסוי בקבוצות",
+      "pigeonhole principle": "שובך היונים",
+      "greedy set cover": "קירוב לכיסוי בקבוצות",
+      "left as homework": "תרגיל לבית",
+      "golden ratio": "יחס הזהב",
+      "lis": "תת סדרה עולה ארוכה ביותר",
+      "heaviest independent set": "קבוצה בלתי תלויה כבדה ביותר",
+      "double-computation problem": "בעיית החישוב הכפול",
+      "recursion to iteration": "מרקורסיה לאיטרציה",
+      "path in a grid": "מסלול כבד ביותר בלוח",
+      "final solution": "הפתרון הסופי",
+      "performs a binary search": "חיפוש בינארי",
+      "fibonacci computation example": "חישוב סדרת פיבונאצ'י",
+      "exposes the double-computation problem": "בעיית החישוב הכפול",
+      "grid exercise": "מסלול כבד ביותר בלוח",
+      "path graph exercise": "קבוצה בלתי תלויה כבדה ביותר בגרף מסלולי",
+      "consider two greedy attempts": "ניסיונות חמדניים",
+      "example run": "דוגמת הרצה",
+      "cover on trees exercise": "בעיית כיסוי מינימלי בצמתים על עצים",
+      "way to the solution": "הבחנות בדרך לפתרון",
+      "path in a dag": "מסלול ארוך ביותר בגרף מכוון וחסר מעגלים",
+      "equalizing any two suffixes": "סיפות",
+      "tiling recurrences": "נוסחאות נסיגה",
+      "tiling problem": "בעיית ריצוף האריחים",
+      "example solution": "פתרון דוגמה",
+      "tiles and i tiles": "אריחי L ואריחי I",
+      "proved correct": "הוכחת נכונות",
+      "approached through observations": "הבחנות בדרך לפתרון",
+      "minimum spanning trees": "תכונת המעגל לעצים פורשים מינימליים",
+      "recalled as a reminder": "תזכורת",
+      "every stage a forest": "יער",
+      "priority queue": "תור עדיפויות",
+      "part of the deck": "תרגילים",
+      "minimum-product spanning tree exercise": "עץ פורש עם מכפלה מינימלית",
+      "minimum spanning tree exercise": "יחודיות של העץ הפורש המינימלי",
+      "uses an exchange argument": "טיעון החלפה",
+      "lightest paths": "מסלולים קלים ביותר",
+      "reversing the graph": "להפוך את הגרף",
+      "instead of running floyd-warshall": "פלויד ורשאל",
+      "example the floyd-warshall algorithm": "אלגוריתם פלויד-ורשאל",
+      "black box": "קופסא שחורה",
+      "multiplication of binary matrices": "כפל מטריצות בינאריות",
+      "use a given edge": "מסלולים קלים ביותר המשתמשים בקשת מסויימת",
+      "exercise": "מסלול הכי קל עם משקלים 1...10",
+      "get from rosh hanikra": "ראש הנקרה",
+      "eilat": "אילת",
+      "matrix multiplication via apsp": "כפל מטריצות בינאריות באמצעות APSP",
+      "following tripartite graph": "גרף תלת צדדי",
+      "coupon exercise": "מסלול קל ביותר עם קופון",
+      "shortest zigzag path exercise": "מסלול מזגזג הכי קצר",
+      "graph is duplicated": "נשכפל את הגרף",
+      "homework question": "שאלה לבית",
+      "bounded edge weights exercise": "מסלול הכי קל עם קשתות במשקל מוגבל",
+      "ta from metula": "מטולה",
+      "under the same heading": "מסלול הכי קל עם קשתות במשקל מוגבל",
+      "found by binary search": "חיפוש בינארי",
+      "contradiction": "נניח בשלילה",
       "flow": "זרימה",
       "flow network": "רשת זרימה",
       "flow value": "ערך הזרימה",
@@ -16,9 +225,7 @@
       "edge": "קשת",
       "vertex": "קודקוד",
       "heap": "ערימה",
-      "relaxation": "הרפיה",
-      "dynamic programming": "תכנות דינמי",
-      "divide and conquer": "הפרד ומשול"
+      "relaxation": "הרפיה"
     },
     "translation_fixes": [
       {
@@ -60,41 +267,176 @@
       "letter": "character",
       "change": "edit",
       "multiply": "multiplication"
-    }
+    },
+    "unit_label_he": "תרגול"
   },
   "weeks": [
     {
       "week": 1,
-      "title": "Tutorial 1 — Intro to Algorithm Analysis",
-      "title_he": "תרגול 1 — מבוא לניתוח אלגוריתמים",
+      "title": "Tutorial 1 — Introduction to Algorithm Design and Analysis",
+      "title_he": "תרגול 1 — מבוא לתכנון וניתוח אלגוריתמים",
       "source_pdf": "material/lectures/Tutorial 1 (2).pdf",
       "topics": [
         {
-          "id": "algorithm_analysis",
-          "name": "Algorithm analysis",
+          "id": "algorithm_definition",
+          "name": "Algorithm definition and categories",
           "aliases": [
-            "complexity analysis",
-            "asymptotic notation",
-            "big o"
+            "what is an algorithm",
+            "deterministic algorithm",
+            "deterministic algorithms",
+            "decision algorithm",
+            "decision algorithms",
+            "optimization algorithm",
+            "optimization algorithms",
+            "מהו אלגוריתם",
+            "אלגוריתמים דטרמיניסטיים",
+            "אלגוריתמי הכרעה",
+            "אלגוריתמי אופטימיזציה"
           ],
           "prerequisites": []
         },
         {
-          "id": "insertion_sort",
-          "name": "Insertion sort",
-          "aliases": [],
+          "id": "pseudocode",
+          "name": "Pseudo-code",
+          "aliases": [
+            "pseudocode",
+            "describing an algorithm",
+            "פסודו-קוד",
+            "תיאור אלגוריתם"
+          ],
           "prerequisites": []
         },
         {
-          "id": "selection_sort",
-          "name": "Selection sort",
-          "aliases": [],
+          "id": "correctness_proofs",
+          "name": "Proving algorithm correctness",
+          "aliases": [
+            "proof of correctness",
+            "correctness proof",
+            "direct proof",
+            "proof by construction",
+            "הוכחת נכונות",
+            "הוכחה ישירה",
+            "הוכחה בבנייה"
+          ],
           "prerequisites": []
         },
         {
-          "id": "bubble_sort",
-          "name": "Bubble sort",
-          "aliases": [],
+          "id": "problem_solving_tips",
+          "name": "Problem-solving tips",
+          "aliases": [
+            "problem solving strategies",
+            "טיפים לפתרון בעיות"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "algorithm_analysis",
+          "name": "Running time complexity and asymptotic notation",
+          "aliases": [
+            "algorithm analysis",
+            "complexity analysis",
+            "time complexity",
+            "running time complexity",
+            "asymptotic notation",
+            "asymptotic order of growth",
+            "Big-O",
+            "big O notation",
+            "Big-Omega",
+            "Big-Theta",
+            "Omega notation",
+            "Theta notation",
+            "little-o",
+            "little-omega",
+            "סיבוכיות זמן ריצה",
+            "יחס אסימפטוטי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "running_time_comparison",
+          "name": "Running time comparison table",
+          "aliases": [
+            "comparison of running times",
+            "growth rate comparison table",
+            "השוואת זמני ריצה"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "maximum_input_size_problem",
+          "name": "Maximum input size within one hour",
+          "aliases": [
+            "largest input size in one hour",
+            "maximum input size in one hour",
+            "גודל הקלט המקסימלי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "ordering_functions_by_growth",
+          "name": "Ordering functions by asymptotic growth",
+          "aliases": [
+            "ordering functions by growth rate",
+            "ranking functions by growth rate",
+            "סדרו את הפונקציות"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "stirling_approximation",
+          "name": "Stirling's approximation",
+          "aliases": [
+            "Stirling approximation",
+            "Stirling's formula",
+            "Stirling formula",
+            "קירוב סטרלינג"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "diners_problem",
+          "name": "Diners problem",
+          "aliases": [
+            "restaurant diners problem",
+            "maximum simultaneous diners",
+            "maximum number of overlapping intervals",
+            "בעיית הסועדים"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "merged_median_problem",
+          "name": "Merged median problem",
+          "aliases": [
+            "merged median",
+            "median of two sorted arrays",
+            "בעיית החציון הממוזג",
+            "חציון הממוזג"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "graph_basics",
+          "name": "Directed and undirected graphs",
+          "aliases": [
+            "directed graph",
+            "undirected graph",
+            "גרף מכוון",
+            "גרף לא מכוון"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "graph_pursuit_game",
+          "name": "Pursuit-evasion game",
+          "aliases": [
+            "Rami and Dina",
+            "pursuit game on a graph",
+            "cops and robbers",
+            "game state graph",
+            "game on a graph",
+            "רמי ודינה"
+          ],
           "prerequisites": []
         }
       ]
@@ -120,48 +462,101 @@
           ]
         },
         {
-          "id": "master_theorem",
-          "name": "Master theorem",
-          "aliases": [
-            "משפט המאסטר"
-          ],
-          "prerequisites": [
-            "algorithm_analysis"
-          ]
-        },
-        {
           "id": "merge_sort",
           "name": "Merge sort",
           "aliases": [
             "mergesort",
             "מיון מיזוג"
           ],
-          "prerequisites": [
-            "divide_and_conquer"
-          ]
+          "prerequisites": []
         },
         {
-          "id": "binary_search",
-          "name": "Binary search",
+          "id": "recursion_tree",
+          "name": "Recursion tree",
           "aliases": [
-            "חיפוש בינארי"
-          ],
-          "prerequisites": [
-            "divide_and_conquer"
-          ]
-        },
-        {
-          "id": "karatsuba",
-          "name": "Karatsuba",
-          "aliases": [
-            "קרצובה"
+            "recursion-tree method",
+            "עץ הרקורסיה",
+            "עץ רקורסיה"
           ],
           "prerequisites": []
         },
         {
           "id": "maximum_profit_problem",
           "name": "Maximum profit problem",
-          "aliases": [],
+          "aliases": [
+            "max profit problem",
+            "best time to buy and sell stock",
+            "בעיית הרווח המקסימלי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "fast_exponentiation",
+          "name": "Fast exponentiation",
+          "aliases": [
+            "exponentiation by squaring",
+            "binary exponentiation",
+            "repeated squaring",
+            "fast power",
+            "חזקה מהירה"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "majority_element",
+          "name": "Majority element",
+          "aliases": [
+            "majority element problem",
+            "בעיית האיבר המרובה",
+            "איבר מרובה"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "prefix_free_codes",
+          "name": "Prefix-free codes",
+          "aliases": [
+            "prefix-free code",
+            "prefix code",
+            "prefix codes",
+            "קודים חסרי רישא",
+            "קודים חסרי רישות",
+            "קוד חסר רישות"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "huffman_coding",
+          "name": "Huffman coding",
+          "aliases": [
+            "huffman",
+            "קידוד הופמן",
+            "הופמן"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "exchange_argument",
+          "name": "Exchange argument",
+          "aliases": [
+            "טיעון החלפה",
+            "exchange proof",
+            "טיעון ההחלפה"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "maximum_subarray",
+          "name": "Maximum subarray",
+          "aliases": [
+            "maximum subarray problem",
+            "maximum-sum subarray",
+            "largest subarray",
+            "heaviest interval",
+            "תת מערך גדול ביותר",
+            "תת מערך מקסימלי",
+            "אינטרוול כבד ביותר"
+          ],
           "prerequisites": []
         }
       ]
@@ -177,45 +572,101 @@
           "name": "Greedy algorithms",
           "aliases": [
             "greedy algorithm",
+            "greedy method",
+            "אלגוריתמים חמדניים",
+            "אלגוריתם חמדן",
             "אלגוריתם חמדני"
           ],
           "prerequisites": []
         },
         {
+          "id": "greedy_stays_ahead",
+          "name": "Greedy stays ahead argument",
+          "aliases": [
+            "greedy stays ahead",
+            "comparison argument",
+            "טיעון ההשוואה",
+            "טיעון השוואה"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "coin_change",
+          "name": "Coin change",
+          "aliases": [
+            "coin change problem",
+            "change-making problem",
+            "minimum coin change",
+            "greedy coin change",
+            "בעיית המטבעות"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "interval_partitioning",
+          "name": "Interval partitioning",
+          "aliases": [
+            "interval partitioning problem",
+            "scheduling all intervals",
+            "interval coloring",
+            "interval graph coloring",
+            "diner seating problem",
+            "בעיית שיבוץ הסועדים"
+          ],
+          "prerequisites": []
+        },
+        {
           "id": "activity_selection",
-          "name": "Activity selection",
+          "name": "Interval scheduling",
           "aliases": [
-            "interval scheduling"
+            "interval scheduling problem",
+            "activity selection",
+            "activity selection problem",
+            "earliest finish time",
+            "single-table diner scheduling",
+            "שיבוץ הסועדים בשולחן בודד",
+            "בעיית שיבוץ הסועדים בשולחן בודד"
           ],
           "prerequisites": []
         },
         {
-          "id": "fractional_knapsack",
-          "name": "Fractional knapsack",
-          "aliases": [],
-          "prerequisites": []
-        },
-        {
-          "id": "0_1_knapsack",
-          "name": "0/1 knapsack",
-          "aliases": [],
-          "prerequisites": []
-        },
-        {
-          "id": "huffman_coding",
-          "name": "Huffman coding",
+          "id": "set_cover",
+          "name": "Set cover",
           "aliases": [
-            "huffman",
-            "הופמן"
+            "set cover problem",
+            "set cover approximation",
+            "greedy set cover",
+            "קירוב לכיסוי בקבוצות",
+            "בעיית הכיסוי בקבוצות",
+            "כיסוי בקבוצות"
           ],
-          "prerequisites": [
-            "greedy_algorithms"
-          ]
+          "prerequisites": []
         },
         {
-          "id": "exchange_argument",
-          "name": "Exchange argument",
-          "aliases": [],
+          "id": "minimum_vertex_cover",
+          "name": "Minimum vertex cover on trees",
+          "aliases": [
+            "minimum vertex cover",
+            "vertex cover",
+            "vertex cover on trees",
+            "tree vertex cover",
+            "MVC",
+            "כיסוי מינימלי בצמתים על עצים",
+            "כיסוי מינימלי בצמתים",
+            "כיסוי בצמתים"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "carpenter_problem",
+          "name": "Carpenter problem",
+          "aliases": [
+            "carpenter's problem",
+            "beam cutting problem",
+            "beam cutting",
+            "overnight stops problem",
+            "בעיית הנגר"
+          ],
           "prerequisites": []
         }
       ]
@@ -223,7 +674,7 @@
     {
       "week": 4,
       "title": "Tutorial 4 — Dynamic Programming",
-      "title_he": "תרגול 4 — תכנות דינמי",
+      "title_he": "תרגול 4 — תכנון דינאמי",
       "source_pdf": "material/lectures/Tutorial 4 (2).pdf",
       "topics": [
         {
@@ -231,83 +682,147 @@
           "name": "Dynamic programming",
           "aliases": [
             "DP",
-            "תכנות דינמי",
-            "תכנון דינמי"
+            "תכנון דינאמי"
           ],
           "prerequisites": []
         },
         {
           "id": "fibonacci",
-          "name": "Fibonacci",
+          "name": "Fibonacci sequence",
           "aliases": [
-            "פיבונאצ'י",
-            "פיבונצי"
+            "Fibonacci",
+            "Fibonacci numbers",
+            "n-th Fibonacci number",
+            "סדרת פיבונאצ'י",
+            "פיבונאצ'י"
           ],
           "prerequisites": []
         },
         {
-          "id": "rod_cutting",
-          "name": "Rod cutting",
-          "aliases": [],
-          "prerequisites": []
-        },
-        {
-          "id": "longest_common_subsequence",
-          "name": "Longest common subsequence",
+          "id": "heaviest_grid_path",
+          "name": "Heaviest path in a grid",
           "aliases": [
-            "LCS"
+            "heaviest grid path",
+            "maximum-weight path in a grid",
+            "maximum path sum in a grid",
+            "מסלול כבד ביותר בלוח"
           ],
-          "prerequisites": [
-            "dynamic_programming"
-          ]
-        }
-      ]
-    },
-    {
-      "week": 5,
-      "title": "Tutorial 5 — Advanced DP",
-      "title_he": "תרגול 5 — תכנות דינמי מתקדם",
-      "source_pdf": "material/lectures/Tutorial algo 5.pdf",
-      "topics": [
-        {
-          "id": "coin_change",
-          "name": "Coin change",
-          "aliases": [],
           "prerequisites": []
-        },
-        {
-          "id": "matrix_chain_multiplication",
-          "name": "Matrix chain multiplication",
-          "aliases": [],
-          "prerequisites": [
-            "dynamic_programming"
-          ]
-        },
-        {
-          "id": "edit_distance",
-          "name": "Edit distance",
-          "aliases": [
-            "levenshtein",
-            "מרחק עריכה"
-          ],
-          "prerequisites": [
-            "dynamic_programming"
-          ]
         },
         {
           "id": "longest_increasing_subsequence",
           "name": "Longest increasing subsequence",
           "aliases": [
-            "LIS"
+            "LIS",
+            "longest strictly increasing subsequence",
+            "תת סדרה עולה ארוכה ביותר"
           ],
-          "prerequisites": [
-            "dynamic_programming"
-          ]
+          "prerequisites": []
         },
         {
-          "id": "minimum_vertex_cover",
-          "name": "Minimum vertex cover",
-          "aliases": [],
+          "id": "maximum_weight_independent_set",
+          "name": "Maximum-weight independent set in a path graph",
+          "aliases": [
+            "heaviest independent set in a path graph",
+            "heaviest independent set",
+            "maximum-weight independent set",
+            "MWIS",
+            "קבוצה בלתי תלויה כבדה ביותר בגרף מסלולי",
+            "קבוצה בלתי תלויה כבדה ביותר"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "path_graph",
+          "name": "Path graph",
+          "aliases": [
+            "linear graph",
+            "גרף מסלולי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "independent_set",
+          "name": "Independent set",
+          "aliases": [
+            "stable set",
+            "independent vertex set",
+            "קבוצה בלתי תלויה"
+          ],
+          "prerequisites": []
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "title": "Tutorial 5 — Dynamic Programming (Continued)",
+      "title_he": "תרגול 5 — תכנון דינאמי - המשך",
+      "source_pdf": "material/lectures/Tutorial algo 5.pdf",
+      "topics": [
+        {
+          "id": "directed_acyclic_graph",
+          "name": "Directed acyclic graph",
+          "aliases": [
+            "DAG",
+            "DAGs",
+            "directed acyclic graphs",
+            "acyclic directed graph",
+            "גרף מכוון חסר מעגלים",
+            "גרף מכוון וחסר מעגלים",
+            "גמ\"ל"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "longest_path_dag",
+          "name": "Longest path in a DAG",
+          "aliases": [
+            "longest path in a directed acyclic graph",
+            "DAG longest path",
+            "מסלול ארוך ביותר בגרף מכוון וחסר מעגלים",
+            "בעיית המסלול הארוך ביותר בגמ\"ל"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "edit_distance",
+          "name": "Edit distance",
+          "aliases": [
+            "Levenshtein distance",
+            "Levenshtein",
+            "edit (Levenshtein) distance",
+            "מרחק עריכה"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "tiling_count",
+          "name": "Counting 2×n tilings with L and I tiles",
+          "aliases": [
+            "tiling problem",
+            "2×n tiling",
+            "2xn tiling",
+            "2 x n tiling",
+            "L and I tiles",
+            "domino and tromino tiling",
+            "בעיית ריצוף האריחים",
+            "ריצוף האריחים",
+            "בעיית הריצוף",
+            "אריחי L ואריחי I"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "tree_diameter",
+          "name": "Tree diameter",
+          "aliases": [
+            "diameter of a tree",
+            "diameter of the tree",
+            "longest path in a tree",
+            "קוטר בעץ",
+            "קוטר העץ",
+            "מסלול ארוך ביותר בעץ"
+          ],
           "prerequisites": []
         }
       ]
@@ -315,33 +830,29 @@
     {
       "week": 6,
       "title": "Tutorial 6 — Dynamic Programming and Graph Traversal",
-      "title_he": "תרגול 6 — תכנות דינמי וסריקות גרפים",
+      "title_he": "תרגול 6 — תכנון דינאמי וסריקות גרפים",
       "source_pdf": "material/lectures/Tutorial algo 6.pdf",
       "topics": [
         {
-          "id": "subset_sum",
-          "name": "Subset sum",
-          "aliases": [],
-          "prerequisites": []
-        },
-        {
-          "id": "partition_into_equal_subsets",
-          "name": "Partition into equal subsets",
+          "id": "equal_sum_split_count",
+          "name": "Counting equal-sum splits",
           "aliases": [
-            "partition problem"
+            "equal-sum split",
+            "equal-sum partition",
+            "split {1, …, n} into two sets with equal sums",
+            "חלוקה לשתי קבוצות שסכומן שווה"
           ],
           "prerequisites": []
         },
         {
-          "id": "count_subsets",
-          "name": "Count subsets",
-          "aliases": [],
-          "prerequisites": []
-        },
-        {
-          "id": "grid_paths",
-          "name": "Grid paths",
-          "aliases": [],
+          "id": "graph_representations",
+          "name": "Graph representations",
+          "aliases": [
+            "adjacency matrix",
+            "adjacency list",
+            "מטריצת שכנויות",
+            "רשימת שכנויות"
+          ],
           "prerequisites": []
         },
         {
@@ -350,6 +861,7 @@
           "aliases": [
             "BFS",
             "breadth first search",
+            "BFS tree",
             "חיפוש לרוחב"
           ],
           "prerequisites": []
@@ -368,28 +880,36 @@
           "id": "unweighted_shortest_paths",
           "name": "Unweighted shortest paths",
           "aliases": [
-            "unweighted shortest path"
+            "shortest paths in an unweighted graph",
+            "multiple sources"
           ],
-          "prerequisites": [
-            "breadth_first_search"
-          ]
+          "prerequisites": []
         },
         {
           "id": "topological_ordering",
           "name": "Topological ordering",
           "aliases": [
             "topological sort",
+            "topological sorting",
             "מיון טופולוגי"
           ],
-          "prerequisites": [
-            "directed_acyclic_graph"
-          ]
+          "prerequisites": []
         },
         {
-          "id": "directed_acyclic_graph",
-          "name": "Directed acyclic graph",
+          "id": "counting_paths_dag",
+          "name": "Counting paths in a DAG",
           "aliases": [
-            "DAG"
+            "number of paths in a DAG",
+            "counting routes"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "layered_graph",
+          "name": "Layered graph",
+          "aliases": [
+            "even-length paths",
+            "graph duplication"
           ],
           "prerequisites": []
         }
@@ -402,55 +922,113 @@
       "source_pdf": "material/lectures/Tutorial algo 7.pdf",
       "topics": [
         {
-          "id": "minimum_spanning_tree",
-          "name": "Minimum spanning tree",
+          "id": "spanning_tree",
+          "name": "Spanning tree",
           "aliases": [
-            "minimum spanning trees",
-            "MST",
-            "עץ פורש מינימלי"
+            "spanning trees",
+            "עץ פורש",
+            "עצים פורשים"
           ],
           "prerequisites": []
         },
         {
-          "id": "kruskal",
-          "name": "Kruskal",
+          "id": "minimum_spanning_tree",
+          "name": "Minimum spanning tree",
           "aliases": [
-            "קרוסקל"
+            "minimum spanning trees",
+            "minimum-weight spanning tree",
+            "MST",
+            "עץ פורש מינימלי",
+            "עצים פורשים מינימליים"
           ],
-          "prerequisites": [
-            "minimum_spanning_tree",
-            "union_find"
-          ]
+          "prerequisites": []
         },
         {
-          "id": "prim",
-          "name": "Prim",
+          "id": "cycle_property",
+          "name": "Cycle property",
           "aliases": [
-            "פרים"
-          ],
-          "prerequisites": [
-            "minimum_spanning_tree",
-            "greedy_algorithms"
-          ]
-        },
-        {
-          "id": "union_find",
-          "name": "Union find",
-          "aliases": [
-            "disjoint set"
+            "MST cycle property",
+            "cycle property for minimum spanning trees",
+            "תכונת המעגל",
+            "תכונת המעגל לעצים פורשים מינימליים"
           ],
           "prerequisites": []
         },
         {
           "id": "cut_property",
           "name": "Cut property",
-          "aliases": [],
+          "aliases": [
+            "MST cut property",
+            "cut property for minimum spanning trees",
+            "תכונת החתך",
+            "תכונת החתך לעצים פורשים מינימליים"
+          ],
           "prerequisites": []
         },
         {
-          "id": "cycle_property",
-          "name": "Cycle property",
-          "aliases": [],
+          "id": "graph_cut",
+          "name": "Cut in a graph",
+          "aliases": [
+            "graph cut",
+            "edge cut",
+            "חתך בגרף"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "kruskal",
+          "name": "Kruskal's algorithm",
+          "aliases": [
+            "Kruskal",
+            "Kruskal algorithm",
+            "קרוסקל",
+            "אלגוריתם של קרוסקל"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "prim",
+          "name": "Prim's algorithm",
+          "aliases": [
+            "Prim",
+            "Prim algorithm",
+            "פרים",
+            "אלגוריתם של פרים"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "maximum_spanning_tree",
+          "name": "Maximum spanning tree",
+          "aliases": [
+            "maximum spanning trees",
+            "maximum-weight spanning tree",
+            "max spanning tree",
+            "עץ פורש מקסימלי"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "minimum_product_spanning_tree",
+          "name": "Minimum-product spanning tree",
+          "aliases": [
+            "minimum product spanning tree",
+            "spanning tree with minimum product",
+            "spanning tree with minimum product of edge weights",
+            "עץ פורש עם מכפלה מינימלית"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "mst_uniqueness",
+          "name": "Uniqueness of the minimum spanning tree",
+          "aliases": [
+            "unique minimum spanning tree",
+            "uniqueness of the MST",
+            "MST uniqueness",
+            "unique MST",
+            "יחודיות של העץ הפורש המינימלי"
+          ],
           "prerequisites": []
         }
       ]
@@ -466,44 +1044,150 @@
           "name": "Weighted shortest paths",
           "aliases": [
             "weighted shortest path",
+            "lightest path",
+            "lightest paths",
+            "minimum-weight path",
+            "shortest path in a weighted graph",
+            "מסלול קל ביותר",
+            "מסלולים קלים ביותר",
+            "מסלול הכי קל",
+            "מסלול הקל ביותר",
             "מסלול קצר ביותר בגרף ממושקל"
           ],
           "prerequisites": []
         },
         {
-          "id": "dijkstra",
-          "name": "Dijkstra",
+          "id": "lightest_path_through_edge",
+          "name": "Lightest paths through a given edge",
           "aliases": [
-            "דייקסטרה",
-            "דיקסטרה"
+            "lightest path through a given edge",
+            "lightest paths that use a specific edge",
+            "shortest path through a specific edge",
+            "shortest paths that use a given edge",
+            "מסלולים קלים ביותר המשתמשים בקשת מסויימת",
+            "מסלולים קלים ביותר המשתמשים בקשת מסוימת"
           ],
-          "prerequisites": [
-            "greedy_algorithms",
-            "breadth_first_search"
-          ]
+          "prerequisites": []
         },
         {
           "id": "bellman_ford",
-          "name": "Bellman Ford",
+          "name": "Bellman-Ford algorithm",
           "aliases": [
+            "Bellman-Ford",
+            "Bellman Ford",
+            "Belman-Ford",
+            "בלמן-פורד",
             "בלמן פורד"
           ],
           "prerequisites": []
         },
         {
-          "id": "floyd_warshall",
-          "name": "Floyd Warshall",
+          "id": "lightest_path_small_integer_weights",
+          "name": "Lightest path with integer weights 1 to 10",
           "aliases": [
-            "פלויד וורשל"
+            "lightest path with weights 1 to 10",
+            "shortest path with integer weights 1 to 10",
+            "shortest path with small integer weights",
+            "splitting edges into unit-weight edges",
+            "edge splitting",
+            "מסלול הכי קל עם משקלים 1...10",
+            "פיצול קשתות"
           ],
           "prerequisites": []
         },
         {
-          "id": "negative_cycle",
-          "name": "Negative cycle",
+          "id": "dijkstra",
+          "name": "Dijkstra's algorithm",
           "aliases": [
-            "negative cycles",
-            "מעגל שלילי"
+            "Dijkstra",
+            "Dijkstra algorithm",
+            "Dijkstras algorithm",
+            "Djikstra",
+            "דייקסטרא",
+            "דייקסטרה",
+            "דיקסטרה",
+            "דיקסטרא"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "all_pairs_shortest_paths",
+          "name": "All-pairs shortest paths",
+          "aliases": [
+            "APSP",
+            "all pairs shortest path",
+            "all-pairs shortest path problem",
+            "מסלולים קצרים ביותר בין כל הזוגות"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "boolean_matrix_multiplication_apsp",
+          "name": "Boolean matrix multiplication via APSP",
+          "aliases": [
+            "Boolean matrix multiplication",
+            "binary matrix multiplication",
+            "BMM",
+            "reduction from Boolean matrix multiplication to APSP",
+            "כפל מטריצות בינאריות באמצעות APSP",
+            "כפל מטריצות בינאריות",
+            "כפל מטריצות בוליאניות"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "lightest_path_with_coupon",
+          "name": "Lightest path with a half-price coupon",
+          "aliases": [
+            "lightest path with a coupon",
+            "shortest path with a coupon",
+            "shortest path with coupon",
+            "coupon shortest path",
+            "shortest path with one half-price edge",
+            "מסלול קל ביותר עם קופון",
+            "מסלול הכי קל עם קופון",
+            "מסלול עם קופון"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "zigzag_shortest_path",
+          "name": "Shortest alternating-color (zigzag) path",
+          "aliases": [
+            "shortest zigzag path",
+            "zigzag path",
+            "alternating-color shortest path",
+            "red-blue alternating path",
+            "shortest path with alternating edge colors",
+            "מסלול מזגזג הכי קצר",
+            "מסלול מזגזג קצר ביותר",
+            "מסלול מזגזג"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "lightest_path_edge_weight_limit",
+          "name": "Lightest path with an edge-weight limit",
+          "aliases": [
+            "lightest path with bounded edge weights",
+            "shortest path with an edge-weight limit",
+            "shortest path with a per-edge budget",
+            "shortest path avoiding edges heavier than L",
+            "מסלול הכי קל עם קשתות במשקל מוגבל",
+            "מסלול קל ביותר עם קשתות במשקל מוגבל",
+            "קשתות במשקל מוגבל"
+          ],
+          "prerequisites": []
+        },
+        {
+          "id": "minimum_edge_weight_limit",
+          "name": "Minimum edge-weight limit for an s-t path",
+          "aliases": [
+            "minimum bottleneck path",
+            "minimax path",
+            "smallest edge-weight limit",
+            "minimum edge-weight limit",
+            "binary search on the weight limit"
           ],
           "prerequisites": []
         }
@@ -524,9 +1208,7 @@
             "זרימה מקסימלית",
             "זרימה מרבית"
           ],
-          "prerequisites": [
-            "flow_networks"
-          ]
+          "prerequisites": []
         },
         {
           "id": "flow_networks",
@@ -548,9 +1230,7 @@
             "גרף שיורי",
             "רשת שיורית"
           ],
-          "prerequisites": [
-            "flow_networks"
-          ]
+          "prerequisites": []
         },
         {
           "id": "augmenting_paths",
@@ -560,9 +1240,7 @@
             "מסילה מגדילה",
             "מסלול מגדיל"
           ],
-          "prerequisites": [
-            "residual_networks"
-          ]
+          "prerequisites": []
         },
         {
           "id": "minimum_cut",
@@ -581,9 +1259,7 @@
             "פורד פולקרסון",
             "פורד פלקרסון"
           ],
-          "prerequisites": [
-            "augmenting_paths"
-          ]
+          "prerequisites": []
         },
         {
           "id": "edmonds_karp",
@@ -592,10 +1268,7 @@
             "edmonds karp",
             "אדמונדס קארפ"
           ],
-          "prerequisites": [
-            "ford_fulkerson",
-            "breadth_first_search"
-          ]
+          "prerequisites": []
         },
         {
           "id": "bipartite_matching",
@@ -606,9 +1279,7 @@
             "זיווג מושלם",
             "שידוך מקסימום"
           ],
-          "prerequisites": [
-            "maximum_flow"
-          ]
+          "prerequisites": []
         },
         {
           "id": "menger_s_theorem",

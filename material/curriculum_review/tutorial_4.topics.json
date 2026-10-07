@@ -1,0 +1,64 @@
+{
+  "week": 4,
+  "title": "Tutorial 4 — Dynamic Programming",
+  "title_he": "תרגול 4 — תכנון דינאמי",
+  "source_pdf": "material/lectures/Tutorial 4 (2).pdf",
+  "topics": [
+    {
+      "id": "dynamic_programming",
+      "name": "Dynamic programming",
+      "aliases": ["DP", "תכנון דינאמי"],
+      "pages": [2, 14],
+      "kind": "concept"
+    },
+    {
+      "id": "fibonacci",
+      "name": "Fibonacci sequence",
+      "aliases": ["Fibonacci", "Fibonacci numbers", "n-th Fibonacci number", "סדרת פיבונאצ'י", "פיבונאצ'י"],
+      "pages": [3, 14],
+      "kind": "problem"
+    },
+    {
+      "id": "heaviest_grid_path",
+      "name": "Heaviest path in a grid",
+      "aliases": ["heaviest grid path", "maximum-weight path in a grid", "maximum path sum in a grid", "מסלול כבד ביותר בלוח"],
+      "pages": [15, 21],
+      "kind": "problem"
+    },
+    {
+      "id": "longest_increasing_subsequence",
+      "name": "Longest increasing subsequence",
+      "aliases": ["LIS", "longest strictly increasing subsequence", "תת סדרה עולה ארוכה ביותר"],
+      "pages": [22, 70],
+      "kind": "problem"
+    },
+    {
+      "id": "maximum_weight_independent_set",
+      "name": "Maximum-weight independent set in a path graph",
+      "aliases": ["heaviest independent set in a path graph", "heaviest independent set", "maximum-weight independent set", "MWIS", "קבוצה בלתי תלויה כבדה ביותר בגרף מסלולי", "קבוצה בלתי תלויה כבדה ביותר"],
+      "pages": [71, 102],
+      "kind": "problem"
+    },
+    {
+      "id": "path_graph",
+      "name": "Path graph",
+      "aliases": ["linear graph", "גרף מסלולי"],
+      "pages": [72, 72],
+      "kind": "concept"
+    },
+    {
+      "id": "independent_set",
+      "name": "Independent set",
+      "aliases": ["stable set", "independent vertex set", "קבוצה בלתי תלויה"],
+      "pages": [73, 74],
+      "kind": "concept"
+    },
+    {
+      "id": "minimum_vertex_cover",
+      "name": "Minimum vertex cover on trees",
+      "aliases": ["minimum vertex cover", "vertex cover on trees", "vertex cover", "כיסוי מינימלי בצמתים על עצים", "כיסוי מינימלי בצמתים", "כיסוי בצמתים"],
+      "pages": [103, 112],
+      "kind": "problem"
+    }
+  ]
+}

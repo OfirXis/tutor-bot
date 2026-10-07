@@ -1,0 +1,85 @@
+{
+  "week": 8,
+  "title": "Tutorial 8 — Shortest Paths",
+  "title_he": "תרגול 8 — מסלולים קצרים ביותר",
+  "source_pdf": "material/lectures/Tutorial algo 8.pdf",
+  "topics": [
+    {
+      "id": "weighted_shortest_paths",
+      "name": "Weighted shortest paths",
+      "aliases": ["weighted shortest path", "lightest path", "lightest paths", "minimum-weight path", "shortest path in a weighted graph", "מסלול קל ביותר", "מסלולים קלים ביותר", "מסלול הכי קל", "מסלול הקל ביותר", "מסלול קצר ביותר בגרף ממושקל"],
+      "pages": [1, 51],
+      "kind": "concept"
+    },
+    {
+      "id": "lightest_path_through_edge",
+      "name": "Lightest paths through a given edge",
+      "aliases": ["lightest path through a given edge", "lightest paths that use a specific edge", "shortest path through a specific edge", "shortest paths that use a given edge", "מסלולים קלים ביותר המשתמשים בקשת מסויימת", "מסלולים קלים ביותר המשתמשים בקשת מסוימת"],
+      "pages": [2, 8],
+      "kind": "problem"
+    },
+    {
+      "id": "bellman_ford",
+      "name": "Bellman-Ford algorithm",
+      "aliases": ["Bellman-Ford", "Bellman Ford", "Belman-Ford", "בלמן-פורד", "בלמן פורד"],
+      "pages": [5, 42],
+      "kind": "algorithm"
+    },
+    {
+      "id": "lightest_path_small_integer_weights",
+      "name": "Lightest path with integer weights 1 to 10",
+      "aliases": ["lightest path with weights 1 to 10", "shortest path with integer weights 1 to 10", "shortest path with small integer weights", "splitting edges into unit-weight edges", "edge splitting", "מסלול הכי קל עם משקלים 1...10", "פיצול קשתות"],
+      "pages": [9, 17],
+      "kind": "problem"
+    },
+    {
+      "id": "dijkstra",
+      "name": "Dijkstra's algorithm",
+      "aliases": ["Dijkstra", "Dijkstra algorithm", "Dijkstras algorithm", "Djikstra", "דייקסטרא", "דייקסטרה", "דיקסטרה", "דיקסטרא"],
+      "pages": [13, 48],
+      "kind": "algorithm"
+    },
+    {
+      "id": "all_pairs_shortest_paths",
+      "name": "All-pairs shortest paths",
+      "aliases": ["APSP", "all pairs shortest path", "all-pairs shortest path problem", "מסלולים קצרים ביותר בין כל הזוגות"],
+      "pages": [18, 29],
+      "kind": "concept"
+    },
+    {
+      "id": "boolean_matrix_multiplication_apsp",
+      "name": "Boolean matrix multiplication via APSP",
+      "aliases": ["Boolean matrix multiplication", "binary matrix multiplication", "BMM", "reduction from Boolean matrix multiplication to APSP", "כפל מטריצות בינאריות באמצעות APSP", "כפל מטריצות בינאריות", "כפל מטריצות בוליאניות"],
+      "pages": [18, 29],
+      "kind": "problem"
+    },
+    {
+      "id": "lightest_path_with_coupon",
+      "name": "Lightest path with a half-price coupon",
+      "aliases": ["lightest path with a coupon", "shortest path with a coupon", "shortest path with coupon", "coupon shortest path", "shortest path with one half-price edge", "מסלול קל ביותר עם קופון", "מסלול הכי קל עם קופון", "מסלול עם קופון"],
+      "pages": [30, 35],
+      "kind": "problem"
+    },
+    {
+      "id": "zigzag_shortest_path",
+      "name": "Shortest alternating-color (zigzag) path",
+      "aliases": ["shortest zigzag path", "zigzag path", "alternating-color shortest path", "red-blue alternating path", "shortest path with alternating edge colors", "מסלול מזגזג הכי קצר", "מסלול מזגזג קצר ביותר", "מסלול מזגזג"],
+      "pages": [36, 42],
+      "kind": "problem"
+    },
+    {
+      "id": "lightest_path_edge_weight_limit",
+      "name": "Lightest path with an edge-weight limit",
+      "aliases": ["lightest path with bounded edge weights", "shortest path with an edge-weight limit", "shortest path with a per-edge budget", "shortest path avoiding edges heavier than L", "מסלול הכי קל עם קשתות במשקל מוגבל", "מסלול קל ביותר עם קשתות במשקל מוגבל", "קשתות במשקל מוגבל"],
+      "pages": [43, 48],
+      "kind": "problem"
+    },
+    {
+      "id": "minimum_edge_weight_limit",
+      "name": "Minimum edge-weight limit for an s-t path",
+      "aliases": ["minimum bottleneck path", "minimax path", "smallest edge-weight limit", "minimum edge-weight limit", "binary search on the weight limit"],
+      "pages": [49, 51],
+      "kind": "problem"
+    }
+  ]
+}

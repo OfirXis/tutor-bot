@@ -1,0 +1,137 @@
+{
+  "week": 9,
+  "title": "Tutorial 9 — Flow Networks and Maximum Flow",
+  "title_he": "תרגול 9 — רשתות זרימה וזרימה מקסימלית",
+  "source_pdf": "material/lectures/algo-maxflow-9-3.pdf",
+  "topics": [
+    {
+      "id": "maximum_flow",
+      "name": "Maximum flow",
+      "aliases": [
+        "max flow",
+        "maxflow",
+        "זרימה מקסימלית",
+        "זרימה מרבית"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "flow_networks",
+      "name": "Flow networks",
+      "aliases": [
+        "flow network",
+        "network flow",
+        "רשת זרימה",
+        "רשתות זרימה"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "residual_networks",
+      "name": "Residual networks",
+      "aliases": [
+        "residual network",
+        "residual graph",
+        "גרף שיורי",
+        "רשת שיורית"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "augmenting_paths",
+      "name": "Augmenting paths",
+      "aliases": [
+        "augmenting path",
+        "מסילה מגדילה",
+        "מסלול מגדיל"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "minimum_cut",
+      "name": "Minimum cut",
+      "aliases": [
+        "min cut",
+        "חתך מינימלי"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "ford_fulkerson",
+      "name": "Ford-Fulkerson",
+      "aliases": [
+        "ford fulkerson",
+        "פורד פולקרסון",
+        "פורד פלקרסון"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "edmonds_karp",
+      "name": "Edmonds-Karp",
+      "aliases": [
+        "edmonds karp",
+        "אדמונדס קארפ"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "bipartite_matching",
+      "name": "Bipartite matching",
+      "aliases": [
+        "maximum matching",
+        "perfect matching",
+        "זיווג מושלם",
+        "שידוך מקסימום"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "menger_s_theorem",
+      "name": "Menger's theorem",
+      "aliases": [
+        "menger",
+        "משפט מנגר"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "hall_s_theorem",
+      "name": "Hall's theorem",
+      "aliases": [
+        "hall theorem",
+        "hall's marriage theorem",
+        "משפט הול"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "dilworth_s_theorem",
+      "name": "Dilworth's theorem",
+      "aliases": [
+        "dilworth",
+        "משפט דילוורת"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "konig_s_theorem",
+      "name": "König's theorem",
+      "aliases": [
+        "konig's theorem",
+        "konig theorem",
+        "משפט קוניג"
+      ],
+      "kind": "concept"
+    },
+    {
+      "id": "minimum_chain_cover",
+      "name": "Minimum chain cover",
+      "aliases": [
+        "chain cover",
+        "כיסוי בשרשראות"
+      ],
+      "kind": "concept"
+    }
+  ]
+}

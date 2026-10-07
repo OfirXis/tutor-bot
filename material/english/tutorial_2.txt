@@ -1,156 +1,77 @@
-# Tutorial 2 — Divide & Conquer
+# Tutorial 2 — Divide and Conquer
+
+## Source and Scope
+These English notes summarize the supplied Hebrew slides `material/lectures/Tutorial 2 (2).pdf`, titled "Divide and Conquer" (הפרד ומשול), "Design and Analysis of Algorithms — Tutorial Two" (תכנון וניתוח אלגוריתמים - תרגול שני). Page references below refer to PDF pages (1–59). Repeated animation slides are consolidated; the title slide (PDF page 1) and the empty last page (PDF page 59) carry no course content. The tutorial defines the divide-and-conquer technique, analyzes merge sort with a recursion tree, and develops recursive solutions that halve the problem for the maximum profit problem, fast exponentiation, the majority element problem and the maximum subarray problem. It also covers prefix-free codes and Huffman coding, including an optimality argument (PDF pages 28–53). The section title on PDF page 54 carries the English subtitle "The Closest Pair Problem", but the content that follows is the maximum subarray problem; closest pair is not covered. The slides do not present the master theorem, binary search or Karatsuba multiplication.
 
 ## Core Concepts
-The Divide and Conquer (D&C) algorithm design paradigm involves breaking a problem into smaller subproblems, solving each subproblem recursively, and then combining the solutions to solve the original problem. The general recurrence relation for a D&C algorithm can be expressed as:
+### Divide and Conquer — PDF page 2
+Divide and conquer (הפרד ומשול) is an algorithmic method in which the solution to a problem (1) divides the input (the problem) into one or more parts, (2) solves the problem recursively on the different parts, and (3) assembles the solution of the whole problem from the solutions on the parts. When formulating an algorithm with this technique, two things must not be forgotten. First, define the stopping condition of the recursion (תנאי העצירה): the base case for which the problem is solved directly. Second, define how the solutions obtained are combined into a solution for the whole input. Two later slides add general remarks. When the input is an array of numbers, a divide-and-conquer solution usually splits it into two equal halves $A$ and $B$ and solves each recursively (PDF page 10). For many problems handled by divide and conquer, the trivial solution compares all $O(n^2)$ pairs of elements, and divide and conquer often saves comparisons, reducing their number to $O(n \log n)$ (PDF page 25).
 
-\[ T(n) = aT\left(\frac{n}{b}\right) + f(n) \]
+### Recursion Tree — PDF pages 5–6
+The recursion tree (עץ הרקורסיה) is the tool the slides use to analyze merge sort, whose running time is given by the recurrence $T(n) = 2T(n/2) + \Theta(n)$. The root of the tree is $T(n)$, the next level holds $2 \times T(n/2)$ and the level after it $4 \times T(n/4)$. The work on these levels is $1 \times \Theta(n)$, $2 \times \Theta(n/2)$ and $4 \times \Theta(n/4)$, so every level performs $\Theta(n)$ work in total. The tree has $\Theta(\log n)$ levels (the diagram labels its height $\log n$), so the running time of the whole algorithm is $O(n \log n)$. The maximum subarray analysis on PDF page 58 uses the same reasoning: recursion depth $O(\log n)$ with $O(n)$ work per level. Other recurrences in the deck are stated together with their solutions: $T(n) = 2 \cdot T(n/2) + O(1) \in O(n)$ (PDF page 15), $T(n) = T(n/2) + O(1) \in O(\log n)$ (PDF page 20) and $T(n) = 2 \cdot T(n/2) + O(n) \in O(n \log n)$ (PDF page 27).
 
-Where:
-- \( n \) is the size of the problem,
-- \( a \) is the number of subproblems,
-- \( b \) is the factor by which the problem size is reduced,
-- \( f(n) \) is the cost of the work done outside the recursive calls.
+### Prefix-Free Codes — PDF pages 29–34
+Prefix-free codes (קודים חסרי רישא; later slides write קודים חסרי רישות) answer an encoding problem. Given a text $T$ over an alphabet $\Sigma = \{a_1, a_2, \dots, a_n\}$, we want to encode it with a binary alphabet. The restrictions are that it must be possible to decode the encoding back into $T$, and that encoding and decoding should be polynomial. The objective function is that the encoding be as short as possible. Definition: a code $C = \{c_1, c_2, \dots, c_n\}$ is a set of strings, not necessarily of fixed length. A code $C$ is called prefix-free if there is no word $c_i$ that is a prefix of another word $c_j$. The slides introduce this definition to explain why the second example code for the text $abbca$ is valid (PDF pages 31–34), and then prove that prefix-free codes are uniquely decodable (PDF pages 35–39).
 
-### Master Theorem
-The Master Theorem provides a method for analyzing the time complexity of divide and conquer algorithms. It states:
+### Prefix-Free Codes as Binary Trees — PDF pages 40–43
+Prefix-free codes can be mapped to binary trees (עצים בינאריים) and vice versa. Each leaf represents a character, and the path to it represents the character's encoding: a move to the left is 0 and a move to the right is 1. For the code $a \to 00$, $b \to 01$, $c \to 1$, the root's left child has the leaves $a$ (left) and $b$ (right), and the root's right child is the leaf $c$ (see PDF page 41; diagram not fully extractable). Since prefix-free codes are always uniquely decodable, the slides look for the optimal encoding among prefix-free codes and set out to prove that they can reach the optimum in encoding length. For the text $T$, the frequency (תדירות) $f_\sigma$ of each $\sigma \in \Sigma$ is its number of occurrences divided by the length of the text. The objective function (פונקציית המטרה) to minimize is $\sum_{\sigma \in \Sigma} f_\sigma \cdot |c(\sigma)|$, where $c(\sigma)$ is the binary encoding of $\sigma$. In the tree corresponding to the code, the objective function is $\sum_{\sigma \in \Sigma} f_\sigma \cdot h_\sigma$, where $h_\sigma$ is the depth in the tree; the slides note that the two functions are equivalent.
 
-Let \( k = \log_b a \). Then:
-1. If \( f(n) = O(n^{k - \epsilon}) \) for some \( \epsilon > 0 \), then \( T(n) = \Theta(n^k) \).
-2. If \( f(n) = \Theta(n^k \log^p n) \) for some \( p \geq 0 \), then \( T(n) = \Theta(n^k \log^{p + 1} n) \).
-3. If \( f(n) = \Omega(n^{k + \epsilon}) \) for some \( \epsilon > 0 \) and \( a f(n/b) \leq c f(n) \) for some \( c < 1 \) and sufficiently large \( n \), then \( T(n) = \Theta(f(n)) \).
+## Algorithms and Complexity
+### Merge Sort — PDF pages 3–6
+Merge sort (מיון מיזוג) is a recursive algorithm that uses the divide-and-conquer technique. Given an array, it splits it into two separate arrays and sorts them recursively; this is the divide step (הפרד). An array that contains a single element is a sorted array, and this is the stopping condition. Given the two sorted arrays, the algorithm passes over them in linear time and merges them into one sorted array, as required; this is the conquer step (משול). The running time of merge sort is given by the recurrence $T(n) = 2T(n/2) + \Theta(n)$. Its recursion tree has $\Theta(\log n)$ levels with $\Theta(n)$ total work on each level, so merge sort runs in $O(n \log n)$ (PDF pages 5–6). The slide illustrates the algorithm on a seven-element array (PDF page 4), and the first maximum-profit solution is later described as $O(n \log n)$ "similar to merge sort" (PDF page 14).
 
-## Algorithms & Complexity
+### Fast Exponentiation — PDF pages 17–20
+Fast exponentiation (חזקה מהירה) computes $a^b$ in sub-linear time instead of evaluating the product $a \cdot a \cdots a$ of $b$ factors. It relies on the exponent laws $a^x \cdot a^y = a^{x+y}$ and $(a^x)^y = a^{x \cdot y}$. Splitting the product into two halves of $b/2$ factors each gives the recursive formula $a^b = (a^{b/2})^2$ if $b$ is even and $a^b = (a^{\lfloor b/2 \rfloor})^2 \cdot a$ if $b$ is odd. Each step divides the exponent by at least 2 while performing $O(1)$ operations. Therefore the running time is $T(n) = T(n/2) + O(1) \in O(\log n)$, where the slide writes the recurrence with $n$ standing for the exponent. The correctness proof is by induction (PDF page 21).
 
-### 1. Merge Sort
-**Description**: Merge Sort is a classic example of a divide and conquer algorithm used for sorting an array.
+### Huffman Coding — PDF pages 49–50
+Huffman coding (קידוד הופמן) constructs an optimal prefix-free code from the character frequencies of a text. The slides state the algorithm in six steps. (1) Build a binary tree with the characters as leaves. (2) Merge every parent that has a single child with that child. (3) Replace the two siblings at the lowest level with the two nodes of lowest frequency. (4) Take the two nodes of lowest frequency and merge them (together with their parent) into one node whose frequency is the sum of their frequencies. (5) Run step three again, until a single node remains. (6) Split every node into the two nodes it is composed of; if there are none, skip it. The slides state that an example for the text $T = aaeabbbccdd$ is presented on the board; the example is not worked out in the slides. A heap-based implementation follows on PDF page 51, and the optimality proof on PDF pages 52–53.
 
-**Pseudocode**:
-```plaintext
-function mergeSort(array):
-    if length(array) <= 1:
-        return array
-    mid = length(array) / 2
-    left = mergeSort(array[0:mid])
-    right = mergeSort(array[mid:length(array)])
-    return merge(left, right)
-
-function merge(left, right):
-    result = []
-    while left and right are not empty:
-        if left[0] <= right[0]:
-            append left[0] to result
-            remove left[0]
-        else:
-            append right[0] to result
-            remove right[0]
-    append remaining elements of left and right to result
-    return result
-```
-
-**Recurrence**:
-\[ T(n) = 2T\left(\frac{n}{2}\right) + O(n) \]
-
-**Complexity Analysis**:
-Using the Master Theorem:
-- Here, \( a = 2 \), \( b = 2 \), and \( f(n) = O(n) \).
-- \( k = \log_2 2 = 1 \).
-- Since \( f(n) = O(n^{1 - \epsilon}) \) for \( \epsilon = 1 \), we have \( T(n) = \Theta(n \log n) \).
-
-### 2. Binary Search
-**Description**: Binary Search is an efficient algorithm for finding an item from a sorted array.
-
-**Pseudocode**:
-```plaintext
-function binarySearch(array, target):
-    low = 0
-    high = length(array) - 1
-    while low <= high:
-        mid = (low + high) / 2
-        if array[mid] == target:
-            return mid
-        else if array[mid] < target:
-            low = mid + 1
-        else:
-            high = mid - 1
-    return -1
-```
-
-**Recurrence**:
-\[ T(n) = T\left(\frac{n}{2}\right) + O(1) \]
-
-**Complexity Analysis**:
-Using the Master Theorem:
-- Here, \( a = 1 \), \( b = 2 \), and \( f(n) = O(1) \).
-- \( k = \log_2 1 = 0 \).
-- Since \( f(n) = O(n^{0 - \epsilon}) \) for any \( \epsilon > 0 \), we have \( T(n) = \Theta(\log n) \).
-
-### 3. Karatsuba Multiplication
-**Description**: Karatsuba is an efficient algorithm for multiplying large numbers.
-
-**Pseudocode**:
-```plaintext
-function karatsuba(x, y):
-    if x < 10 or y < 10:
-        return x * y
-    n = max(length(x), length(y))
-    half = n / 2
-    a = x // 10^half
-    b = x % 10^half
-    c = y // 10^half
-    d = y % 10^half
-    ac = karatsuba(a, c)
-    bd = karatsuba(b, d)
-    abcd = karatsuba(a + b, c + d)
-    return ac * 10^(2 * half) + (abcd - ac - bd) * 10^half + bd
-```
-
-**Recurrence**:
-\[ T(n) = 3T\left(\frac{n}{2}\right) + O(n) \]
-
-**Complexity Analysis**:
-Using the Master Theorem:
-- Here, \( a = 3 \), \( b = 2 \), and \( f(n) = O(n) \).
-- \( k = \log_2 3 \approx 1.585 \).
-- Since \( f(n) = O(n^{1 - \epsilon}) \) for \( \epsilon = 0.585 \), we have \( T(n) = \Theta(n^{\log_2 3}) \).
-
-## Theorems & Proofs
-- **Master Theorem**: A method for analyzing the time complexity of divide and conquer algorithms.
-- **Induction Proof**: Used to prove the correctness of algorithms, particularly in recursive algorithms.
+### Huffman Coding with a Min-Heap — PDF page 51
+Huffman coding can also be implemented with a min-heap (ערמת מינימום); the slides present this as another implementation (מימוש נוסף). (1) Build a min-heap that contains all the characters with their frequencies. (2) Extract the two minimums and insert their sum. (3) Repeat until a single element remains in the heap. (4) Build the corresponding tree; the slides leave writing this step formally as an exercise. From this implementation the slides conclude that constructing the code takes $O(n \log n)$ time.
 
 ## Worked Examples
+### Example: Merge Sort on a Seven-Element Array — PDF page 4
+The merge sort slide illustrates the algorithm on the array $38, 27, 43, 3, 9, 82, 10$. In the divide phase the array is split into two arrays, and the parts are split again recursively until every part contains a single element, which is already sorted (the stopping condition). In the conquer phase, sorted parts are merged in linear time into larger sorted arrays, level by level, until one sorted array containing all seven numbers remains. The intermediate rows appear only in the slide's diagram (see PDF page 4; diagram not fully extractable).
 
-### Example 1: Merge Sort
-Given the array [38, 27, 43, 3, 9, 82, 10], apply Merge Sort:
-1. Split into [38, 27, 43] and [3, 9, 82, 10].
-2. Further split until single elements: [38], [27], [43], [3], [9], [82], [10].
-3. Merge back: [27, 38, 43], [3, 9, 10, 82].
-4. Final merge: [3, 9, 10, 27, 38, 43, 82].
+### Example: The Maximum Profit Problem — PDF pages 7–11
+The maximum profit problem (בעיית הרווח המקסימלי) gives a list of estimated stock prices $p_1, p_2, \dots, p_n$ for the next $n$ days. You may buy and sell the stock only once. The goal is to find a day $i$ on which to buy and a day $j$ on which to sell such that $i < j$ and the profit $p_j - p_i$ is maximal. The slides then collect observations on the way to a solution. When the input is an array of numbers, a divide-and-conquer solution usually splits the array into two equal halves $A$ and $B$ and solves them recursively; here the halves are $p_1, \dots, p_{\lceil n/2 \rceil}$ and $p_{\lceil n/2 \rceil + 1}, \dots, p_n$. Given the optimal solutions on both halves, the overall optimal solution is the optimal solution in $A$, or the optimal solution in $B$, or the optimal solution with $i \in A$ and $j \in B$. A later slide notes that the trivial solution for this problem goes over all $O(n^2)$ pairs (PDF page 25).
 
-### Example 2: Binary Search
-Given a sorted array [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] and target 7:
-1. Check middle (5): 7 > 5, search right half.
-2. Check middle (8): 7 < 8, search left half.
-3. Check middle (7): found at index 6.
+### Example: Maximum Profit by Divide and Conquer — PDF pages 12–14
+The divide-and-conquer solution to the maximum profit problem splits the input $p_1, p_2, \dots, p_n$ into two sets $A$ and $B$ of size about $n/2$. It is important that $i < j$ for every $i \in A$ and $j \in B$; the slide leaves the reason as a question. The algorithm runs recursively on $A$ and on $B$. The recursion stops when $n = 1$, where it returns that there is no solution (no profit is possible). Next, it finds the optimal solution with $i \in A$ and $j \in B$: this solution takes the minimum element of $A$ and the maximum element of $B$, and both can be found in linear time. The overall optimal solution is the maximum among the two recursive solutions and this third solution. The running time is $O(n \log n)$, similar to merge sort. The slides remark that this is not the most efficient solution and ask for an $O(n)$ solution.
 
-## Practice Problems (with solutions)
+### Example: Maximum Profit in Linear Time — PDF page 15
+The improved solution (הפתרון המשופר) to the maximum profit problem passes up the recursion not only the optimal solution but also the minimum and the maximum of the range. The optimal solution with $i \in A$ and $j \in B$ still takes the minimum element of $A$ and the maximum element of $B$, but these values are now available in $O(1)$ from the recursion. The overall optimal solution is again the maximum among the two recursive solutions and the third solution. The running time becomes $T(n) = 2 \cdot T(n/2) + O(1) \in O(n)$. The correctness of the algorithm is proved by induction on PDF page 16.
 
-### Problem 1: Merge Sort Complexity
-**Question**: Analyze the time complexity of Merge Sort using the Master Theorem.
-**Solution**: \( T(n) = 2T(n/2) + O(n) \) leads to \( T(n) = O(n \log n) \).
+### Example: Computing a Power in Sub-Linear Time — PDF pages 18–20
+The fast exponentiation exercise starts from the fact that multiplication is a basic operation that processors perform in constant time, whereas raising to a high power is a significantly more expensive operation. It asks whether $a^b$ can be computed by an algorithm of sub-linear complexity, rather than as a product of $b$ factors. As a hint, the slides recall the exponent laws $a^x \cdot a^y = a^{x+y}$ and $(a^x)^y = a^{x \cdot y}$ and ask whether they can save unnecessary computations. The solution views the $b$ factors as two halves of $b/2$ factors each: $a^b$ is the square of $a^{b/2}$ when $b$ is even, and the square of $a^{\lfloor b/2 \rfloor}$ multiplied by $a$ when $b$ is odd. Each step divides the exponent by at least 2 using $O(1)$ operations, so the solution runs in $O(\log n)$, with $n$ the exponent.
 
-### Problem 2: Binary Search Implementation
-**Question**: Implement Binary Search and analyze its complexity.
-**Solution**: Implement as shown above; complexity is \( O(\log n) \).
+### Example: The Majority Element Problem — PDF pages 22–25
+The majority element problem (בעיית האיבר המרובה) is posed as a question about system resources. You hold a set of $n$ distinct encoded strings $S = \{s_1, s_2, \dots, s_n\}$ that represent resources used by users of a system. Because the strings are encoded, at first glance they mean nothing and look like complete gibberish. You also have an efficient algorithm $A$ that receives two strings (resources) and determines in $O(1)$ whether they belong to the same user (see PDF page 24; formula not fully extractable). The task is to describe an $O(n \log n)$ algorithm that uses $A$ to determine whether some user overloads the system by using more than half of the resources. Before the solution, the slides remark that, as in the maximum profit problem, the trivial solution compares all $O(n^2)$ possible pairs, and that divide and conquer often reduces the number of comparisons to $O(n \log n)$. Moreover, not every pair needs to be compared, because equality is transitive: if $a = b$ and $b = c$ then $a = c$, which saves a comparison.
 
-### Problem 3: Karatsuba Multiplication
-**Question**: What is the time complexity of Karatsuba multiplication?
-**Solution**: \( T(n) = 3T(n/2) + O(n) \) leads to \( T(n) = O(n^{\log_2 3}) \).
+### Example: Majority Element by Divide and Conquer — PDF pages 26–27
+The divide-and-conquer solution to the majority element problem splits the input into two sets of size about $n/2$, $A = \{s_1, \dots, s_{n/2}\}$ and $B = \{s_{n/2+1}, \dots, s_n\}$. If some element represents a majority in $S$, it must also be a majority in at least one of the sets $A$ and $B$; the slide leaves the reason as a question. Let $f(A)$ denote the majority element of $A$ (the slide words it as the element that appears more than $n/2$ times in $A$), and define $f(B)$ similarly. Then there are at most two candidates for $f(S)$, namely $f(A)$ and $f(B)$. To check whether these $O(1)$ candidates really are a majority, compare them with all the other elements of $S$ in $O(n)$. If none of the candidates obtains a majority, return that $S$ has no majority. The total running time is $T(n) = 2 \cdot T(n/2) + O(n) \in O(n \log n)$. The slides add that the problem has an algorithm that solves it in linear time and suggest looking up the Boyer–Moore algorithm.
 
-### Problem 4: Maximum Profit Problem
-**Question**: Given stock prices over n days, find the maximum profit from one buy and one sell.
-**Solution**: Use D&C to split prices, find min in left and max in right, combine results.
+### Example: An Ambiguous Code and a Prefix-Free Code — PDF pages 31–33
+Encoding examples (דוגמאות לקידודים) compare two codes for the text $T = abbca$, where $\Sigma = \{a, b, c\}$. With the code $a \to 00$, $b \to 0$, $c \to 1$, the encoded text is $T' = 0000100$. That is a problem, because $T'$ can be decoded as the original text but also as $aacbb$; therefore this encoding is not valid. With the code $a \to 00$, $b \to 01$, $c \to 1$, the slides say that a little experimentation is enough to be convinced that the encoding is valid. The next slide gives the reason: the second code is a prefix-free code (PDF page 34). The same code is later drawn as a binary tree (PDF page 41).
 
-## Common Mistakes to Avoid
-- Misapplying the Master Theorem: Ensure conditions are met for each case.
-- Forgetting base cases in recursive algorithms: Always define a clear base case.
-- Not considering the cost of combining solutions: This can significantly affect overall complexity.
+### Example: The Maximum Subarray Problem — PDF pages 54–55
+The maximum subarray problem (בעיית תת מערך גדול ביותר) takes as input an array $A[1, \dots, n]$ of distinct integers. The output is a subarray $A[i, \dots, j]$ whose sum of elements is the largest possible. The slides call such a subarray the heaviest interval (האינטרוול הכבד ביותר) of the array. The section title slide (PDF page 54) gives the Hebrew title "largest subarray" together with the English subtitle "The Closest Pair Problem"; the problem actually treated is the maximum subarray problem, and no closest-pair material follows.
+
+### Example: Maximum Subarray by Divide and Conquer — PDF pages 56–58
+The first solution (פתרון ראשון) to the maximum subarray problem is requested in $O(n \log n)$. Split the array into the two parts $A[1, \dots, n/2]$ and $A[n/2+1, \dots, n]$. Find a maximal subarray in each of them (the recursion continues). Find the subarray with the largest sum in $A[n/2+1, \dots, n]$ that starts at $n/2+1$, and the subarray with the largest sum in $A[1, \dots, n/2]$ that, in the slide's wording, "starts at 1" (for the two pieces to join into one contiguous subarray, this piece must end at position $n/2$; check PDF page 57). Add the sums of these two subarrays. Return the maximum among the three subarrays obtained. Analysis: the recursion depth is $O(\log n)$, and at each level of the recursion the operations take $O(n)$ time. Comparing sums of subarrays takes constant time, and finding the third subarray takes linear time, which can be done with a running sum counter. The total running time is therefore $O(n \log n)$. For correctness, the slides suggest trying induction, which they call relatively simple and quite clear; a bonus exercise asks for an $O(n)$ solution.
+
+## Theorems and Proofs
+### Correctness of the Maximum-Profit Algorithm — PDF page 16
+The correctness proof (הוכחת נכונות) of the divide-and-conquer maximum-profit algorithm is by induction. Base case: when $n = 1$ there is indeed no solution, since no profit can be made by buying and selling the stock. Induction step: assume the algorithm is correct for inputs of length less than $n$ and prove it for $n$. Split the problem into two sets $A$ and $B$ as the algorithm does. The optimal solution is a solution within one of the subsets, or a solution with $i \in A$ and $j \in B$. By the induction hypothesis, the solutions obtained recursively on $A$ and $B$ are optimal. For the third type, taking $i$ as the minimum in $A$ and $j$ as the maximum in $B$ clearly maximizes $p_j - p_i$, since $i < j$ holds in any case. The algorithm returns the maximum among the three representatives of these options. The options cover the entire space of possible solutions and each representative is optimal for its option, so the returned solution is maximal, as required.
+
+### Correctness of Fast Exponentiation — PDF page 21
+The correctness (נכונות) of fast exponentiation is proved by induction on the exponent $n$, following the recursive formula on PDF page 20. Base case: for $n = 1$ the slide checks $a = a$. Induction hypothesis: assume that the expression holds for every $i \le n - 1$, and prove it for $n$. If $n$ is even, the slide writes $(a^{n/2})^2$; if $n$ is odd, it writes $(a^{\lfloor n/2 \rfloor})^2 \cdot a$. The hypothesis for every $i \le n - 1$ is what covers the smaller exponents $n/2$ and $\lfloor n/2 \rfloor$ used in these two cases.
+
+### Prefix-Free Codes Are Uniquely Decodable — PDF pages 35–39
+The claim (טענה) is that prefix-free codes are uniquely decodable (ניתנים לפענוח יחיד), which the slides prove by induction. Let $T = a_1 a_2 \dots a_n$ be a text over $\Sigma = \{\sigma_1, \dots, \sigma_k\}$, encoded into the binary text $T' = b_1 \dots b_m$. Base case: if $T' = \varepsilon$, decode it as the empty text, and clearly this is the only decoding; the slide asks whether this is really clear. Next, decode the first character of $T$: scan $T'$ until some prefix of it matches the encoding of some character $\sigma$ of the alphabet, remember that character, and then decode the smaller remaining text. For full formality one would state the induction step and then apply it to the smaller text. Why can the first character not be decoded wrongly? Because the code is prefix-free: if the first character were a different one, $\sigma$ would be encoded as a prefix of another character, a contradiction.
+
+### Three Observations on the Optimal Tree — PDF pages 44–48
+Three observations (שלוש אבחנות) about the optimal code tree precede the Huffman algorithm. First observation: in the optimal tree, the deepest leaf has the lowest frequency. The slides justify it with a simple exchange argument (טיעון החלפה): otherwise, one could swap the deepest leaf and the leaf with the lowest frequency, which can only decrease the objective function; hence, without loss of generality, the deepest leaf has the lowest frequency. Second observation: in the optimal tree, every internal node has two children. Otherwise, merge the parent with its only child; this does not destroy the prefix-free property and gives a more efficient code, so without loss of generality every internal node has two children. Third observation: the two nodes with the minimal frequencies are siblings in the tree, and the slides state that the proof is similar to the first one.
+
+### Optimality of Huffman Coding — PDF pages 52–53
+The optimality of Huffman coding (אופטימליות הפתרון) is proved by showing that each merge step keeps optimizing the objective function. Suppose that at some stage the minimal frequencies are $f_i$ and $f_j$; after this stage the two nodes are merged. Let $F$ be the objective function before the merge and $F^*$ the objective function after it. The slides say it is easy to see that $F - F^* = f_i + f_j$. Since $f_i$ and $f_j$ are constants, the two functions differ by a constant, so optimizing $F$ is equivalent to optimizing $F^*$. Therefore every step continues to optimize the original objective function, which proves that the resulting code is optimal. The slides word this as "maximizing" the objective function, although the objective defined on PDF page 42 is to be minimized.

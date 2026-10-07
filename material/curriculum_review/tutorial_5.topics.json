@@ -1,0 +1,43 @@
+{
+  "week": 5,
+  "title": "Tutorial 5 — Dynamic Programming (Continued)",
+  "title_he": "תרגול 5 — תכנון דינאמי - המשך",
+  "source_pdf": "material/lectures/Tutorial algo 5.pdf",
+  "topics": [
+    {
+      "id": "directed_acyclic_graph",
+      "name": "Directed acyclic graph",
+      "aliases": ["DAG", "DAGs", "directed acyclic graphs", "acyclic directed graph", "גרף מכוון חסר מעגלים", "גרף מכוון וחסר מעגלים", "גמ\"ל"],
+      "pages": [33, 35],
+      "kind": "concept"
+    },
+    {
+      "id": "longest_path_dag",
+      "name": "Longest path in a DAG",
+      "aliases": ["longest path in a directed acyclic graph", "DAG longest path", "מסלול ארוך ביותר בגרף מכוון וחסר מעגלים", "בעיית המסלול הארוך ביותר בגמ\"ל"],
+      "pages": [32, 39],
+      "kind": "problem"
+    },
+    {
+      "id": "edit_distance",
+      "name": "Edit distance",
+      "aliases": ["Levenshtein distance", "Levenshtein", "edit (Levenshtein) distance", "מרחק עריכה"],
+      "pages": [40, 52],
+      "kind": "problem"
+    },
+    {
+      "id": "tiling_count",
+      "name": "Counting 2×n tilings with L and I tiles",
+      "aliases": ["tiling problem", "2×n tiling", "2xn tiling", "2 x n tiling", "L and I tiles", "domino and tromino tiling", "בעיית ריצוף האריחים", "ריצוף האריחים", "בעיית הריצוף", "אריחי L ואריחי I"],
+      "pages": [53, 62],
+      "kind": "problem"
+    },
+    {
+      "id": "tree_diameter",
+      "name": "Tree diameter",
+      "aliases": ["diameter of a tree", "diameter of the tree", "longest path in a tree", "קוטר בעץ", "קוטר העץ", "מסלול ארוך ביותר בעץ"],
+      "pages": [63, 75],
+      "kind": "problem"
+    }
+  ]
+}

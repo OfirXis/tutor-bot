@@ -1,164 +1,95 @@
-# Tutorial 4 — Dynamic Programming (DP)
+# Tutorial 4 — Dynamic Programming
+
+## Source and Scope
+These English notes summarize the supplied Hebrew slides `material/lectures/Tutorial 4 (2).pdf` (112 PDF pages), titled "Dynamic Programming — Design and Analysis of Algorithms, Tutorial Four" (תכנון דינאמי — תכנון וניתוח אלגוריתמים, תרגול רביעי). Page references below refer to PDF pages (1–112). Repeated animation slides are consolidated. The tutorial introduces dynamic programming by contrast with divide and conquer, motivates it with the Fibonacci sequence, and then applies it to four exercises: the heaviest path in a grid, the longest increasing subsequence (an $O(n^2)$ solution and an $O(n \log n)$ binary-search solution), the heaviest independent set in a path graph (two different recurrences), and minimum vertex cover on trees. The slides describe computing the smallest subproblems first and storing their results, but they do not use the terms memoization, top-down or bottom-up. They do not cover rod cutting, longest common subsequence or knapsack problems.
 
 ## Core Concepts
-Dynamic Programming (DP) is a method for solving complex problems by breaking them down into simpler subproblems. It is applicable when the problem exhibits two key properties:
-1. **Overlapping Subproblems**: The problem can be broken down into subproblems that are reused multiple times.
-2. **Optimal Substructure**: An optimal solution to the problem can be constructed from optimal solutions of its subproblems.
+### Dynamic Programming — PDF page 2
+Dynamic programming (תכנון דינאמי) is introduced by contrast with divide and conquer (הפרד ומשול), the method seen two weeks earlier. Divide and conquer splits a problem into disjoint subproblems and solves them recursively. If a solution requires splitting the problem into subproblems that are not necessarily disjoint, the recursion may perform duplicate, inefficient computations, and sometimes the duplication grows until the algorithm becomes unnecessarily exponential.
 
-### Steps in Dynamic Programming
-1. **Define the Subproblem**: Identify the smaller subproblems that can be solved independently.
-2. **Recurrence Relation**: Establish a relationship between the solution of the problem and the solutions of its subproblems.
-3. **Base Cases**: Define the simplest cases that can be solved directly.
-4. **Order of Computation**: Determine the order in which the subproblems should be solved to ensure that each subproblem is solved before it is needed.
-5. **Extract the Answer**: Use the computed values to derive the final solution to the original problem.
+Dynamic programming is a method in which the smallest problems are computed first and stored in memory. When larger problems are reached, the algorithm uses the computations it already performed and stored instead of recomputing them. Later in the deck (PDF pages 13–14) this becomes a two-step recipe: first find the trivial solution that breaks the problem into subproblems, then solve the subproblems from the smallest to the largest.
 
-## Algorithms & Complexity
+### The Fibonacci Sequence and the Golden Ratio — PDF pages 3–5
+The Fibonacci sequence (סדרת פיבונאצ'י) is the first example of the deck. For $n \in \mathbb{N}^+$ the slides define $F_n = 0$ for $n = 1$, $F_n = 1$ for $n = 2$, and $F_n = F_{n-1} + F_{n-2}$ for $n > 2$, which gives 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, … Note that this indexing starts with $F_1 = 0$. A slide on the Fibonacci sequence in nature and the golden ratio (יחס הזהב) defines $\phi = \lim_{n \to \infty} F_n / F_{n-1}$ and equates it with $\frac{1 + \sqrt{5}}{2}$ and with the continued fraction $1 + \frac{1}{1 + \frac{1}{1 + \cdots}}$, approximately $1.618$ (see PDF page 5; formula not fully extractable). The deck then uses the sequence to show how a direct recursion becomes exponential and how computing small values first avoids this.
 
-### 1. Fibonacci Sequence
-- **Definition**: 
-  - \( F(0) = 0 \)
-  - \( F(1) = 1 \)
-  - \( F(n) = F(n-1) + F(n-2) \) for \( n > 1 \)
-  
-- **Naive Recursive Implementation**:
-  ```python
-  def fib(n):
-      if n < 2:
-          return n
-      return fib(n-1) + fib(n-2)
-  ```
-  - **Complexity**: \( O(2^n) \)
+### Longest Increasing Subsequence — PDF pages 22–25
+The longest increasing subsequence problem, LIS (תת סדרה עולה ארוכה ביותר), is defined for an array of numbers $a_1, a_2, \ldots, a_n$. The goal is a longest sub-array, not necessarily contiguous, of strictly increasing elements of $a$. Formally, find a sequence of indices $i_1, i_2, \ldots, i_k$ with $k$ maximal such that $i_1 < i_2 < \cdots < i_k$ and $a_{i_1} < a_{i_2} < \cdots < a_{i_k}$. The definition slides show the example array 10, 22, 9, 33, 21, 50, 41, 60, 80; the animation builds on these pages add no extractable text (see PDF pages 23–25; diagram not fully extractable). The deck solves the problem twice: with an $O(n^2)$ dynamic program over the longest subsequence ending at each $a_i$, and with an $O(n \log n)$ method based on binary search.
 
-- **Dynamic Programming Implementation**:
-  ```python
-  def fib_dp(n):
-      dp = [0] * (n + 1)
-      dp[1] = 1
-      for i in range(2, n + 1):
-          dp[i] = dp[i-1] + dp[i-2]
-      return dp[n]
-  ```
-  - **Complexity**: \( O(n) \) time, \( O(n) \) space
+### Path Graphs and Independent Sets — PDF pages 71–74
+A path graph (גרף מסלולי) is a graph $G = (V, E)$ with vertices $V = \{1, 2, \ldots, n\}$ such that $E = \{(i, i+1) : 1 \le i < n\}$, so the only edges join consecutive vertices. An independent set (קבוצה בלתי תלויה) in a graph $G = (V, E)$ is a set of vertices $S \subseteq V$ such that there is no edge $(v, u) \in E$ with $v, u \in S$; in words, no edge connects two of its vertices.
 
-- **Optimized Space Implementation**:
-  ```python
-  def fib_optimized(n):
-      a, b = 0, 1
-      for _ in range(2, n + 1):
-          a, b = b, a + b
-      return b
-  ```
-  - **Complexity**: \( O(n) \) time, \( O(1) \) space
+Given a positive weight function on the vertices, $w: V \to \mathbb{R}^+$, a heaviest independent set (קבוצה בלתי תלויה כבדה ביותר) of $G$ is an independent set whose sum of vertex weights is maximal among all independent sets of $G$. The slides illustrate this with a small graph whose vertices are labelled 1, 4, 6, 3, 5, 8, and the set $S = \{1, 6, 5\}$ with $\sum_{v \in S} w(v) = 12$ (see PDF pages 73–74; diagram not fully extractable).
 
-### 2. Rod Cutting
-- **Problem Statement**: Given a rod of length \( n \) and a price list \( p[j] \) for lengths \( j \), determine the maximum revenue obtainable by cutting the rod and selling the pieces.
-  
-- **Recurrence Relation**:
-  \[
-  dp[i] = \max(p[j] + dp[i-j]) \quad \text{for } j = 1 \ldots i
-  \]
-  
-- **Implementation**:
-  ```python
-  def rod_cutting(prices, n):
-      dp = [0] * (n + 1)
-      for i in range(1, n + 1):
-          for j in range(1, i + 1):
-              dp[i] = max(dp[i], prices[j-1] + dp[i-j])
-      return dp[n]
-  ```
-  - **Complexity**: \( O(n^2) \)
+### Vertex Cover — PDF pages 103–106
+A vertex cover (כיסוי בצמתים) of an undirected graph $G = (V, E)$ is a set of vertices $\tilde{V} \subseteq V$ such that for every edge $(v, u) \in E$, either $v \in \tilde{V}$ or $u \in \tilde{V}$ (or both). A minimum vertex cover (כיסוי מינימלי בצמתים) of $G$ is a minimum set of vertices that is a cover of $G$. The slides state that on a general graph this is an NP-complete problem, that is, a hard one, and that it is studied in depth in the Computational Models course (מודלים חישוביים). The exercise in this tutorial restricts the input to trees, as the section title announces: "Minimum Vertex Cover on Trees (Using Dynamic Programming)" (כיסוי מינימלי בצמתים על עצים, בעזרת תכנון דינאמי).
 
-### 3. Longest Common Subsequence (LCS)
-- **Problem Statement**: Given two sequences, find the length of their longest subsequence present in both.
-  
-- **Recurrence Relation**:
-  \[
-  dp[i][j] = 
-  \begin{cases} 
-  dp[i-1][j-1] + 1 & \text{if } X[i] = Y[j] \\
-  \max(dp[i-1][j], dp[i][j-1]) & \text{otherwise}
-  \end{cases}
-  \]
-  
-- **Implementation**:
-  ```python
-  def lcs(X, Y):
-      m, n = len(X), len(Y)
-      dp = [[0] * (n + 1) for _ in range(m + 1)]
-      for i in range(1, m + 1):
-          for j in range(1, n + 1):
-              if X[i-1] == Y[j-1]:
-                  dp[i][j] = dp[i-1][j-1] + 1
-              else:
-                  dp[i][j] = max(dp[i-1][j], dp[i][j-1])
-      return dp[m][n]
-  ```
-  - **Complexity**: \( O(mn) \)
+## Algorithms and Complexity
+### Naive Recursive Fibonacci — PDF pages 6–11
+The naive recursive Fibonacci algorithm, under the slide title "computing the Fibonacci sequence" (חישוב סדרת פיבונאצ'י), follows immediately from the definition: `int fib(int n) { if (n<3) return n == 2; return fib(n-1) + fib(n-2); }` returns the $n$-th element. Its running time satisfies $T(n) = O(1) + T(n-1) + T(n-2)$, and the slides ask how such an expression can be brought to a closed formula; the following slides analyze the recursion tree instead, starting from the double-computation problem (בעיית החישוב הכפול) visible in the tree of $F_5$.
 
-### 4. 0/1 Knapsack Problem
-- **Problem Statement**: Given weights and values of \( n \) items, determine the maximum value that can be carried in a knapsack of capacity \( W \).
-  
-- **Recurrence Relation**:
-  \[
-  dp[i][w] = 
-  \begin{cases} 
-  dp[i-1][w] & \text{if } wt[i] > w \\
-  \max(dp[i-1][w], dp[i-1][w-wt[i]] + val[i]) & \text{otherwise}
-  \end{cases}
-  \]
-  
-- **Implementation**:
-  ```python
-  def knapsack(weights, values, W):
-      n = len(weights)
-      dp = [[0] * (W + 1) for _ in range(n + 1)]
-      for i in range(1, n + 1):
-          for w in range(W + 1):
-              if weights[i-1] <= w:
-                  dp[i][w] = max(dp[i-1][w], dp[i-1][w-weights[i-1]] + values[i-1])
-              else:
-                  dp[i][w] = dp[i-1][w]
-      return dp[n][W]
-  ```
-  - **Complexity**: \( O(nW) \)
+In general, the recursion tree of $F_n$ has height exactly $n$, but all of its leaves lie at depth at least $n/2$; the general tree diagram marks these two depths (see PDF pages 9–10; diagram not fully extractable). Hence the number of nodes $k$ in the tree satisfies $2^{n/2} < k < 2^n$. A single call costs $O(1)$, so the running time equals the number of recursive calls, and the slides conclude that it is $\Theta(2^n)$, i.e. exponential.
 
-## Theorems & Proofs
-- **Optimal Substructure**: A problem exhibits optimal substructure if an optimal solution can be constructed from optimal solutions of its subproblems.
-- **Overlapping Subproblems**: A problem has overlapping subproblems if it can be broken down into subproblems that are reused multiple times.
+### From Recursion to Iteration — PDF pages 12–14
+From recursion to iteration (מרקורסיה לאיטרציה) is the step that removes the repeated work. For Fibonacci, the values are computed in increasing order of index and kept, so each new element is obtained from the two stored elements before it rather than from new recursive calls; PDF page 12 depicts this as a row of values $F_{n-7}, \ldots, F_n$ (see PDF page 12; diagram not fully extractable). The slides remark that this iterative, linear solution for the $n$-th Fibonacci element is of course no less simple than the recursive one, and that although the problem may seem too easy and intuitive, it demonstrates the principles of dynamic programming well.
+
+These principles are stated as a two-step method. First, find the trivial solution, which breaks the problem into different subproblems, similarly to divide and conquer. Then, find a way to solve the subproblems from the smallest problem to the largest, thereby saving the duplicate computations and significantly improving the complexity of the algorithm. The grid exercise later repeats this step under the same heading (PDF page 21).
+
+### Heaviest Grid Path by Dynamic Programming — PDF pages 18–21
+The heaviest path in a grid (מסלול כבד ביותר בלוח) is solved by changing the point of view: instead of asking which cells can be reached from a given cell, ask from which cells that cell can be reached. Cell $(i, j)$ can be entered in only two ways: from $(i-1, j)$, above it, or from $(i, j-1)$, to its left. Let $w^*_{i,j}$ hold the weight of the heaviest path ending at $(i, j)$. Choosing the better of the two options gives the recursive formula $w^*_{i,j} = w_{i,j} + \max(w^*_{i-1,j}, w^*_{i,j-1})$, with recursion base $w^*_{i,0} = w^*_{0,i} = -\infty$ for every $i = 1, 2, \ldots, n$ and $w^*_{0,0} = 0$. The slides say the formula can be proved correct by induction (posed as "how?"), and the weight of the heaviest path is $w^*_{n,n}$ by definition.
+
+Run as a recursion, this is again exponential. Since the formula for cell $(i, j)$ depends only on cells with smaller indices, the recursion can be replaced by going over the cells in the reverse order and storing the computed values. Each cell then costs $O(1)$, so the total complexity is $O(n^2)$. How to recover the heaviest path itself, and not only its weight, is left as a question.
+
+### Longest Increasing Subsequence in Quadratic Time — PDF pages 26–28
+The quadratic longest increasing subsequence (LIS) algorithm, introduced as an "idea for a solution" (רעיון לפתרון), concentrates on finding only the length of the longest increasing subsequence; the slides note that from a solution that finds the maximal length, such a subsequence can fairly easily be extracted as well. It maintains an array $d$ in which $d_i$ is the length of the longest increasing subsequence whose last element is $a_i$. The formulas are $d_0 = 0$, $d_i = \max\{\max_{j = 0, \ldots, i-1;\ a_j < a_i} (d_j + 1),\ 1\}$ and $ans = \max_{i = 1, \ldots, n} d_i$. Earlier builds of the slide show only the inner maximum; the final build (PDF page 28) adds $1$ as a further option, so $d_i$ is never below 1. The values are computed in order, first $d_1$, then $d_2$, and so on up to $d_n$, so every $d_j$ needed for $d_i$ is already available. The total complexity of the solution is $O(n^2)$.
+
+### Longest Increasing Subsequence with Binary Search — PDF pages 52–70
+The binary-search LIS algorithm, introduced as "another idea for a solution" (רעיון אחר לפתרון), builds a different array: $d_i$ contains, at every moment, the smallest element that ends an increasing subsequence of length $i$. Initially $d_i = \infty$ for every $i$. The slides note that $d$ is monotonically increasing, because an element that ends an increasing subsequence of length $i$ also ends an increasing subsequence of length $i - 1$.
+
+The final solution (הפתרון הסופי) goes over the original array, and for each element $a$ performs a binary search (חיפוש בינארי) on $d$ to find the index $i$ such that $d_i \le a < d_{i+1}$. It then updates $d_{i+1} := a$ and continues along the array. The answer is the maximal index $i$ such that $d_i < \infty$. Since one binary search is performed per array element, the time complexity drops to $O(n \log n)$. The proof of correctness is given on the board and does not appear in the slides.
+
+### Heaviest Independent Set on a Path: Two-State Recurrence — PDF pages 79–81
+The heaviest independent set in a path graph (קבוצה בלתי תלויה כבדה ביותר בגרף מסלולי) is solved by noting that each vertex is either in the set $S$ or not, and that if $i \in S$ then $(i-1) \notin S$ and $(i+1) \notin S$. The algorithm passes over the vertices in increasing order $i = 1, 2, \ldots, n$ and computes and stores two values per vertex. ${+}_i$ is the maximal weight of an independent set on vertices $1, 2, \ldots, i$ in which $i$ is in $S$, and ${-}_i$ is the maximal weight of such a set in which $i$ is not in $S$.
+
+They satisfy ${+}_i = w_i + {-}_{i-1}$ and ${-}_i = \max\{{+}_{i-1}, {-}_{i-1}\}$, starting from ${+}_0 = {-}_0 = 0$ (PDF page 82). The final solution is $\max\{{+}_n, {-}_n\}$. To recover the vertices of $S$ themselves, one can also record at each step of ${-}_i$ which option gave the maximum; completing the reconstruction is left as a question. Correctness is proved by induction (see Theorems and Proofs). The extracted slides do not state a running time for this algorithm.
+
+### Heaviest Independent Set on a Path: One-State Recurrence — PDF pages 86–88
+The one-state recurrence for the heaviest independent set in a path graph, presented as "another solution" (פתרון נוסף), keeps a single value per vertex. It rests on two observations for non-negative weights. First, there is an optimal solution in which every contiguous segment of three vertices contains at least one vertex of the independent set: if a run of at least three consecutive vertices lies outside the set, the second of them can be added, which only adds weight. Second, there is an optimal solution containing vertex $n$ or vertex $n-1$: if the optimal answer contains neither of the last two vertices, vertex $n$ can be added without breaking legality, again only adding weight.
+
+Accordingly, each vertex $i$ stores ${+}_i$ for the case that $i$ is in the set (the slide's wording says "the number of vertices", but the recurrence adds weights), computed by ${+}_i = w_i + \max\{{+}_{i-2}, {+}_{i-3}\}$ with recursion base ${+}_{<0} = 0$ (see PDF page 87; formula not fully extractable). The final answer is the set represented by $\max\{{+}_n, {+}_{n-1}\}$.
+
+### Minimum Vertex Cover on Trees — PDF pages 110–112
+Minimum vertex cover on trees (כיסוי מינימלי בצמתים על עצים) is solved by rooting the tree arbitrarily and visiting the vertices by levels, from the lowest level up to the root. The root is denoted $r$, and $c(i)$ denotes the set of all children of $i$ after rooting; the slides add that later in the course students will learn how to do this simply and in linear time. For each vertex $i$ two values are computed and stored. ${+}_i$ is the minimum number of vertices of the subtree of $i$ that are in the cover when $i$ itself is in the cover. ${-}_i$ is the minimum number of vertices of the subtree in the cover when $i$ does not have to be in the cover, so, unlike in the independent-set solution, ${-}_i$ still allows $i$ to be chosen.
+
+Together, ${+}_i = 1 + \sum_{j \in c(i)} {-}_j$ and ${-}_i = \min\{{+}_i, \sum_{j \in c(i)} {+}_j\}$. The size of the minimum cover is ${-}_r$; how to also recover the set of cover vertices is left as a question. Correctness can be proved by induction, in the same way as the algorithm itself (assume the values are minimal on the subtrees). Apart from the remark about rooting and level order, the slides state no running time.
 
 ## Worked Examples
-### Example 1: Fibonacci Sequence
-- Calculate \( F(5) \):
-  - Using DP: \( F(5) = F(4) + F(3) = 3 + 2 = 5 \)
+### Example: Computing the n-th Fibonacci Number — PDF pages 6–14
+The Fibonacci computation example (חישוב סדרת פיבונאצ'י) poses the task of computing the $n$-th element of the Fibonacci sequence. The solution that follows immediately from the definition is the recursive function `fib`, whose running time satisfies $T(n) = O(1) + T(n-1) + T(n-2)$. Drawing its recursion tree for $F_5$ exposes the double-computation problem (בעיית החישוב הכפול): the same subproblems, such as $F_3$ and $F_2$, appear in several branches and are recomputed each time (see PDF pages 7–8; diagram not fully extractable). Counting the nodes of the general tree shows that the recursive computation is exponential. The presented fix goes from recursion to iteration: compute the elements from the smallest index upward and reuse the stored values, which gives the iterative, linear solution. The slides admit the example is easy and intuitive, but use it because it demonstrates the principles of dynamic programming well.
 
-### Example 2: Rod Cutting
-- Given prices: \( p = [1, 5, 8, 9, 10] \) for lengths \( 1 \) to \( 5 \), find maximum revenue for length \( 5 \):
-  - Maximum revenue = \( 13 \) (cut into lengths \( 2 \) and \( 3 \))
+### Example: Heaviest Path in a Grid — PDF pages 15–21
+The heaviest path in a grid exercise (מסלול כבד ביותר בלוח) gives an $n \times n$ grid with a weight $w_{i,j}$ for every cell. The starting point is cell $(1, 1)$ at the top left, and the goal is cell $(n, n)$ at the bottom right. Moves are allowed only to the right or down; formally, from cell $(i, j)$ one may jump to $(i+1, j)$ or to $(i, j+1)$. Students are asked to describe an algorithm, with as good a complexity as possible, that finds the legal path of maximum weight from the starting point to the end point, and to prove its correctness and complexity.
 
-## Practice Problems (with solutions)
-### Problem 1: Fibonacci Sequence
-- **Question**: Calculate \( F(10) \) using dynamic programming.
-- **Solution**: 
-  - Using the DP approach, \( F(10) = 55 \).
+The presented solution looks at each cell from the point of view of the cells it can be reached from, defines $w^*_{i,j}$ as the weight of the heaviest path ending at $(i, j)$, and uses $w^*_{i,j} = w_{i,j} + \max(w^*_{i-1,j}, w^*_{i,j-1})$ with answer $w^*_{n,n}$. Evaluating the cells iteratively with stored values instead of recursing gives $O(n^2)$ time.
 
-### Problem 2: Rod Cutting
-- **Question**: Given prices \( p = [2, 3, 7, 8, 10] \), find the maximum revenue for length \( 4 \).
-- **Solution**: 
-  - Maximum revenue = \( 10 \) (cut into lengths \( 2 \) and \( 2 \)).
+### Example: Quadratic LIS Run — PDF pages 29–51
+The quadratic longest increasing subsequence (LIS) recurrence is traced on a concrete array. The problem as posed on PDF pages 23–25 asks for the longest strictly increasing, not necessarily contiguous, subsequence of $a_1, \ldots, a_n$. Here $a$ = 3, 1, 4, 15, 9, 2, 6, 5, 14, 58, 10, and $d$ is filled from left to right. Element by element ($a_i \to d_i$), the values are 3 → 1, 1 → 1, 4 → 2, 15 → 3, 9 → 3, 2 → 2, 6 → 3, 5 → 3, 14 → 4, 58 → 5 and 10 → 4. For instance, 4 can extend a subsequence ending at 3 or at 1, so $d_3 = 2$; 14 can extend a length-3 subsequence ending at 9, 6 or 5, so $d_9 = 4$. The final array is $d$ = 1, 1, 2, 3, 3, 2, 3, 3, 4, 5, 4, so the answer $\max_i d_i$ is 5. The intermediate animation frames between these values add no extractable text (see PDF pages 29–51; diagram not fully extractable).
 
-### Problem 3: Longest Common Subsequence
-- **Question**: Find the LCS of "AGGTAB" and "GXTXAYB".
-- **Solution**: 
-  - LCS length = \( 4 \) ("GTAB").
+### Example: Binary-Search LIS Run — PDF pages 52–65
+The binary-search LIS method is traced on the same array 3, 1, 4, 15, 9, 2, 6, 5, 14, 58, 10, with $d_1, \ldots, d_{11}$ initialized to $\infty$. Showing only the finite entries of $d$ after each element: 3 gives (3); 1 replaces it, giving (1); 4 gives (1, 4); 15 gives (1, 4, 15); 9 replaces 15, giving (1, 4, 9); 2 replaces 4, giving (1, 2, 9); 6 replaces 9, giving (1, 2, 6); 5 replaces 6, giving (1, 2, 5); 14 gives (1, 2, 5, 14); 58 gives (1, 2, 5, 14, 58); and 10 replaces 14, giving (1, 2, 5, 10, 58). The largest index with $d_i < \infty$ is 5, the same length as in the quadratic run. Each update writes $a$ into position $i+1$ where $d_i \le a < d_{i+1}$, so an element either extends the longest length found so far or lowers the smallest known ending value for some length.
 
-### Problem 4: 0/1 Knapsack
-- **Question**: Given weights \( [1, 2, 3] \) and values \( [10, 15, 40] \), find the maximum value for capacity \( 6 \).
-- **Solution**: 
-  - Maximum value = \( 55 \) (items with weights \( 2 \) and \( 3 \)).
+### Example: Heaviest Independent Set in a Path Graph — PDF pages 75–81
+The heaviest independent set in a path graph exercise (קבוצה בלתי תלויה כבדה ביותר בגרף מסלולי) gives an array $w_1, w_2, \ldots, w_n$ with the vertex weights of a path graph $G$. Students must describe an algorithm, with as good a complexity as possible, that finds a heaviest independent set in $G$, and prove its correctness and complexity.
 
-## Common Mistakes to Avoid
-- **Ignoring Base Cases**: Always define base cases clearly; they are crucial for the correctness of the DP solution.
-- **Incorrect Recurrence Relations**: Ensure that the recurrence relation accurately reflects the problem's requirements.
-- **Space Complexity**: Be mindful of space usage; optimize where possible, especially in large problems.
-- **Order of Computation**: Ensure that subproblems are solved in the correct order to avoid using uninitialized values.
+The slides first consider two greedy attempts (ניסיונות חמדניים), posed as questions: what happens if we take the heaviest vertex first, and what happens if we choose the maximum between the even-numbered and the odd-numbered vertices. Small weighted path examples are used to examine them; numbers such as 5, 8, 4 appear in the diagram (see PDF pages 76–78; diagram not fully extractable). The deck then turns to dynamic programming with two values per vertex, ${+}_i = w_i + {-}_{i-1}$ and ${-}_i = \max\{{+}_{i-1}, {-}_{i-1}\}$, and returns $\max\{{+}_n, {-}_n\}$.
+
+### Example: One-State Recurrence on Weights 2, 8, 3, 4, 7, 1 — PDF pages 89–102
+The one-state heaviest independent set recurrence ${+}_i = w_i + \max\{{+}_{i-2}, {+}_{i-3}\}$ is traced in an example run (דוגמת הרצה) on a path with weights 2, 8, 3, 4, 7, 1; entries not yet computed are drawn as $\infty$ placeholders. The values filled in are ${+}_1 = 2$, ${+}_2 = 8$, ${+}_3 = 3 + 2 = 5$, ${+}_4 = 4 + 8 = 12$, ${+}_5 = 7 + 8 = 15$ and ${+}_6 = 1 + 12 = 13$. The run ends with RETURN $\max\{{+}_n, {+}_{n-1}\}$, which here is $\max\{13, 15\} = 15$. The last frame appears to set apart the vertices of weight 8 and 7, whose total is 15 (see PDF page 102; diagram not fully extractable).
+
+### Example: Minimum Vertex Cover on a Tree — PDF pages 104–112
+The minimum vertex cover on trees exercise (בעיית כיסוי מינימלי בצמתים על עצים) asks for an algorithm, with as good a complexity as possible, that finds the minimum vertex cover of a given tree, together with proofs of its correctness and complexity. The observations on the way to the solution are as follows. Root the tree arbitrarily; this allows subproblems to be defined on subtrees, so the solution is assembled from solutions on the subtrees. Each vertex is either in the cover or not. If a vertex is not in the cover, all of its children must be in the cover so that the edges between them are covered. If a vertex is in the cover, the edges to its children are covered, so the children do not need to be in the cover; however, a child may still be in the cover even though its parent is, when that is what makes the cover minimal. The resulting dynamic program (PDF pages 110–112) uses ${+}_i = 1 + \sum_{j \in c(i)} {-}_j$ and ${-}_i = \min\{{+}_i, \sum_{j \in c(i)} {+}_j\}$, with the answer ${-}_r$ at the root $r$.
+
+## Theorems and Proofs
+### Correctness of the Two-State Independent-Set Recurrences — PDF pages 82–85
+The correctness proof (הוכחת נכונות) for the two-state heaviest independent set recurrences ${+}_i = w_i + {-}_{i-1}$ and ${-}_i = \max\{{+}_{i-1}, {-}_{i-1}\}$ is by induction. Base case: for $i = 0$ define ${+}_0 = {-}_0 = 0$; an independent set on the first 0 vertices of the graph has weight 0. Induction step: assume ${+}_{i-1}$ is the weight of the heaviest independent set on the first $i-1$ vertices that contains vertex $i-1$, and that the analogous claim holds for ${-}_{i-1}$.
+
+If $i$ is not in the set, the heaviest independent set up to $i$ is one of the sets represented by ${+}_{i-1}$ and ${-}_{i-1}$, since no vertex is added to the weight and the weights are positive; because no vertex is added, the set remains a legal independent set. If $i$ is taken, $i-1$ cannot be, since otherwise the set would not be independent; therefore, and because the weights are positive, the set must be a maximum set not containing $i-1$, namely the one represented by ${-}_{i-1}$, plus the weight $w_i$. Finally, the answer is $\max\{{+}_n, {-}_n\}$, because a solution either includes the last vertex or does not, and the heaviest solution is the larger of these two options.

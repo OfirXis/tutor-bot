@@ -1,0 +1,78 @@
+{
+  "week": 7,
+  "title": "Tutorial 7 — Minimum Spanning Trees",
+  "title_he": "תרגול 7 — עצים פורשים מינימליים",
+  "source_pdf": "material/lectures/Tutorial algo 7.pdf",
+  "topics": [
+    {
+      "id": "spanning_tree",
+      "name": "Spanning tree",
+      "aliases": ["spanning trees", "עץ פורש", "עצים פורשים"],
+      "pages": [2, 4],
+      "kind": "concept"
+    },
+    {
+      "id": "minimum_spanning_tree",
+      "name": "Minimum spanning tree",
+      "aliases": ["minimum spanning trees", "minimum-weight spanning tree", "MST", "עץ פורש מינימלי", "עצים פורשים מינימליים"],
+      "pages": [5, 7],
+      "kind": "concept"
+    },
+    {
+      "id": "cycle_property",
+      "name": "Cycle property",
+      "aliases": ["MST cycle property", "cycle property for minimum spanning trees", "תכונת המעגל", "תכונת המעגל לעצים פורשים מינימליים"],
+      "pages": [8, 20],
+      "kind": "theorem"
+    },
+    {
+      "id": "cut_property",
+      "name": "Cut property",
+      "aliases": ["MST cut property", "cut property for minimum spanning trees", "תכונת החתך", "תכונת החתך לעצים פורשים מינימליים"],
+      "pages": [21, 28],
+      "kind": "theorem"
+    },
+    {
+      "id": "graph_cut",
+      "name": "Cut in a graph",
+      "aliases": ["graph cut", "edge cut", "חתך בגרף"],
+      "pages": [22, 24],
+      "kind": "concept"
+    },
+    {
+      "id": "kruskal",
+      "name": "Kruskal's algorithm",
+      "aliases": ["Kruskal", "Kruskal algorithm", "קרוסקל", "אלגוריתם של קרוסקל"],
+      "pages": [29, 55],
+      "kind": "algorithm"
+    },
+    {
+      "id": "prim",
+      "name": "Prim's algorithm",
+      "aliases": ["Prim", "Prim algorithm", "פרים", "אלגוריתם של פרים"],
+      "pages": [56, 74],
+      "kind": "algorithm"
+    },
+    {
+      "id": "maximum_spanning_tree",
+      "name": "Maximum spanning tree",
+      "aliases": ["maximum spanning trees", "maximum-weight spanning tree", "max spanning tree", "עץ פורש מקסימלי"],
+      "pages": [76, 78],
+      "kind": "problem"
+    },
+    {
+      "id": "minimum_product_spanning_tree",
+      "name": "Minimum-product spanning tree",
+      "aliases": ["minimum product spanning tree", "spanning tree with minimum product", "spanning tree with minimum product of edge weights", "עץ פורש עם מכפלה מינימלית"],
+      "pages": [79, 83],
+      "kind": "problem"
+    },
+    {
+      "id": "mst_uniqueness",
+      "name": "Uniqueness of the minimum spanning tree",
+      "aliases": ["unique minimum spanning tree", "uniqueness of the MST", "MST uniqueness", "unique MST", "יחודיות של העץ הפורש המינימלי"],
+      "pages": [84, 87],
+      "kind": "theorem"
+    }
+  ]
+}

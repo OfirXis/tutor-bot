@@ -1,0 +1,16 @@
+{
+  "week": 6,
+  "title": "Tutorial 6 — Dynamic Programming and Graph Traversal",
+  "title_he": "תרגול 6 — תכנון דינאמי וסריקות גרפים",
+  "source_pdf": "material/lectures/Tutorial algo 6.pdf",
+  "topics": [
+    {"id": "equal_sum_split_count", "name": "Counting equal-sum splits", "aliases": ["equal-sum split", "equal-sum partition", "split {1, …, n} into two sets with equal sums", "חלוקה לשתי קבוצות שסכומן שווה"], "kind": "problem"},
+    {"id": "graph_representations", "name": "Graph representations", "aliases": ["adjacency matrix", "adjacency list", "מטריצת שכנויות", "רשימת שכנויות"], "kind": "concept"},
+    {"id": "breadth_first_search", "name": "Breadth-first search", "aliases": ["BFS", "breadth first search", "BFS tree", "חיפוש לרוחב"], "kind": "method"},
+    {"id": "depth_first_search", "name": "Depth-first search", "aliases": ["DFS", "depth first search", "חיפוש לעומק"], "kind": "method"},
+    {"id": "unweighted_shortest_paths", "name": "Unweighted shortest paths", "aliases": ["shortest paths in an unweighted graph", "multiple sources"], "kind": "problem"},
+    {"id": "topological_ordering", "name": "Topological ordering", "aliases": ["topological sort", "topological sorting", "מיון טופולוגי"], "kind": "method"},
+    {"id": "counting_paths_dag", "name": "Counting paths in a DAG", "aliases": ["number of paths in a DAG", "counting routes"], "kind": "problem"},
+    {"id": "layered_graph", "name": "Layered graph", "aliases": ["even-length paths", "graph duplication"], "kind": "method"}
+  ]
+}

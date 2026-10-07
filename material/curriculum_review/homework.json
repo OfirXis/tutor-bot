@@ -1,0 +1,197 @@
+{
+  "hw_1": {
+    "title": "Homework 1",
+    "problem_pdf": "material/Homework/HW1.pdf",
+    "week": 4,
+    "week_basis": "automatic: the latest week among the topics its problems need",
+    "description": "Asymptotic analysis, recurrences, sorted-matrix search, greedy rope merging and graph degree sequences.",
+    "problem_topics": {
+      "1": [
+        "algorithm_definition",
+        "pseudocode",
+        "correctness_proofs",
+        "algorithm_analysis"
+      ],
+      "2": [
+        "algorithm_definition",
+        "algorithm_analysis",
+        "ordering_functions_by_growth"
+      ],
+      "3": [
+        "algorithm_definition",
+        "pseudocode",
+        "algorithm_analysis",
+        "maximum_input_size_problem"
+      ],
+      "4": [
+        "greedy_algorithms",
+        "coin_change",
+        "dynamic_programming"
+      ],
+      "5": [
+        "greedy_algorithms",
+        "graph_basics",
+        "algorithm_analysis"
+      ]
+    },
+    "pdf_sha256": "113578e66e00b0392701064ab90becef270d847e8e486969025f67ce0fc57c4c"
+  },
+  "hw_2": {
+    "title": "Homework 2",
+    "problem_pdf": "material/Homework/HW2_algo.pdf",
+    "week": 4,
+    "week_basis": "automatic: the latest week among the topics its problems need",
+    "description": "Dynamic programming: matrix-chain multiplication, constrained subsequences, maximum bias, weighted scheduling and string shuffles.",
+    "problem_topics": {
+      "1": [
+        "algorithm_definition",
+        "problem_solving_tips",
+        "algorithm_analysis",
+        "running_time_comparison"
+      ],
+      "2": [
+        "maximum_subarray",
+        "greedy_algorithms",
+        "greedy_stays_ahead"
+      ],
+      "3": [
+        "algorithm_definition",
+        "problem_solving_tips",
+        "algorithm_analysis",
+        "maximum_input_size_problem"
+      ],
+      "4": [
+        "greedy_algorithms",
+        "dynamic_programming",
+        "maximum_profit_problem"
+      ],
+      "5": [
+        "algorithm_definition",
+        "problem_solving_tips",
+        "algorithm_analysis",
+        "graph_basics"
+      ]
+    },
+    "pdf_sha256": "86ba2dcc5a6b1d1ef72f8dd112975e2ec86629213d8bdd36a11600d64c0b66d0"
+  },
+  "hw_3": {
+    "title": "Homework 3",
+    "problem_pdf": "material/Homework/HW3_ALGO.pdf",
+    "week": 6,
+    "week_basis": "automatic: the latest week among the topics its problems need",
+    "description": "Graph traversal: tree diameter, BFS/DFS runtimes and trees, unique connectivity and path reachability.",
+    "problem_topics": {
+      "1": [
+        "breadth_first_search",
+        "dynamic_programming"
+      ],
+      "2": [
+        "algorithm_definition",
+        "breadth_first_search",
+        "running_time_comparison",
+        "graph_basics"
+      ],
+      "3": [
+        "graph_basics",
+        "breadth_first_search",
+        "depth_first_search",
+        "correctness_proofs"
+      ],
+      "4": [
+        "directed_acyclic_graph",
+        "breadth_first_search",
+        "depth_first_search"
+      ],
+      "5": [
+        "algorithm_definition",
+        "correctness_proofs",
+        "graph_basics",
+        "breadth_first_search"
+      ],
+      "6": [
+        "algorithm_definition",
+        "pseudocode",
+        "correctness_proofs",
+        "graph_basics"
+      ]
+    },
+    "pdf_sha256": "c29aff830bce8035f2799a56806bd2a640a629e0f3fd2f0fc311ac4deac67bec"
+  },
+  "hw_4": {
+    "title": "Homework 4",
+    "problem_pdf": "material/Homework/HW4_ALGO.pdf",
+    "week": 8,
+    "week_basis": "automatic: the latest week among the topics its problems need",
+    "description": "Minimum spanning trees and shortest paths: nearest facilities, MST exchange, road costs and DAG shortest paths.",
+    "problem_topics": {
+      "1": [
+        "algorithm_definition",
+        "correctness_proofs",
+        "minimum_spanning_tree",
+        "graph_basics"
+      ],
+      "2": [
+        "graph_basics",
+        "minimum_spanning_tree",
+        "weighted_shortest_paths"
+      ],
+      "3": [
+        "minimum_spanning_tree",
+        "cycle_property",
+        "cut_property",
+        "graph_cut"
+      ],
+      "4": [
+        "algorithm_definition",
+        "algorithm_analysis",
+        "dynamic_programming",
+        "bellman_ford"
+      ],
+      "5": [
+        "dijkstra",
+        "directed_acyclic_graph",
+        "longest_path_dag",
+        "all_pairs_shortest_paths"
+      ]
+    },
+    "pdf_sha256": "0e7cb1729a8f778d6c16fa390851fad5685c48e822b7e5d9639d64a1b44493a5"
+  },
+  "hw_5": {
+    "title": "Homework 5",
+    "problem_pdf": "material/Homework/HW5_ALGO.pdf",
+    "week": 9,
+    "week_basis": "automatic: the latest week among the topics its problems need",
+    "description": "Flow networks: rational capacities, regular bipartite edge coloring, minimum cuts, team assignment and image partitioning.",
+    "problem_topics": {
+      "1": [
+        "algorithm_definition",
+        "algorithm_analysis",
+        "maximum_flow",
+        "ford_fulkerson"
+      ],
+      "2": [
+        "graph_basics",
+        "graph_pursuit_game",
+        "graph_representations",
+        "breadth_first_search"
+      ],
+      "3": [
+        "graph_cut",
+        "minimum_cut",
+        "ford_fulkerson",
+        "augmenting_paths"
+      ],
+      "4": [
+        "algorithm_definition",
+        "problem_solving_tips",
+        "dynamic_programming"
+      ],
+      "5": [
+        "algorithm_definition",
+        "dynamic_programming",
+        "problem_solving_tips"
+      ]
+    },
+    "pdf_sha256": "b7abc31e88788bd096185bf3ed5dabcc1a4edbab77c06367cec4b6cfbc8f0847"
+  }
+}

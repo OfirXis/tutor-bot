@@ -1,0 +1,71 @@
+{
+  "week": 3,
+  "title": "Tutorial 3 — Greedy Algorithms",
+  "title_he": "תרגול 3 — אלגוריתמים חמדניים",
+  "source_pdf": "material/lectures/Tutorial 3 (2).pdf",
+  "topics": [
+    {
+      "id": "greedy_algorithms",
+      "name": "Greedy algorithms",
+      "aliases": ["greedy algorithm", "greedy method", "אלגוריתמים חמדניים", "אלגוריתם חמדן", "אלגוריתם חמדני"],
+      "pages": [2, 7],
+      "kind": "concept"
+    },
+    {
+      "id": "greedy_stays_ahead",
+      "name": "Greedy stays ahead argument",
+      "aliases": ["greedy stays ahead", "comparison argument", "טיעון ההשוואה", "טיעון השוואה"],
+      "pages": [4, 7],
+      "kind": "concept"
+    },
+    {
+      "id": "exchange_argument",
+      "name": "Exchange argument",
+      "aliases": ["exchange proof", "טיעון ההחלפה", "טיעון החלפה"],
+      "pages": [6, 7],
+      "kind": "concept"
+    },
+    {
+      "id": "coin_change",
+      "name": "Coin change",
+      "aliases": ["coin change problem", "change-making problem", "minimum coin change", "greedy coin change", "בעיית המטבעות"],
+      "pages": [8, 17],
+      "kind": "problem"
+    },
+    {
+      "id": "interval_partitioning",
+      "name": "Interval partitioning",
+      "aliases": ["interval partitioning problem", "scheduling all intervals", "interval coloring", "interval graph coloring", "diner seating problem", "בעיית שיבוץ הסועדים"],
+      "pages": [18, 23],
+      "kind": "problem"
+    },
+    {
+      "id": "activity_selection",
+      "name": "Interval scheduling",
+      "aliases": ["interval scheduling problem", "activity selection", "activity selection problem", "earliest finish time", "single-table diner scheduling", "שיבוץ הסועדים בשולחן בודד", "בעיית שיבוץ הסועדים בשולחן בודד"],
+      "pages": [24, 30],
+      "kind": "problem"
+    },
+    {
+      "id": "set_cover",
+      "name": "Set cover",
+      "aliases": ["set cover problem", "set cover approximation", "greedy set cover", "קירוב לכיסוי בקבוצות", "בעיית הכיסוי בקבוצות", "כיסוי בקבוצות"],
+      "pages": [31, 44],
+      "kind": "algorithm"
+    },
+    {
+      "id": "minimum_vertex_cover",
+      "name": "Minimum vertex cover on trees",
+      "aliases": ["minimum vertex cover", "vertex cover", "vertex cover on trees", "tree vertex cover", "MVC", "כיסוי מינימלי בצמתים על עצים", "כיסוי מינימלי בצמתים", "כיסוי בצמתים"],
+      "pages": [45, 67],
+      "kind": "problem"
+    },
+    {
+      "id": "carpenter_problem",
+      "name": "Carpenter problem",
+      "aliases": ["carpenter's problem", "beam cutting problem", "beam cutting", "overnight stops problem", "בעיית הנגר"],
+      "pages": [68, 74],
+      "kind": "problem"
+    }
+  ]
+}

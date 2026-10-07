@@ -1,0 +1,99 @@
+{
+  "week": 1,
+  "title": "Tutorial 1 — Introduction to Algorithm Design and Analysis",
+  "title_he": "תרגול 1 — מבוא לתכנון וניתוח אלגוריתמים",
+  "source_pdf": "material/lectures/Tutorial 1 (2).pdf",
+  "topics": [
+    {
+      "id": "algorithm_definition",
+      "name": "Algorithm definition and categories",
+      "aliases": ["what is an algorithm", "deterministic algorithm", "deterministic algorithms", "decision algorithm", "decision algorithms", "optimization algorithm", "optimization algorithms", "מהו אלגוריתם", "אלגוריתמים דטרמיניסטיים", "אלגוריתמי הכרעה", "אלגוריתמי אופטימיזציה"],
+      "pages": [4, 5],
+      "kind": "concept"
+    },
+    {
+      "id": "pseudocode",
+      "name": "Pseudo-code",
+      "aliases": ["pseudocode", "describing an algorithm", "פסודו-קוד", "תיאור אלגוריתם"],
+      "pages": [6, 6],
+      "kind": "concept"
+    },
+    {
+      "id": "correctness_proofs",
+      "name": "Proving algorithm correctness",
+      "aliases": ["proof of correctness", "correctness proof", "direct proof", "proof by construction", "הוכחת נכונות", "הוכחה ישירה", "הוכחה בבנייה"],
+      "pages": [7, 7],
+      "kind": "concept"
+    },
+    {
+      "id": "problem_solving_tips",
+      "name": "Problem-solving tips",
+      "aliases": ["problem solving strategies", "טיפים לפתרון בעיות"],
+      "pages": [8, 9],
+      "kind": "concept"
+    },
+    {
+      "id": "algorithm_analysis",
+      "name": "Running time complexity and asymptotic notation",
+      "aliases": ["algorithm analysis", "complexity analysis", "time complexity", "running time complexity", "asymptotic notation", "asymptotic order of growth", "Big-O", "big O notation", "Big-Omega", "Big-Theta", "Omega notation", "Theta notation", "little-o", "little-omega", "סיבוכיות זמן ריצה", "יחס אסימפטוטי"],
+      "pages": [10, 13],
+      "kind": "concept"
+    },
+    {
+      "id": "running_time_comparison",
+      "name": "Running time comparison table",
+      "aliases": ["comparison of running times", "growth rate comparison table", "השוואת זמני ריצה"],
+      "pages": [14, 14],
+      "kind": "concept"
+    },
+    {
+      "id": "maximum_input_size_problem",
+      "name": "Maximum input size within one hour",
+      "aliases": ["largest input size in one hour", "maximum input size in one hour", "גודל הקלט המקסימלי"],
+      "pages": [15, 15],
+      "kind": "problem"
+    },
+    {
+      "id": "ordering_functions_by_growth",
+      "name": "Ordering functions by asymptotic growth",
+      "aliases": ["ordering functions by growth rate", "ranking functions by growth rate", "סדרו את הפונקציות"],
+      "pages": [16, 18],
+      "kind": "problem"
+    },
+    {
+      "id": "stirling_approximation",
+      "name": "Stirling's approximation",
+      "aliases": ["Stirling approximation", "Stirling's formula", "Stirling formula", "קירוב סטרלינג"],
+      "pages": [17, 17],
+      "kind": "theorem"
+    },
+    {
+      "id": "diners_problem",
+      "name": "Diners problem",
+      "aliases": ["restaurant diners problem", "maximum simultaneous diners", "maximum number of overlapping intervals", "בעיית הסועדים"],
+      "pages": [19, 33],
+      "kind": "problem"
+    },
+    {
+      "id": "merged_median_problem",
+      "name": "Merged median problem",
+      "aliases": ["merged median", "median of two sorted arrays", "בעיית החציון הממוזג", "חציון הממוזג"],
+      "pages": [34, 40],
+      "kind": "problem"
+    },
+    {
+      "id": "graph_basics",
+      "name": "Directed and undirected graphs",
+      "aliases": ["directed graph", "undirected graph", "גרף מכוון", "גרף לא מכוון"],
+      "pages": [41, 41],
+      "kind": "concept"
+    },
+    {
+      "id": "graph_pursuit_game",
+      "name": "Rami and Dina pursuit game",
+      "aliases": ["Rami and Dina", "pursuit game on a graph", "pursuit-evasion game", "cops and robbers", "game state graph", "רמי ודינה"],
+      "pages": [42, 62],
+      "kind": "problem"
+    }
+  ]
+}

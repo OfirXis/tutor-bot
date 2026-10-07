@@ -34,7 +34,7 @@ os.chdir(Path(__file__).parent)
 st.set_page_config(
     page_title="Course Tutor",
     page_icon="🎓",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
@@ -61,7 +61,7 @@ html, body, .stApp { background: var(--bg) !important; }
 code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; }
 
 #MainMenu, footer, header[data-testid="stHeader"] { display: none !important; }
-.block-container { padding-top: 2rem !important; padding-bottom: 8rem !important; max-width: 720px; }
+.block-container { padding-top: 1.5rem !important; padding-bottom: 8rem !important; max-width: 760px; }
 
 /* ── typography in chat ─────────────────────────────────────────────── */
 .main p, .main li, .main span, .main td, .main th { color: var(--text); font-size: .98rem; line-height: 1.7; }
@@ -106,8 +106,10 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
 }
 [class*="st-key-rtl-"] [data-testid="stMarkdownContainer"] pre,
 [class*="st-key-rtl-"] [data-testid="stMarkdownContainer"] code,
-[class*="st-key-rtl-"] [data-testid="stMarkdownContainer"] .katex {
-    direction: ltr !important; unicode-bidi: isolate;
+[class*="st-key-rtl-"] [data-testid="stMarkdownContainer"] .katex,
+[class*="st-key-rtl-"] [data-testid="stMarkdownContainer"] .katex-display,
+[class*="st-key-rtl-"] [data-testid="stMarkdownContainer"] .katex-inline {
+    direction: ltr !important; unicode-bidi: plaintext !important; text-align: left !important;
 }
 
 /* code blocks */
@@ -128,9 +130,15 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
     direction: ltr; unicode-bidi: isolate; display: inline-block;
 }
 
-/* KaTeX */
-.katex { color: var(--text) !important; font-size: 1.03em !important;
-         direction: ltr; unicode-bidi: isolate; }
+/* KaTeX — always LTR, never affected by parent RTL */
+.katex, .katex-display, .katex-inline { 
+    color: var(--text) !important; 
+    font-size: 1.03em !important;
+    direction: ltr !important; 
+    unicode-bidi: plaintext !important; 
+    text-align: left !important;
+    display: inline-block !important;
+}
 /* tables */
 .main table { border-collapse: collapse; width: 100%; }
 .main td, .main th { border: 1px solid var(--border) !important; padding: 6px 12px !important; }
@@ -173,6 +181,17 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
 [data-testid="stSidebar"] .stCaption, [data-testid="stSidebar"] small { color: var(--text-faint) !important; }
 [data-testid="stSidebar"] hr { border-color: var(--border) !important; margin: .75rem 0 !important; }
 
+/* Sidebar section headers for better visual hierarchy */
+[data-testid="stSidebar"] strong {
+    font-size: 0.85rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: var(--text-faint) !important;
+    display: block !important;
+    margin-top: 12px !important;
+    margin-bottom: 8px !important;
+}
+
 [data-testid="stSidebar"] [data-baseweb="select"] > div,
 [data-testid="stSidebar"] .stTextInput input, [data-testid="stSidebar"] .stNumberInput input {
     background: var(--surface) !important;
@@ -199,9 +218,63 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
     border: 1px solid var(--border) !important;
     border-radius: 12px !important;
     font-weight: 500 !important;
-    transition: background .15s, border-color .15s !important;
+    font-size: .95rem !important;
+    padding: 10px 16px !important;
+    transition: all .15s ease !important;
 }
-.stButton > button:hover { background: var(--surface-2) !important; border-color: #4d4d4d !important; }
+.stButton > button:hover {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: var(--bg) !important;
+    transform: translateY(-1px) !important;
+}
+.stButton > button:active { transform: translateY(0) !important; }
+
+/* selectbox styling — make more visible and interactive */
+[data-baseweb="select"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    transition: border-color .15s ease !important;
+}
+[data-baseweb="select"]:hover {
+    border-color: var(--accent) !important;
+}
+[data-baseweb="select"] [role="button"] {
+    color: var(--text) !important;
+    font-weight: 500 !important;
+}
+
+/* radio buttons — segmented control style */
+.stRadio {
+    display: flex !important;
+}
+.stRadio [role="radiogroup"] {
+    gap: 2px !important;
+    display: flex !important;
+    background: var(--surface-2) !important;
+    border-radius: 10px !important;
+    padding: 3px !important;
+    width: 100% !important;
+}
+.stRadio label {
+    flex: 1 !important;
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    text-align: center !important;
+    cursor: pointer !important;
+    transition: all .15s ease !important;
+    color: var(--text-dim) !important;
+    font-weight: 500 !important;
+}
+.stRadio label:hover {
+    background: rgba(16, 163, 127, 0.1) !important;
+}
+.stRadio label:has(input:checked) {
+    background: var(--accent) !important;
+    color: var(--bg) !important;
+    box-shadow: 0 2px 8px rgba(16, 163, 127, 0.2) !important;
+}
 
 /* expanders (sources) */
 [data-testid="stExpander"] {
@@ -215,10 +288,38 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
 .pill {
     display: inline-flex; align-items: center; gap: 7px;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 999px; padding: 4px 13px;
+    border-radius: 999px; padding: 6px 14px;
     font-size: .78rem; color: var(--text-dim);
+    font-weight: 500;
+    animation: fadeIn 0.3s ease;
 }
-.pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.pill .dot { 
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent); 
+    animation: pulse 2s infinite;
+}
+
+/* Loading animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Spinner for loading states */
+[data-testid="stStatus"] {
+    animation: fadeIn 0.3s ease;
+}
+[data-testid="stSpinner"] > div {
+    border-color: var(--surface-2) !important;
+    border-top-color: var(--accent) !important;
+    animation: spin 1s linear infinite !important;
+}
 .hero { text-align: center; padding: 3rem 0 1.4rem; }
 .hero .logo {
     width: 44px; height: 44px; margin: 0 auto 16px; border-radius: 12px;

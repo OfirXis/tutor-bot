@@ -1,0 +1,78 @@
+{
+  "week": 2,
+  "title": "Tutorial 2 — Divide and Conquer",
+  "title_he": "תרגול 2 — הפרד ומשול",
+  "source_pdf": "material/lectures/Tutorial 2 (2).pdf",
+  "topics": [
+    {
+      "id": "divide_and_conquer",
+      "name": "Divide and conquer",
+      "aliases": ["divide & conquer", "הפרד ומשול"],
+      "pages": [2, 2],
+      "kind": "concept"
+    },
+    {
+      "id": "merge_sort",
+      "name": "Merge sort",
+      "aliases": ["mergesort", "מיון מיזוג"],
+      "pages": [3, 6],
+      "kind": "algorithm"
+    },
+    {
+      "id": "recursion_tree",
+      "name": "Recursion tree",
+      "aliases": ["recursion-tree method", "עץ הרקורסיה", "עץ רקורסיה"],
+      "pages": [5, 6],
+      "kind": "concept"
+    },
+    {
+      "id": "maximum_profit_problem",
+      "name": "Maximum profit problem",
+      "aliases": ["max profit problem", "best time to buy and sell stock", "בעיית הרווח המקסימלי"],
+      "pages": [7, 16],
+      "kind": "problem"
+    },
+    {
+      "id": "fast_exponentiation",
+      "name": "Fast exponentiation",
+      "aliases": ["exponentiation by squaring", "binary exponentiation", "repeated squaring", "fast power", "חזקה מהירה"],
+      "pages": [17, 21],
+      "kind": "algorithm"
+    },
+    {
+      "id": "majority_element",
+      "name": "Majority element",
+      "aliases": ["majority element problem", "בעיית האיבר המרובה", "איבר מרובה"],
+      "pages": [22, 27],
+      "kind": "problem"
+    },
+    {
+      "id": "prefix_free_codes",
+      "name": "Prefix-free codes",
+      "aliases": ["prefix-free code", "prefix code", "prefix codes", "קודים חסרי רישא", "קודים חסרי רישות", "קוד חסר רישות"],
+      "pages": [28, 39],
+      "kind": "concept"
+    },
+    {
+      "id": "huffman_coding",
+      "name": "Huffman coding",
+      "aliases": ["huffman", "קידוד הופמן", "הופמן"],
+      "pages": [40, 53],
+      "kind": "algorithm"
+    },
+    {
+      "id": "exchange_argument",
+      "name": "Exchange argument",
+      "aliases": ["טיעון החלפה"],
+      "pages": [45, 48],
+      "kind": "concept"
+    },
+    {
+      "id": "maximum_subarray",
+      "name": "Maximum subarray",
+      "aliases": ["maximum subarray problem", "maximum-sum subarray", "largest subarray", "heaviest interval", "תת מערך גדול ביותר", "תת מערך מקסימלי", "אינטרוול כבד ביותר"],
+      "pages": [54, 58],
+      "kind": "problem"
+    }
+  ]
+}
