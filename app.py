@@ -60,7 +60,12 @@ html, body, .stApp { background: var(--bg) !important; }
 * { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; }
 code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; }
 
-#MainMenu, footer, header[data-testid="stHeader"] { display: none !important; }
+/* The header also holds the button that reopens a collapsed sidebar, so it
+   stays (transparent); only the menu, deploy button and toolbar are hidden. */
+#MainMenu, footer, [data-testid="stMainMenu"], [data-testid="stAppDeployButton"],
+[data-testid="stToolbarActions"], [data-testid="stDecoration"] { display: none !important; }
+header[data-testid="stHeader"] { background: transparent !important; }
+[data-testid="stExpandSidebarButton"] { color: var(--text) !important; }
 .block-container { padding-top: 1.5rem !important; padding-bottom: 8rem !important; max-width: 760px; }
 
 /* ── typography in chat ─────────────────────────────────────────────── */
@@ -307,18 +312,10 @@ code, pre, kbd { font-family: 'JetBrains Mono', Consolas, monospace !important; 
     from { opacity: 0; transform: translateY(-4px); }
     to { opacity: 1; transform: translateY(0); }
 }
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
 
-/* Spinner for loading states */
+/* Status boxes for loading states */
 [data-testid="stStatus"] {
     animation: fadeIn 0.3s ease;
-}
-[data-testid="stSpinner"] > div {
-    border-color: var(--surface-2) !important;
-    border-top-color: var(--accent) !important;
-    animation: spin 1s linear infinite !important;
 }
 .hero { text-align: center; padding: 3rem 0 1.4rem; }
 .hero .logo {
@@ -496,6 +493,20 @@ def get_retriever(index_revision: int):
 def get_llm_cached(provider: str, model: str, api_key: str = ""):
     # Settings are passed explicitly: one browser session must never change another's.
     return rag.get_llm(provider=provider, model=model, api_key=api_key or None)
+
+
+OPENROUTER_MODELS = ["anthropic/claude-haiku-5.5", "openai/gpt-4o-mini", "openai/gpt-5-mini",
+                     "google/gemini-2.5-flash", "anthropic/claude-sonnet-5.5"]
+
+
+def openrouter_model_input(label: str, default: str, key: str) -> str:
+    """Common OpenRouter models, plus any other model id typed by hand."""
+    options = list(dict.fromkeys([default, *OPENROUTER_MODELS]))
+    choice = st.selectbox(label, [*options, "custom"], key=key,
+                          format_func=lambda value: "Custom / מותאם" if value == "custom" else value)
+    if choice == "custom":
+        return st.text_input("OpenRouter model id", placeholder="provider/model", key=key + "_custom")
+    return choice
 
 
 @st.cache_data(ttl=30)
@@ -676,11 +687,12 @@ with st.sidebar:
     st.divider()
     st.markdown(f"**{t('model_heading')}**")
 
-    providers = ["ollama", "github", "openai"]
+    providers = ["ollama", "github", "openai", "openrouter"]
     provider_labels = {
         "ollama": "Ollama (מקומי · חינם)" if ui_is_he else "Ollama (local · free)",
         "github": "GitHub Models (חינם)" if ui_is_he else "GitHub Models (free)",
         "openai": "OpenAI (בתשלום)" if ui_is_he else "OpenAI (paid)",
+        "openrouter": "OpenRouter (בתשלום)" if ui_is_he else "OpenRouter (paid)",
     }
     provider = st.selectbox(
         t("provider"),
@@ -715,6 +727,11 @@ with st.sidebar:
         api_key = os.getenv("GITHUB_TOKEN", "") or st.text_input(
             t("github_token"), type="password", placeholder="github_pat_… / ghp_…",
             key="github_token")
+    elif provider == "openrouter":
+        model = openrouter_model_input(t("model"), os.getenv("OPENROUTER_MODEL", rag.OPENROUTER_DEFAULT_MODEL),
+                                       key="openrouter_model")
+        api_key = os.getenv("OPENROUTER_API_KEY", "") or st.text_input(
+            "OpenRouter API key", type="password", placeholder="sk-or-…", key="openrouter_key")
     else:
         model = st.selectbox(t("model"), ["gpt-4o-mini", "gpt-4o"])
         api_key = os.getenv("OPENAI_API_KEY", "") or st.text_input(
@@ -727,7 +744,7 @@ with st.sidebar:
             st.caption(info[0])
         st.caption("בחרו Ollama כדי לבחור מודל מקומי" if ui_is_he
                    else "Select Ollama below to choose a local translation model.")
-        translation_choices = ["auto", "ollama", "tutor", "openai"]
+        translation_choices = ["auto", "ollama", "tutor", "openai", "openrouter"]
         configured_translation = os.getenv("TRANSLATION_PROVIDER", "auto")
         translation_provider = st.selectbox(
             "מודל תרגום" if ui_is_he else "Translation provider",
@@ -736,7 +753,8 @@ with st.sidebar:
             if configured_translation in translation_choices else 0,
             format_func=lambda value: {
                 "auto": "Automatic / אוטומטי", "ollama": "Ollama (local / מקומי)",
-                "tutor": "Tutoring model / מודל ההוראה", "openai": "OpenAI"}[value],
+                "tutor": "Tutoring model / מודל ההוראה", "openai": "OpenAI",
+                "openrouter": "OpenRouter"}[value],
         )
         translation_model = None
         local_fallback_model = None
@@ -769,10 +787,21 @@ with st.sidebar:
             translation_model = st.text_input(
                 "מודל תרגום OpenAI" if ui_is_he else "OpenAI translation model",
                 value=os.getenv("TRANSLATION_MODEL", "gpt-4o-mini"))
-        translation_api_key = os.getenv("OPENAI_API_KEY", "") or (api_key if provider == "openai" else "")
-        if translation_provider in {"auto", "openai"} and not translation_api_key:
-            translation_api_key = st.text_input(t("openai_key"), type="password",
-                                                key="translation_openai_key")
+        elif translation_provider == "openrouter":
+            translation_model = openrouter_model_input(
+                "מודל תרגום OpenRouter" if ui_is_he else "OpenRouter translation model",
+                os.getenv("TRANSLATION_OPENROUTER_MODEL",
+                          os.getenv("OPENROUTER_MODEL", rag.OPENROUTER_DEFAULT_MODEL)),
+                key="translation_openrouter_model")
+        if translation_provider == "openrouter":
+            translation_api_key = os.getenv("OPENROUTER_API_KEY", "") or (
+                api_key if provider == "openrouter" else "") or st.text_input(
+                "OpenRouter API key", type="password", key="translation_openrouter_key")
+        else:
+            translation_api_key = os.getenv("OPENAI_API_KEY", "") or (api_key if provider == "openai" else "")
+            if translation_provider in {"auto", "openai"} and not translation_api_key:
+                translation_api_key = st.text_input(t("openai_key"), type="password",
+                                                    key="translation_openai_key")
         st.caption("עברית → English → tutor → English → עברית")
 
     with st.expander(t("retrieval")):
@@ -797,6 +826,7 @@ with st.sidebar:
         st.session_state.pop("display", None)
         st.session_state.pop("active_homework_problems", None)
         st.session_state.pop("quiz_chunks", None)
+        st.session_state.pop("followup_chunks", None)
         st.rerun()
     st.caption(
         t(
@@ -815,6 +845,7 @@ if st.session_state.get("ctx") != ctx_key:
     st.session_state.display = []
     st.session_state.active_homework_problems = []
     st.session_state.quiz_chunks = []
+    st.session_state.followup_chunks = []
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Hero + suggestions (empty chat)
@@ -927,8 +958,10 @@ if question and not (is_hw and homework[sel].get("source_error")):
         fut_tut = rag.named_future_topic(contextual_question, week) if not wrong_mode else 0
         is_future = bool(fut_tut)
         scope_error = None
-        clarification = ("clarify_question" if not wrong_mode and rag.clarification_needed(contextual_question)
-                         else None)
+        # With a previous answer to refer back to, a bare "why?" is a follow-up, not ambiguous.
+        followup_chunks = [] if is_hw else st.session_state.get("followup_chunks", [])
+        clarification = ("clarify_question" if not wrong_mode and not followup_chunks
+                         and rag.clarification_needed(contextual_question) else None)
         if is_hw:
             clarification = homework_clarification(homework[sel], contextual_question) or clarification
 
@@ -968,6 +1001,13 @@ if question and not (is_hw and homework[sel].get("source_error")):
                         hits = [rag.Hit(retriever.chunks[cid], 1.0)
                                 for cid in st.session_state.quiz_chunks if cid in retriever.chunks]
                         decision_status, clarification = "quiz", None
+                    elif followup_chunks and decision.status in ("overview", "clarify"):
+                        # A message naming no topic ("I don't understand", "why?") continues
+                        # the previous answer; reuse its passages instead of listing topics.
+                        hits = [rag.Hit(retriever.chunks[cid], 1.0) for cid in followup_chunks
+                                if cid in retriever.chunks and retriever.chunks[cid].tutorial <= week]
+                        if hits:
+                            decision_status, clarification = "answer", None
                     if is_hw and decision.status == "answer":
                         assignment_sources = selected_statements(homework[sel], interpreted_question)
                     st.write(mt("found", count=len(hits)))
@@ -1101,6 +1141,7 @@ if question and not (is_hw and homework[sel].get("source_error")):
                     if translated_future:
                         raise rag.FutureMaterialError(translated_future)
                     rag.validate_citations(answer, len(hits), len(assignment_sources))
+                    answer = rag.localize_citations(rag.split_grouped_citations(answer), "he")
                     render_md(slot, answer, rtl=True)
                     history_ready = True
                     status.update(
@@ -1133,11 +1174,12 @@ if question and not (is_hw and homework[sel].get("source_error")):
                 )
                 history_ready = True
 
+            source_label, assignment_label = ("מקור", "מטלה") if q_is_he else ("Source", "Assignment")
             sources = ([
-                {"section": f"Source {i} — {hit.chunk.section}", "score": hit.similarity}
+                {"section": f"{source_label} {i} — {hit.chunk.section}", "score": hit.similarity}
                 for i, hit in enumerate(hits, 1)
             ] + [
-                {"section": f"Assignment {i} — {Path(homework[sel]['problem_pdf']).name}, "
+                {"section": f"{assignment_label} {i} — {Path(homework[sel]['problem_pdf']).name}, "
                             f"Problem {p['number']}, PDF pages {', '.join(map(str, p['pages']))}",
                  "score": None}
                 for i, p in enumerate(assignment_sources, 1)
@@ -1147,6 +1189,8 @@ if question and not (is_hw and homework[sel].get("source_error")):
     if history_ready:
         st.session_state.quiz_chunks = ([h.chunk.id for h in hits]
                                         if decision_status == "quiz" else [])
+        st.session_state.followup_chunks = ([h.chunk.id for h in hits]
+                                            if not is_hw and decision_status == "answer" else [])
         if is_hw:
             selected = problem_numbers(interpreted_question)
             if selected:
@@ -1160,6 +1204,10 @@ if question and not (is_hw and homework[sel].get("source_error")):
                               "of the selected assignment and offered to work through them.")
         st.session_state.history += [
             HumanMessage(rag.question_message(query_en, interpreted_question)), AIMessage(history_answer)]
+    elif decision_status != "greeting":
+        # A refused or failed turn ends the topic; "I don't understand" must not
+        # silently continue an answer from before it. Small talk keeps the topic.
+        st.session_state.followup_chunks = []
     st.session_state.display += [
         {"role": "user", "content": question, "rtl": q_is_he},
         {

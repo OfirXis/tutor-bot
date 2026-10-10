@@ -69,9 +69,10 @@ def test_translation_uses_fallback_model():
     primary = FailingLLM()
     fallback = PassthroughLLM()
 
-    result = translate_with_fallback("מהו אלגוריתם?", "en", primary, fallback)
+    # Neutral text: a curriculum alias would trip the lost-course-term check.
+    result = translate_with_fallback("יש לי שאלה", "en", primary, fallback)
 
-    assert result == "מהו אלגוריתם?"
+    assert result == "יש לי שאלה"
     assert primary.calls == 1
     assert fallback.calls == 1
 
@@ -105,6 +106,25 @@ def test_local_translator_is_independent_of_tutor_and_openai(monkeypatch):
     assert result['num_predict'] > 0
     assert result['client_kwargs']['timeout'] > 0
     assert len(calls) == 1
+
+
+def test_openrouter_serves_tutor_and_translator(monkeypatch):
+    import rag_engine as rag
+    monkeypatch.setenv('OPENROUTER_API_KEY', 'sk-or-test')
+    monkeypatch.setenv('OPENROUTER_MODEL', 'openai/gpt-4o-mini')
+    monkeypatch.delenv('TRANSLATION_OPENROUTER_MODEL', raising=False)
+    tutor = rag.get_llm(provider='openrouter')
+    translator = rag.get_translation_llm('openrouter')
+    for llm in (tutor, translator):
+        assert llm.model_name == 'openai/gpt-4o-mini'
+        assert str(llm.openai_api_base) == rag.OPENROUTER_BASE_URL
+        assert llm.openai_api_key.get_secret_value() == 'sk-or-test'
+    assert translator.temperature == 0
+    monkeypatch.delenv('OPENROUTER_API_KEY')
+    with pytest.raises(ValueError, match='OPENROUTER_API_KEY'):
+        rag.get_llm(provider='openrouter')
+    with pytest.raises(ValueError, match='OPENROUTER_API_KEY'):
+        rag.get_translation_llm('openrouter')
 
 
 def test_translation_provider_validation_and_tutor_mode(monkeypatch):
@@ -230,6 +250,33 @@ def test_local_translation_repairs_invalid_output_once():
     llm = Repair('')
     assert translate('A problem.', 'he', llm) == 'בעיה.'
     assert llm.calls == 2
+
+
+class CloudTranslator:
+    """Chat translator with no Ollama format: replies with each queued output in turn."""
+    def __init__(self, *outputs):
+        self.outputs = list(outputs)
+        self.calls = 0
+
+    def invoke(self, messages):
+        self.calls += 1
+        return AIMessage(content=self.outputs.pop(0))
+
+
+def test_cloud_hebrew_answer_is_validated_and_repaired_once():
+    llm = CloudTranslator('A problem.', 'בעיה.')
+    assert translate('A problem.', 'he', llm) == 'בעיה.'
+    assert llm.calls == 2
+    with pytest.raises(ValueError, match='Hebrew prose'):
+        translate('A problem.', 'he', CloudTranslator('A problem.', 'Still English.'))
+
+
+def test_tutor_ollama_model_reused_as_translator_takes_the_local_path():
+    class ChatOllama(StructuredLocal):
+        format = None  # The tutor model has no translation JSON schema of its own.
+    llm = ChatOllama('בעיה.')
+    assert translate('A problem.', 'he', llm) == 'בעיה.'
+    assert llm.calls == 1
 
 
 def test_local_fallback_is_only_an_installed_translation_preset():

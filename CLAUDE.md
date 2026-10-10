@@ -21,6 +21,9 @@ it current when you make a meaningful change.
   course-agnostic refactor). Keep `personal` pushed up to date — that's
   what a fresh clone on another machine should pull from.
 
+Remote names differ per machine: on the second machine (cloned fresh)
+`origin` = OfirXis/tutor-bot and `upstream` = steinergad/tutor-bot.
+
 ## Architecture essentials (don't relitigate these)
 
 - **Curriculum-leak prevention is deterministic, not LLM-trust-based.**
@@ -54,31 +57,42 @@ it current when you make a meaningful change.
   that look mathy (LaTeX command, caret exponent, `f(n)=` pattern) — don't
   remove this or trust the prompt instruction alone.
 
-## Known open issue — not yet fixed, flag before relying on scope safety
+## Course-builder data audit (resolved 2026-10-10)
 
-The colleague's new automated course-builder (`course_builder.py`) has a
-**real topic-misclassification bug**: in `db/curriculum.json`, "Huffman
-coding" and "Exchange argument" are tagged as week 2 (Divide & Conquer)
-instead of week 3 (Greedy Algorithms) where they conceptually belong. This
-isn't cosmetic — it breaks the curriculum-leak gate itself (a week-2
-student can now ask about Huffman coding, real week-3 content, without
-being blocked). Several `test_scope.py`/`test_rag_improvements.py` test
-failures trace back to this one data bug (not the gate logic, which is
-correct given the data it's fed) — LCS/longest-increasing-subsequence/
-Hebrew "תכנות דינמי" alias-matching failures may be more of the same
-pattern and are worth a full curriculum.json audit, not just this one pair.
-Also affects homework concept-mapping (HW5 Problem 4 should reference
-"Bipartite matching", doesn't) and HW1 prerequisite retrieval (false
-"future material" block). User was asked whether to fix this directly or
-flag to the colleague — check chat history / ask again if picking this up
-fresh.
+- **Huffman coding / prefix-free codes in week 2 is CORRECT** for this course:
+  Tutorial 2's own slides (PDF slides 28–53) teach them. Exchange argument is
+  used in Tutorial 2's Huffman proof and taught formally in Tutorial 3; week 2
+  is defensible. Tests that expected week 3 were outdated and were updated.
+- Real course-builder errors, fixed by hand in `db/` (a rebuild with
+  `build_course.py` would reintroduce them; review its output):
+  - Dynamic programming lacked the common Hebrew spelling "תכנות דינמי" (only
+    "תכנון דינאמי"), so Hebrew DP questions bypassed the week gate. Added it,
+    plus LCS / longest common subsequence.
+  - HW1 problem 4 (rope merging, greedy) was tagged DP → HW1 is week 3, not 4.
+  - HW2 (all DP, incl. an edit-distance-style shuffle problem) was tagged with
+    greedy/intro topics → week 5, not 4.
+  - HW5 problems 4 (bipartite matching) and 5 (min cut) were tagged DP.
+- Still open: `test_actual_cosine_scores_and_safe_exclusion` fails because
+  "shortest path in an unweighted graph" at week 6 doesn't retrieve the main
+  BFS passage — a genuine retrieval-quality gap, deliberately left failing.
+- `eval/rag_cases.json` passage IDs predate the Oct 7 notes regeneration, so
+  `evaluate_rag.py`'s supporting-passage metrics are stale until relabeled.
 
-One separate, smaller, unrelated test bug: `test_json_is_the_shared_curriculum_source`
-checks the bare substring `'Dijkstra'` but the real (correct) topic name is
-`"Dijkstra's algorithm"` — Python list `in` doesn't substring-match, so
-that one assertion is just wrong, not a real problem.
+## Providers
+
+`LLM_PROVIDER` / `TRANSLATION_PROVIDER` support `openrouter` (one key for
+answers, background classifiers and translation). The user pays for cloud
+calls — never run OpenRouter/OpenAI requests (benchmarks, smoke tests)
+without asking; run tests with `OPENROUTER_API_KEY` overridden to a dummy.
 
 ## Environment facts — re-verify on a new machine, don't assume
+
+Second machine (2026-10-10): Windows 11, RTX 4050 Laptop 6 GB, 16 GB RAM.
+Two local models (tutor + translategemma:4b) don't fit together in 6 GB;
+`OLLAMA_NUM_CTX=4096` + `TRANSLATION_TIMEOUT_SECONDS=120` makes Hebrew work
+(~1 min/question). Windows Smart App Control blocked tiktoken's DLL (breaks
+every langchain_openai provider) until the user turned it off.
+
 
 The original dev sandbox for this project (where the above was found) had
 **no NVIDIA GPU** (confirmed via `Win32_VideoController`/`Get-PnpDevice` —

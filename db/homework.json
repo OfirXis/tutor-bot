@@ -2,7 +2,7 @@
   "hw_1": {
     "title": "Homework 1",
     "problem_pdf": "material/Homework/HW1.pdf",
-    "week": 4,
+    "week": 3,
     "week_basis": "automatic: the latest week among the topics its problems need",
     "description": "Asymptotic analysis, recurrences, sorted-matrix search, greedy rope merging and graph degree sequences.",
     "problem_topics": {
@@ -25,8 +25,7 @@
       ],
       "4": [
         "greedy_algorithms",
-        "coin_change",
-        "dynamic_programming"
+        "huffman_coding"
       ],
       "5": [
         "greedy_algorithms",
@@ -39,37 +38,28 @@
   "hw_2": {
     "title": "Homework 2",
     "problem_pdf": "material/Homework/HW2_algo.pdf",
-    "week": 4,
+    "week": 5,
     "week_basis": "automatic: the latest week among the topics its problems need",
     "description": "Dynamic programming: matrix-chain multiplication, constrained subsequences, maximum bias, weighted scheduling and string shuffles.",
     "problem_topics": {
       "1": [
-        "algorithm_definition",
-        "problem_solving_tips",
-        "algorithm_analysis",
-        "running_time_comparison"
+        "dynamic_programming"
       ],
       "2": [
-        "maximum_subarray",
-        "greedy_algorithms",
-        "greedy_stays_ahead"
+        "dynamic_programming",
+        "maximum_weight_independent_set"
       ],
       "3": [
-        "algorithm_definition",
-        "problem_solving_tips",
-        "algorithm_analysis",
-        "maximum_input_size_problem"
+        "maximum_subarray",
+        "dynamic_programming"
       ],
       "4": [
-        "greedy_algorithms",
         "dynamic_programming",
-        "maximum_profit_problem"
+        "activity_selection"
       ],
       "5": [
-        "algorithm_definition",
-        "problem_solving_tips",
-        "algorithm_analysis",
-        "graph_basics"
+        "dynamic_programming",
+        "edit_distance"
       ]
     },
     "pdf_sha256": "86ba2dcc5a6b1d1ef72f8dd112975e2ec86629213d8bdd36a11600d64c0b66d0"
@@ -182,14 +172,12 @@
         "augmenting_paths"
       ],
       "4": [
-        "algorithm_definition",
-        "problem_solving_tips",
-        "dynamic_programming"
+        "bipartite_matching",
+        "flow_networks"
       ],
       "5": [
-        "algorithm_definition",
-        "dynamic_programming",
-        "problem_solving_tips"
+        "minimum_cut",
+        "maximum_flow"
       ]
     },
     "pdf_sha256": "b7abc31e88788bd096185bf3ed5dabcc1a4edbab77c06367cec4b6cfbc8f0847"

@@ -682,7 +682,13 @@
           "name": "Dynamic programming",
           "aliases": [
             "DP",
-            "תכנון דינאמי"
+            "תכנון דינאמי",
+            "dynamic programming",
+            "תכנות דינמי",
+            "תכנות דינאמי",
+            "תכנון דינמי",
+            "LCS",
+            "longest common subsequence"
           ],
           "prerequisites": []
         },

@@ -6,25 +6,21 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_1::005",
-      "tutorial_1::015",
-      "tutorial_1::012",
-      "tutorial_1::011"
+      "tutorial_1::006",
+      "tutorial_1::007"
     ],
     "similarities": [
-      0.7644,
-      0.7027,
-      0.6794,
-      0.6623
+      0.7015,
+      0.6811
     ],
     "expected_chunks": [
       "tutorial_1::005"
     ],
-    "ms": 2440.6
+    "ms": 52928.2
   },
   {
     "id": "course_02",
@@ -33,21 +29,21 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_1::014"
+      "tutorial_1::017"
     ],
     "similarities": [
-      0.6916
+      0.7081
     ],
     "expected_chunks": [
       "tutorial_1::006",
       "tutorial_1::012",
       "tutorial_1::014"
     ],
-    "ms": 20.0
+    "ms": 1020.3
   },
   {
     "id": "course_03",
@@ -56,70 +52,54 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_1::002"
+      "tutorial_1::001"
     ],
     "similarities": [
-      0.7932
+      0.7302
     ],
     "expected_chunks": [
       "tutorial_1::002"
     ],
-    "ms": 20.9
+    "ms": 787.9
   },
   {
     "id": "course_04",
     "category": "course",
     "question": "How many operations do nested loops cost?",
     "expected_status": "answer",
-    "status": "answer",
-    "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "status": "insufficient",
+    "decision_correct": false,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
-    "chunks": [
-      "tutorial_1::007",
-      "tutorial_1::015"
-    ],
-    "similarities": [
-      0.8252,
-      0.7447
-    ],
+    "chunks": [],
+    "similarities": [],
     "expected_chunks": [
       "tutorial_1::007",
       "tutorial_1::011"
     ],
-    "ms": 32.3
+    "ms": 122.2
   },
   {
     "id": "course_05",
     "category": "course",
     "question": "State the Master Theorem cases.",
     "expected_status": "answer",
-    "status": "answer",
-    "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "status": "insufficient",
+    "decision_correct": false,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
-    "chunks": [
-      "tutorial_2::005",
-      "tutorial_2::001",
-      "tutorial_2::012",
-      "tutorial_2::008"
-    ],
-    "similarities": [
-      0.7243,
-      0.7155,
-      0.6873,
-      0.6168
-    ],
+    "chunks": [],
+    "similarities": [],
     "expected_chunks": [
       "tutorial_2::001"
     ],
-    "ms": 28.6
+    "ms": 83.7
   },
   {
     "id": "course_06",
@@ -128,45 +108,43 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_2::006",
-      "tutorial_2::002",
-      "tutorial_2::008"
+      "tutorial_2::005",
+      "tutorial_2::009",
+      "tutorial_1::020",
+      "tutorial_1::012"
     ],
     "similarities": [
-      0.8443,
-      0.8292,
-      0.7249
+      0.8574,
+      0.8337,
+      0.773,
+      0.7728
     ],
     "expected_chunks": [
       "tutorial_2::002",
       "tutorial_2::006"
     ],
-    "ms": 27.8
+    "ms": 79.4
   },
   {
     "id": "course_07",
     "category": "course",
     "question": "What's a faster way to multiply two big numbers than the school method?",
     "expected_status": "answer",
-    "status": "answer",
-    "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "status": "insufficient",
+    "decision_correct": false,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
-    "chunks": [
-      "tutorial_2::004"
-    ],
-    "similarities": [
-      0.6896
-    ],
+    "chunks": [],
+    "similarities": [],
     "expected_chunks": [
       "tutorial_2::004"
     ],
-    "ms": 542.2
+    "ms": 95.8
   },
   {
     "id": "course_08",
@@ -175,22 +153,22 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_2::003",
-      "tutorial_2::007"
+      "tutorial_2::017",
+      "tutorial_1::011"
     ],
     "similarities": [
-      0.7372,
-      0.6948
+      0.6884,
+      0.6838
     ],
     "expected_chunks": [
       "tutorial_2::003",
       "tutorial_2::007"
     ],
-    "ms": 24.1
+    "ms": 85.5
   },
   {
     "id": "course_09",
@@ -199,21 +177,21 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_3::001",
-      "tutorial_3::007"
+      "tutorial_3::003",
+      "tutorial_3::002"
     ],
     "similarities": [
-      0.935,
-      0.845
+      0.8572,
+      0.7919
     ],
     "expected_chunks": [
       "tutorial_3::001"
     ],
-    "ms": 547.2
+    "ms": 65.3
   },
   {
     "id": "course_10",
@@ -226,46 +204,40 @@
     "reciprocal_rank": 1.0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_3::002"
+      "tutorial_3::008",
+      "tutorial_1::011",
+      "tutorial_3::013"
     ],
     "similarities": [
-      0.846
+      0.6917,
+      0.6659,
+      0.6626
     ],
     "expected_chunks": [
       "tutorial_3::002",
       "tutorial_3::008",
       "tutorial_3::010"
     ],
-    "ms": 30.7
+    "ms": 75.5
   },
   {
     "id": "course_11",
     "category": "course",
     "question": "When can I take fractions of items to maximize value in a knapsack?",
     "expected_status": "answer",
-    "status": "answer",
-    "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "status": "insufficient",
+    "decision_correct": false,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
-    "chunks": [
-      "tutorial_3::003",
-      "tutorial_3::009",
-      "tutorial_3::011",
-      "tutorial_3::012"
-    ],
-    "similarities": [
-      0.8475,
-      0.8182,
-      0.8096,
-      0.8049
-    ],
+    "chunks": [],
+    "similarities": [],
     "expected_chunks": [
       "tutorial_3::003",
       "tutorial_3::009",
       "tutorial_3::011"
     ],
-    "ms": 560.1
+    "ms": 104.6
   },
   {
     "id": "course_12",
@@ -274,47 +246,45 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_3::005",
-      "tutorial_3::013"
+      "tutorial_2::007",
+      "tutorial_2::008",
+      "tutorial_2::023",
+      "tutorial_2::021"
     ],
     "similarities": [
-      0.8215,
-      0.7869
+      0.8413,
+      0.7938,
+      0.7108,
+      0.6895
     ],
     "expected_chunks": [
       "tutorial_3::005",
       "tutorial_3::013"
     ],
-    "ms": 25.6
+    "ms": 82.9
   },
   {
     "id": "course_13",
     "category": "course",
     "question": "What are overlapping subproblems and optimal substructure?",
     "expected_status": "answer",
-    "status": "answer",
-    "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "status": "insufficient",
+    "decision_correct": false,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
-    "chunks": [
-      "tutorial_4::006",
-      "tutorial_3::007"
-    ],
-    "similarities": [
-      0.9078,
-      0.6726
-    ],
+    "chunks": [],
+    "similarities": [],
     "expected_chunks": [
       "tutorial_4::000",
       "tutorial_4::001",
       "tutorial_4::006"
     ],
-    "ms": 16.1
+    "ms": 78.1
   },
   {
     "id": "course_14",
@@ -329,7 +299,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 41.6
+    "ms": 83.6
   },
   {
     "id": "course_15",
@@ -338,26 +308,24 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_4::004",
-      "tutorial_4::010",
-      "tutorial_5::005",
-      "tutorial_5::012"
+      "tutorial_4::009",
+      "tutorial_4::003",
+      "tutorial_4::016"
     ],
     "similarities": [
-      0.8405,
-      0.8038,
-      0.7833,
-      0.742
+      0.7657,
+      0.7582,
+      0.7196
     ],
     "expected_chunks": [
       "tutorial_4::004",
       "tutorial_4::010"
     ],
-    "ms": 32.2
+    "ms": 75.4
   },
   {
     "id": "course_16",
@@ -366,25 +334,21 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_4::003",
-      "tutorial_4::007",
-      "tutorial_4::009"
+      "tutorial_3::016"
     ],
     "similarities": [
-      0.8603,
-      0.8138,
-      0.8122
+      0.6445
     ],
     "expected_chunks": [
       "tutorial_4::003",
       "tutorial_4::007",
       "tutorial_4::009"
     ],
-    "ms": 26.4
+    "ms": 87.0
   },
   {
     "id": "course_17",
@@ -393,46 +357,40 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_5::008",
-      "tutorial_5::010",
-      "tutorial_5::002"
+      "tutorial_3::012",
+      "tutorial_3::006"
     ],
     "similarities": [
-      0.8482,
-      0.8148,
-      0.7738
+      0.772,
+      0.6357
     ],
     "expected_chunks": [
       "tutorial_5::002",
       "tutorial_5::008",
       "tutorial_5::010"
     ],
-    "ms": 42.6
+    "ms": 70.6
   },
   {
     "id": "course_18",
     "category": "course",
     "question": "What order should I multiply a chain of matrices to minimize work?",
     "expected_status": "answer",
-    "status": "answer",
-    "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "status": "insufficient",
+    "decision_correct": false,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
-    "chunks": [
-      "tutorial_5::003"
-    ],
-    "similarities": [
-      0.7777
-    ],
+    "chunks": [],
+    "similarities": [],
     "expected_chunks": [
       "tutorial_5::003"
     ],
-    "ms": 571.3
+    "ms": 99.0
   },
   {
     "id": "course_19",
@@ -441,23 +399,27 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_5::004",
-      "tutorial_5::009"
+      "tutorial_5::018",
+      "tutorial_5::013",
+      "tutorial_5::003",
+      "tutorial_5::007"
     ],
     "similarities": [
-      0.642,
-      0.6355
+      0.6789,
+      0.6704,
+      0.6702,
+      0.6158
     ],
     "expected_chunks": [
       "tutorial_5::004",
       "tutorial_5::009",
       "tutorial_5::011"
     ],
-    "ms": 392.2
+    "ms": 73.0
   },
   {
     "id": "course_20",
@@ -466,26 +428,26 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_5::012",
-      "tutorial_5::005",
-      "tutorial_4::004",
-      "tutorial_4::010"
+      "tutorial_4::003",
+      "tutorial_4::009",
+      "tutorial_4::010",
+      "tutorial_4::016"
     ],
     "similarities": [
-      0.8411,
-      0.8286,
-      0.7588,
-      0.7505
+      0.8443,
+      0.8344,
+      0.8105,
+      0.8089
     ],
     "expected_chunks": [
       "tutorial_5::005",
       "tutorial_5::012"
     ],
-    "ms": 57.2
+    "ms": 64.9
   },
   {
     "id": "course_21",
@@ -494,26 +456,22 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::010",
-      "tutorial_6::003",
-      "tutorial_6::006",
-      "tutorial_6::001"
+      "tutorial_6::001",
+      "tutorial_2::001"
     ],
     "similarities": [
-      0.7259,
-      0.7031,
-      0.6555,
-      0.6538
+      0.7453,
+      0.6407
     ],
     "expected_chunks": [
       "tutorial_6::003",
       "tutorial_6::010"
     ],
-    "ms": 36.7
+    "ms": 70.3
   },
   {
     "id": "course_22",
@@ -522,22 +480,22 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::012",
-      "tutorial_6::005"
+      "tutorial_4::015",
+      "tutorial_4::008"
     ],
     "similarities": [
-      0.7434,
-      0.7212
+      0.7379,
+      0.7155
     ],
     "expected_chunks": [
       "tutorial_6::005",
       "tutorial_6::012"
     ],
-    "ms": 25.1
+    "ms": 86.1
   },
   {
     "id": "course_23",
@@ -547,26 +505,22 @@
     "status": "answer",
     "decision_correct": true,
     "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "reciprocal_rank": 0.5,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::007",
-      "tutorial_6::009",
-      "tutorial_6::001",
-      "tutorial_6::011"
+      "tutorial_3::012",
+      "tutorial_6::002"
     ],
     "similarities": [
-      0.7935,
-      0.7861,
-      0.7764,
-      0.7377
+      0.696,
+      0.6936
     ],
     "expected_chunks": [
       "tutorial_6::002",
       "tutorial_6::007",
       "tutorial_6::009"
     ],
-    "ms": 27.1
+    "ms": 83.6
   },
   {
     "id": "course_24",
@@ -576,24 +530,22 @@
     "status": "answer",
     "decision_correct": true,
     "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "reciprocal_rank": 1.0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_7::001",
       "tutorial_7::005",
-      "tutorial_7::010",
-      "tutorial_7::009"
+      "tutorial_7::013",
+      "tutorial_7::004"
     ],
     "similarities": [
-      0.8725,
-      0.8632,
-      0.8126,
-      0.7943
+      0.8881,
+      0.8682,
+      0.8535
     ],
     "expected_chunks": [
       "tutorial_7::005"
     ],
-    "ms": 62.8
+    "ms": 68.6
   },
   {
     "id": "course_25",
@@ -602,23 +554,23 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_7::002",
-      "tutorial_7::010",
-      "tutorial_7::007"
+      "tutorial_7::006",
+      "tutorial_7::014",
+      "tutorial_7::003"
     ],
     "similarities": [
-      0.7766,
-      0.7663,
-      0.6762
+      0.7881,
+      0.7788,
+      0.7353
     ],
     "expected_chunks": [
       "tutorial_7::002"
     ],
-    "ms": 29.1
+    "ms": 75.6
   },
   {
     "id": "course_26",
@@ -627,19 +579,21 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_7::004"
+      "tutorial_6::017",
+      "tutorial_6::015"
     ],
     "similarities": [
-      0.676
+      0.7288,
+      0.6965
     ],
     "expected_chunks": [
       "tutorial_7::004"
     ],
-    "ms": 25.3
+    "ms": 97.5
   },
   {
     "id": "course_27",
@@ -648,25 +602,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_8::011",
       "tutorial_8::006",
-      "tutorial_8::013",
-      "tutorial_8::010"
+      "tutorial_8::009",
+      "tutorial_8::016",
+      "tutorial_8::005"
     ],
     "similarities": [
-      0.8616,
-      0.7771,
-      0.7696,
-      0.7472
+      0.795,
+      0.756,
+      0.7529,
+      0.7399
     ],
     "expected_chunks": [
       "tutorial_8::011"
     ],
-    "ms": 35.2
+    "ms": 74.9
   },
   {
     "id": "course_28",
@@ -675,26 +629,24 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_8::005",
-      "tutorial_8::002",
-      "tutorial_8::007",
-      "tutorial_8::009"
+      "tutorial_8::003",
+      "tutorial_6::039",
+      "tutorial_6::008"
     ],
     "similarities": [
-      0.8022,
-      0.7749,
-      0.7654,
-      0.7623
+      0.8117,
+      0.7641,
+      0.7593
     ],
     "expected_chunks": [
       "tutorial_8::005",
       "tutorial_8::012"
     ],
-    "ms": 197.1
+    "ms": 81.2
   },
   {
     "id": "course_29",
@@ -703,26 +655,24 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_8::010",
-      "tutorial_8::008",
-      "tutorial_8::003",
-      "tutorial_8::006"
+      "tutorial_7::008",
+      "tutorial_7::003",
+      "tutorial_8::005"
     ],
     "similarities": [
-      0.8137,
-      0.7563,
-      0.7364,
-      0.7163
+      0.736,
+      0.7008,
+      0.6943
     ],
     "expected_chunks": [
       "tutorial_8::003",
       "tutorial_8::010"
     ],
-    "ms": 32.1
+    "ms": 74.0
   },
   {
     "id": "course_30",
@@ -735,21 +685,19 @@
     "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_8::000",
-      "tutorial_8::006",
-      "tutorial_8::003",
-      "tutorial_8::013"
+      "tutorial_8::001",
+      "tutorial_8::014",
+      "tutorial_8::012"
     ],
     "similarities": [
-      0.8044,
-      0.7775,
-      0.7748,
-      0.77
+      0.7657,
+      0.7618,
+      0.7615
     ],
     "expected_chunks": [
       "tutorial_8::004"
     ],
-    "ms": 86.0
+    "ms": 76.6
   },
   {
     "id": "flow_1",
@@ -772,7 +720,7 @@
     "expected_chunks": [
       "tutorial_9::001"
     ],
-    "ms": 82.6
+    "ms": 69.4
   },
   {
     "id": "flow_2",
@@ -799,7 +747,7 @@
     "expected_chunks": [
       "tutorial_9::002"
     ],
-    "ms": 21.4
+    "ms": 61.7
   },
   {
     "id": "flow_3",
@@ -824,7 +772,7 @@
     "expected_chunks": [
       "tutorial_9::003"
     ],
-    "ms": 401.6
+    "ms": 66.9
   },
   {
     "id": "flow_4",
@@ -851,7 +799,7 @@
     "expected_chunks": [
       "tutorial_9::004"
     ],
-    "ms": 28.6
+    "ms": 64.7
   },
   {
     "id": "flow_5",
@@ -872,7 +820,7 @@
     "expected_chunks": [
       "tutorial_9::006"
     ],
-    "ms": 33.7
+    "ms": 62.1
   },
   {
     "id": "flow_6",
@@ -897,7 +845,7 @@
     "expected_chunks": [
       "tutorial_9::008"
     ],
-    "ms": 42.2
+    "ms": 79.2
   },
   {
     "id": "flow_7",
@@ -924,7 +872,7 @@
     "expected_chunks": [
       "tutorial_9::013"
     ],
-    "ms": 24.2
+    "ms": 60.6
   },
   {
     "id": "flow_8",
@@ -937,17 +885,15 @@
     "reciprocal_rank": 1.0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_9::014",
-      "tutorial_5::007"
+      "tutorial_9::014"
     ],
     "similarities": [
-      0.8391,
-      0.6648
+      0.8391
     ],
     "expected_chunks": [
       "tutorial_9::014"
     ],
-    "ms": 984.9
+    "ms": 60.7
   },
   {
     "id": "hw_1_p1",
@@ -960,22 +906,22 @@
     "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
+      "tutorial_1::006",
+      "tutorial_1::007",
       "tutorial_1::009",
-      "tutorial_1::010",
-      "tutorial_1::014",
-      "tutorial_1::005"
+      "tutorial_1::017"
     ],
     "similarities": [
-      0.7814,
-      0.7796,
-      0.7697,
-      0.7552
+      0.7908,
+      0.7765,
+      0.7404,
+      0.7335
     ],
     "expected_chunks": [
       "tutorial_2::000",
       "tutorial_2::001"
     ],
-    "ms": 2686.2
+    "ms": 94.8
   },
   {
     "id": "hw_1_p2",
@@ -984,26 +930,26 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_1::014",
-      "tutorial_1::009",
-      "tutorial_1::012",
-      "tutorial_1::010"
+      "tutorial_1::017",
+      "tutorial_1::006",
+      "tutorial_1::007",
+      "tutorial_1::018"
     ],
     "similarities": [
-      0.8646,
-      0.7724,
-      0.7602,
-      0.7565
+      0.8487,
+      0.8306,
+      0.7614,
+      0.7501
     ],
     "expected_chunks": [
       "tutorial_1::005",
       "tutorial_1::014"
     ],
-    "ms": 1840.8
+    "ms": 98.3
   },
   {
     "id": "hw_1_p3",
@@ -1012,26 +958,26 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_2::007",
-      "tutorial_2::003",
-      "tutorial_2::002",
-      "tutorial_1::008"
+      "tutorial_1::020",
+      "tutorial_2::009",
+      "tutorial_1::012",
+      "tutorial_2::017"
     ],
     "similarities": [
-      0.7705,
-      0.7407,
-      0.7331,
-      0.7076
+      0.7663,
+      0.7339,
+      0.7329,
+      0.7299
     ],
     "expected_chunks": [
       "tutorial_2::000",
       "tutorial_2::003"
     ],
-    "ms": 4065.4
+    "ms": 155.4
   },
   {
     "id": "hw_1_p4",
@@ -1044,21 +990,17 @@
     "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_3::013",
-      "tutorial_3::010",
-      "tutorial_3::011",
-      "tutorial_3::012"
+      "tutorial_3::016",
+      "tutorial_3::001"
     ],
     "similarities": [
-      0.7562,
-      0.7121,
-      0.7032,
-      0.7013
+      0.7515,
+      0.7285
     ],
     "expected_chunks": [
       "tutorial_3::005"
     ],
-    "ms": 6365.4
+    "ms": 96.2
   },
   {
     "id": "hw_1_p5",
@@ -1071,22 +1013,22 @@
     "reciprocal_rank": 1.0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_3::000",
-      "tutorial_3::006",
-      "tutorial_1::002",
-      "tutorial_3::014"
+      "tutorial_3::001",
+      "tutorial_1::010",
+      "tutorial_3::010",
+      "tutorial_3::015"
     ],
     "similarities": [
-      0.7831,
-      0.774,
-      0.7637,
-      0.759
+      0.7877,
+      0.7847,
+      0.7836,
+      0.7803
     ],
     "expected_chunks": [
       "tutorial_3::000",
       "tutorial_3::001"
     ],
-    "ms": 5344.8
+    "ms": 112.1
   },
   {
     "id": "hw_2_p1",
@@ -1095,25 +1037,21 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_5::003",
-      "tutorial_1::007",
-      "tutorial_1::013",
-      "tutorial_4::001"
+      "tutorial_4::001",
+      "tutorial_4::007"
     ],
     "similarities": [
-      0.8337,
-      0.7423,
-      0.7287,
-      0.7276
+      0.7877,
+      0.7639
     ],
     "expected_chunks": [
       "tutorial_5::003"
     ],
-    "ms": 6283.6
+    "ms": 118.0
   },
   {
     "id": "hw_2_p2",
@@ -1122,26 +1060,24 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_5::012",
-      "tutorial_5::005",
-      "tutorial_4::004",
-      "tutorial_5::014"
+      "tutorial_4::018",
+      "tutorial_4::011",
+      "tutorial_4::012"
     ],
     "similarities": [
-      0.7929,
-      0.76,
-      0.7569,
-      0.7518
+      0.8349,
+      0.8065,
+      0.7961
     ],
     "expected_chunks": [
       "tutorial_4::001",
       "tutorial_5::005"
     ],
-    "ms": 4321.8
+    "ms": 111.4
   },
   {
     "id": "hw_2_p3",
@@ -1154,22 +1090,22 @@
     "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
+      "tutorial_2::017",
+      "tutorial_2::018",
       "tutorial_4::003",
-      "tutorial_4::005",
-      "tutorial_3::004",
-      "tutorial_4::007"
+      "tutorial_4::010"
     ],
     "similarities": [
-      0.7134,
-      0.7032,
-      0.7004,
-      0.6979
+      0.7898,
+      0.7651,
+      0.7369,
+      0.71
     ],
     "expected_chunks": [
       "tutorial_2::011",
       "tutorial_4::001"
     ],
-    "ms": 178.6
+    "ms": 195.1
   },
   {
     "id": "hw_2_p4",
@@ -1178,26 +1114,24 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_3::002",
       "tutorial_3::008",
-      "tutorial_4::007",
-      "tutorial_4::009"
+      "tutorial_3::014",
+      "tutorial_2::012"
     ],
     "similarities": [
-      0.7741,
-      0.772,
-      0.7696,
-      0.7665
+      0.7877,
+      0.7642,
+      0.7515
     ],
     "expected_chunks": [
       "tutorial_3::002",
       "tutorial_4::001"
     ],
-    "ms": 1842.4
+    "ms": 106.3
   },
   {
     "id": "hw_2_p5",
@@ -1206,26 +1140,24 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_4::004",
-      "tutorial_4::010",
-      "tutorial_5::004",
-      "tutorial_5::012"
+      "tutorial_5::013",
+      "tutorial_5::018",
+      "tutorial_5::007"
     ],
     "similarities": [
-      0.7776,
-      0.7572,
-      0.7482,
-      0.7462
+      0.7972,
+      0.7678,
+      0.7358
     ],
     "expected_chunks": [
       "tutorial_4::001",
       "tutorial_4::004"
     ],
-    "ms": 1500.7
+    "ms": 234.9
   },
   {
     "id": "hw_3_p1",
@@ -1234,26 +1166,26 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::014",
-      "tutorial_6::015",
-      "tutorial_5::013",
-      "tutorial_5::006"
+      "tutorial_6::005",
+      "tutorial_6::039",
+      "tutorial_5::016",
+      "tutorial_6::040"
     ],
     "similarities": [
-      0.8229,
-      0.8142,
-      0.7804,
-      0.7689
+      0.8562,
+      0.8314,
+      0.8286,
+      0.8161
     ],
     "expected_chunks": [
       "tutorial_6::014",
       "tutorial_6::015"
     ],
-    "ms": 1169.2
+    "ms": 115.1
   },
   {
     "id": "hw_3_p2",
@@ -1262,26 +1194,26 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::014",
-      "tutorial_6::015",
-      "tutorial_1::002",
-      "tutorial_6::017"
+      "tutorial_6::024",
+      "tutorial_6::039",
+      "tutorial_6::005",
+      "tutorial_6::023"
     ],
     "similarities": [
-      0.836,
-      0.7985,
-      0.7756,
-      0.7688
+      0.8319,
+      0.822,
+      0.8211,
+      0.7983
     ],
     "expected_chunks": [
       "tutorial_6::014",
       "tutorial_6::015"
     ],
-    "ms": 819.8
+    "ms": 210.0
   },
   {
     "id": "hw_3_p3",
@@ -1290,25 +1222,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::015",
-      "tutorial_6::014",
-      "tutorial_5::006",
-      "tutorial_5::013"
+      "tutorial_6::005",
+      "tutorial_6::040",
+      "tutorial_6::039",
+      "tutorial_6::023"
     ],
     "similarities": [
-      0.8149,
-      0.8086,
-      0.7657,
-      0.7533
+      0.8448,
+      0.8252,
+      0.8141,
+      0.808
     ],
     "expected_chunks": [
       "tutorial_6::015"
     ],
-    "ms": 136.1
+    "ms": 130.5
   },
   {
     "id": "hw_3_p4",
@@ -1317,26 +1249,26 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.3333333333333333,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::017",
-      "tutorial_6::014",
-      "tutorial_6::015",
-      "tutorial_6::018"
+      "tutorial_5::002",
+      "tutorial_1::010",
+      "tutorial_6::041",
+      "tutorial_6::039"
     ],
     "similarities": [
-      0.7315,
-      0.7121,
-      0.7103,
-      0.7088
+      0.8132,
+      0.7965,
+      0.7684,
+      0.7576
     ],
     "expected_chunks": [
       "tutorial_6::015",
       "tutorial_6::016"
     ],
-    "ms": 61.7
+    "ms": 121.3
   },
   {
     "id": "hw_3_p5",
@@ -1345,25 +1277,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::014",
-      "tutorial_6::015",
-      "tutorial_6::018",
-      "tutorial_6::017"
+      "tutorial_6::039",
+      "tutorial_6::040",
+      "tutorial_6::022",
+      "tutorial_5::012"
     ],
     "similarities": [
-      0.8284,
-      0.8261,
-      0.7754,
-      0.7588
+      0.8195,
+      0.8151,
+      0.8082,
+      0.7972
     ],
     "expected_chunks": [
       "tutorial_6::014"
     ],
-    "ms": 814.0
+    "ms": 138.2
   },
   {
     "id": "hw_3_p6",
@@ -1372,26 +1304,26 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::017",
-      "tutorial_6::015",
-      "tutorial_6::014",
-      "tutorial_6::012"
+      "tutorial_6::022",
+      "tutorial_5::002",
+      "tutorial_5::012",
+      "tutorial_1::010"
     ],
     "similarities": [
-      0.7839,
-      0.7746,
-      0.7717,
-      0.7667
+      0.8045,
+      0.7966,
+      0.7953,
+      0.7871
     ],
     "expected_chunks": [
       "tutorial_6::015",
       "tutorial_6::016"
     ],
-    "ms": 49.0
+    "ms": 138.4
   },
   {
     "id": "hw_4_p1",
@@ -1404,22 +1336,22 @@
     "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_7::009",
-      "tutorial_7::008",
-      "tutorial_7::005",
-      "tutorial_7::006"
+      "tutorial_7::011",
+      "tutorial_7::014",
+      "tutorial_7::002",
+      "tutorial_7::003"
     ],
     "similarities": [
-      0.8532,
-      0.8453,
-      0.8382,
-      0.8375
+      0.8413,
+      0.8399,
+      0.838,
+      0.8378
     ],
     "expected_chunks": [
       "tutorial_7::000",
       "tutorial_7::001"
     ],
-    "ms": 150.5
+    "ms": 198.2
   },
   {
     "id": "hw_4_p2",
@@ -1428,25 +1360,23 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_8::002",
-      "tutorial_8::006",
-      "tutorial_8::007",
-      "tutorial_8::009"
+      "tutorial_8::001",
+      "tutorial_8::014",
+      "tutorial_8::008"
     ],
     "similarities": [
-      0.8296,
-      0.8236,
-      0.8226,
-      0.8087
+      0.8262,
+      0.8206,
+      0.8088
     ],
     "expected_chunks": [
       "tutorial_8::002"
     ],
-    "ms": 533.3
+    "ms": 167.3
   },
   {
     "id": "hw_4_p3",
@@ -1460,21 +1390,21 @@
     "future_context_leaks": 0,
     "chunks": [
       "tutorial_7::005",
-      "tutorial_7::009",
+      "tutorial_7::003",
       "tutorial_7::008",
-      "tutorial_7::001"
+      "tutorial_7::011"
     ],
     "similarities": [
-      0.827,
-      0.8198,
-      0.8034,
-      0.7932
+      0.8828,
+      0.8586,
+      0.8463,
+      0.8395
     ],
     "expected_chunks": [
       "tutorial_7::005",
       "tutorial_7::006"
     ],
-    "ms": 564.2
+    "ms": 252.5
   },
   {
     "id": "hw_4_p4",
@@ -1483,26 +1413,24 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_8::002",
-      "tutorial_8::006",
-      "tutorial_8::009",
-      "tutorial_8::013"
+      "tutorial_8::013",
+      "tutorial_8::005",
+      "tutorial_8::001"
     ],
     "similarities": [
-      0.8232,
-      0.8165,
-      0.8067,
-      0.8028
+      0.7971,
+      0.7967,
+      0.7948
     ],
     "expected_chunks": [
       "tutorial_6::018",
       "tutorial_8::002"
     ],
-    "ms": 277.2
+    "ms": 109.5
   },
   {
     "id": "hw_4_p5",
@@ -1511,25 +1439,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_8::004",
-      "tutorial_8::009",
-      "tutorial_8::003",
-      "tutorial_8::006"
+      "tutorial_5::012",
+      "tutorial_5::002",
+      "tutorial_8::005",
+      "tutorial_5::006"
     ],
     "similarities": [
-      0.8458,
-      0.8343,
-      0.8215,
-      0.8203
+      0.8533,
+      0.8434,
+      0.8423,
+      0.8421
     ],
     "expected_chunks": [
       "tutorial_8::004"
     ],
-    "ms": 1177.0
+    "ms": 87.6
   },
   {
     "id": "hw_5_p1",
@@ -1539,24 +1467,24 @@
     "status": "answer",
     "decision_correct": true,
     "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "reciprocal_rank": 0.3333333333333333,
     "future_context_leaks": 0,
     "chunks": [
+      "tutorial_1::006",
       "tutorial_9::012",
       "tutorial_9::004",
-      "tutorial_2::001",
       "tutorial_9::006"
     ],
     "similarities": [
-      0.7518,
-      0.7482,
-      0.7448,
-      0.742
+      0.7973,
+      0.7793,
+      0.7775,
+      0.7608
     ],
     "expected_chunks": [
       "tutorial_9::004"
     ],
-    "ms": 1130.8
+    "ms": 82.0
   },
   {
     "id": "hw_5_p2",
@@ -1565,27 +1493,27 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_9::015",
-      "tutorial_9::013",
-      "tutorial_9::011",
-      "tutorial_9::014"
+      "tutorial_1::010",
+      "tutorial_1::014",
+      "tutorial_6::005",
+      "tutorial_6::039"
     ],
     "similarities": [
-      0.7866,
-      0.7636,
-      0.7545,
-      0.7369
+      0.816,
+      0.7667,
+      0.7652,
+      0.7562
     ],
     "expected_chunks": [
       "tutorial_9::011",
       "tutorial_9::013",
       "tutorial_9::015"
     ],
-    "ms": 601.4
+    "ms": 77.2
   },
   {
     "id": "hw_5_p3",
@@ -1595,25 +1523,25 @@
     "status": "answer",
     "decision_correct": true,
     "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "reciprocal_rank": 0.3333333333333333,
     "future_context_leaks": 0,
     "chunks": [
+      "tutorial_9::004",
       "tutorial_9::010",
       "tutorial_9::003",
-      "tutorial_9::004",
-      "tutorial_9::005"
+      "tutorial_9::012"
     ],
     "similarities": [
-      0.8265,
-      0.798,
-      0.7974,
-      0.7885
+      0.8318,
+      0.8189,
+      0.7904,
+      0.7764
     ],
     "expected_chunks": [
       "tutorial_9::002",
       "tutorial_9::003"
     ],
-    "ms": 49.9
+    "ms": 72.5
   },
   {
     "id": "hw_5_p4",
@@ -1628,20 +1556,18 @@
     "chunks": [
       "tutorial_9::010",
       "tutorial_9::011",
-      "tutorial_3::010",
       "tutorial_9::015"
     ],
     "similarities": [
-      0.7227,
-      0.7137,
-      0.7046,
-      0.7042
+      0.7228,
+      0.7154,
+      0.7076
     ],
     "expected_chunks": [
       "tutorial_9::001",
       "tutorial_9::011"
     ],
-    "ms": 50.3
+    "ms": 104.1
   },
   {
     "id": "hw_5_p5",
@@ -1651,24 +1577,24 @@
     "status": "answer",
     "decision_correct": true,
     "support_hit": true,
-    "reciprocal_rank": 0.3333333333333333,
+    "reciprocal_rank": 0.5,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::010",
       "tutorial_9::010",
       "tutorial_9::003",
-      "tutorial_6::003"
+      "tutorial_9::004",
+      "tutorial_2::010"
     ],
     "similarities": [
-      0.7634,
-      0.7567,
-      0.7518,
-      0.7515
+      0.742,
+      0.7401,
+      0.7391,
+      0.7388
     ],
     "expected_chunks": [
       "tutorial_9::003"
     ],
-    "ms": 50.6
+    "ms": 113.8
   },
   {
     "id": "unsupported_1",
@@ -1683,7 +1609,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 18.0
+    "ms": 70.0
   },
   {
     "id": "unsupported_2",
@@ -1698,7 +1624,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 18.8
+    "ms": 73.1
   },
   {
     "id": "unsupported_3",
@@ -1713,7 +1639,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 24.7
+    "ms": 70.3
   },
   {
     "id": "unsupported_4",
@@ -1728,7 +1654,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 477.1
+    "ms": 72.2
   },
   {
     "id": "unsupported_5",
@@ -1743,7 +1669,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 20.0
+    "ms": 72.9
   },
   {
     "id": "unsupported_6",
@@ -1758,7 +1684,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 68.6
+    "ms": 66.3
   },
   {
     "id": "unsupported_7",
@@ -1773,7 +1699,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 19.3
+    "ms": 73.2
   },
   {
     "id": "future_1",
@@ -1788,7 +1714,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.6
+    "ms": 3.2
   },
   {
     "id": "future_2",
@@ -1803,7 +1729,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.6
+    "ms": 3.2
   },
   {
     "id": "future_3",
@@ -1818,7 +1744,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.6
+    "ms": 3.4
   },
   {
     "id": "future_4",
@@ -1833,7 +1759,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.9
+    "ms": 4.4
   },
   {
     "id": "future_5",
@@ -1848,7 +1774,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.5
+    "ms": 4.2
   },
   {
     "id": "future_6",
@@ -1863,7 +1789,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.4
+    "ms": 5.1
   },
   {
     "id": "future_7",
@@ -1878,7 +1804,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.4
+    "ms": 4.6
   },
   {
     "id": "future_8",
@@ -1893,7 +1819,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.4
+    "ms": 4.5
   },
   {
     "id": "exclusion_1",
@@ -1902,25 +1828,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.3333333333333333,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::015",
-      "tutorial_6::018",
-      "tutorial_6::014",
-      "tutorial_6::017"
+      "tutorial_6::040",
+      "tutorial_6::037",
+      "tutorial_6::008",
+      "tutorial_4::018"
     ],
     "similarities": [
-      0.7583,
-      0.7152,
-      0.7121,
-      0.6937
+      0.7712,
+      0.7308,
+      0.7293,
+      0.7272
     ],
     "expected_chunks": [
       "tutorial_6::014"
     ],
-    "ms": 29.1
+    "ms": 64.8
   },
   {
     "id": "exclusion_2",
@@ -1929,21 +1855,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::015",
-      "tutorial_6::014"
+      "tutorial_6::011",
+      "tutorial_6::005",
+      "tutorial_6::024",
+      "tutorial_6::023"
     ],
     "similarities": [
-      0.694,
-      0.6887
+      0.7366,
+      0.7121,
+      0.6973,
+      0.6936
     ],
     "expected_chunks": [
       "tutorial_6::014"
     ],
-    "ms": 32.6
+    "ms": 70.6
   },
   {
     "id": "exclusion_3",
@@ -1952,23 +1882,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::015",
-      "tutorial_6::014",
-      "tutorial_6::018"
+      "tutorial_6::011",
+      "tutorial_6::005",
+      "tutorial_6::024",
+      "tutorial_6::040"
     ],
     "similarities": [
-      0.7366,
-      0.7268,
-      0.6674
+      0.7567,
+      0.7499,
+      0.7463,
+      0.7325
     ],
     "expected_chunks": [
       "tutorial_6::014"
     ],
-    "ms": 1036.2
+    "ms": 76.6
   },
   {
     "id": "clarify_1",
@@ -1983,7 +1915,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.8
+    "ms": 9.7
   },
   {
     "id": "clarify_2",
@@ -1998,7 +1930,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.8
+    "ms": 18.0
   },
   {
     "id": "clarify_3",
@@ -2013,7 +1945,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.8
+    "ms": 14.5
   },
   {
     "id": "invalid_problem",
@@ -2028,7 +1960,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.8
+    "ms": 10.5
   },
   {
     "id": "missing_problem",
@@ -2043,7 +1975,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 1.4
+    "ms": 18.4
   },
   {
     "id": "hebrew_1",
@@ -2058,7 +1990,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.4
+    "ms": 4.1
   },
   {
     "id": "hebrew_2",
@@ -2067,23 +1999,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 0.5,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::015",
-      "tutorial_6::014",
-      "tutorial_6::018"
+      "tutorial_6::011",
+      "tutorial_6::005",
+      "tutorial_6::024",
+      "tutorial_6::039"
     ],
     "similarities": [
-      0.7409,
-      0.7389,
-      0.6785
+      0.768,
+      0.7603,
+      0.7597,
+      0.7413
     ],
     "expected_chunks": [
       "tutorial_6::014"
     ],
-    "ms": 56.8
+    "ms": 71.5
   },
   {
     "id": "hebrew_3",
@@ -2098,7 +2032,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.4
+    "ms": 3.3
   },
   {
     "id": "hebrew_4",
@@ -2111,21 +2045,21 @@
     "reciprocal_rank": 0.25,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_7::001",
-      "tutorial_7::005",
+      "tutorial_7::004",
       "tutorial_9::010",
+      "tutorial_7::005",
       "tutorial_9::003"
     ],
     "similarities": [
-      0.7061,
-      0.6921,
+      0.6782,
       0.6665,
+      0.6574,
       0.6573
     ],
     "expected_chunks": [
       "tutorial_9::003"
     ],
-    "ms": 541.9
+    "ms": 57.4
   },
   {
     "id": "hebrew_5",
@@ -2134,25 +2068,21 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_5::003",
-      "tutorial_1::007",
-      "tutorial_1::013",
-      "tutorial_4::001"
+      "tutorial_4::001",
+      "tutorial_4::007"
     ],
     "similarities": [
-      0.8337,
-      0.7423,
-      0.7287,
-      0.7276
+      0.7877,
+      0.7639
     ],
     "expected_chunks": [
       "tutorial_5::003"
     ],
-    "ms": 65.3
+    "ms": 119.1
   },
   {
     "id": "hebrew_6",
@@ -2167,7 +2097,7 @@
     "chunks": [],
     "similarities": [],
     "expected_chunks": [],
-    "ms": 0.9
+    "ms": 9.5
   },
   {
     "id": "hw_natural_1",
@@ -2185,15 +2115,15 @@
       "tutorial_9::015"
     ],
     "similarities": [
-      0.731,
-      0.7303,
+      0.7278,
+      0.727,
       0.7155
     ],
     "expected_chunks": [
       "tutorial_9::001",
       "tutorial_9::011"
     ],
-    "ms": 51.9
+    "ms": 128.8
   },
   {
     "id": "hw_natural_2",
@@ -2202,25 +2132,21 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_5::003",
-      "tutorial_1::007",
       "tutorial_4::001",
-      "tutorial_2::000"
+      "tutorial_4::007"
     ],
     "similarities": [
-      0.8345,
-      0.7481,
-      0.7307,
-      0.7273
+      0.7958,
+      0.7721
     ],
     "expected_chunks": [
       "tutorial_5::003"
     ],
-    "ms": 53.2
+    "ms": 152.3
   },
   {
     "id": "hw_natural_3",
@@ -2229,25 +2155,25 @@
     "expected_status": "answer",
     "status": "answer",
     "decision_correct": true,
-    "support_hit": true,
-    "reciprocal_rank": 1.0,
+    "support_hit": false,
+    "reciprocal_rank": 0,
     "future_context_leaks": 0,
     "chunks": [
-      "tutorial_6::014",
-      "tutorial_6::015",
-      "tutorial_1::002",
-      "tutorial_6::017"
+      "tutorial_6::024",
+      "tutorial_6::005",
+      "tutorial_6::039",
+      "tutorial_6::023"
     ],
     "similarities": [
-      0.8338,
-      0.8021,
-      0.7862,
-      0.7685
+      0.8317,
+      0.8272,
+      0.8266,
+      0.8038
     ],
     "expected_chunks": [
       "tutorial_6::014",
       "tutorial_6::015"
     ],
-    "ms": 92.3
+    "ms": 141.2
   }
 ]

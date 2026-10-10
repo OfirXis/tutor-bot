@@ -76,6 +76,32 @@ NAMED_TOPIC_MIN_SIMILARITY = float(os.getenv("NAMED_TOPIC_MIN_SIMILARITY", "0.45
 
 
 _CITATION_RE = re.compile(r"[\[(](Source|Assignment|מקור|מטלה|משימה)\s+(\d+)(?:\s+[—–-][^\]\)\n]*)?[\])]", re.I)
+_CITATION_KIND = r"(?:Source|Assignment|מקור|מטלה|משימה)s?"
+# "(Source 2, Source 3)", "(Sources 2 and 3)": one bracket naming several IDs.
+_GROUPED_CITATION_RE = re.compile(
+    r"[\[(]\s*(" + _CITATION_KIND + r"\s+\d+(?:\s*(?:,|;|&|\band\b|ו)\s*(?:" + _CITATION_KIND
+    + r"\s+)?\d+)+)\s*[\])]", re.I)
+
+
+def split_grouped_citations(text: str) -> str:
+    """Rewrite grouped citations as single ones, so each ID is validated and protected."""
+    def expand(match: re.Match) -> str:
+        kind, parts = None, []
+        for named, number in re.findall(r"(?:(Source|Assignment|מקור|מטלה|משימה)s?\s+)?(\d+)",
+                                         match.group(1), re.I):
+            kind = (named.capitalize() if named.isascii() else named) if named else kind
+            parts.append(f"({kind} {number})")
+        return " ".join(parts)
+    return _GROUPED_CITATION_RE.sub(expand, text)
+
+
+def localize_citations(text: str, language: str) -> str:
+    """Show citation labels in the reader's language; IDs and validation are unchanged."""
+    if language != "he":
+        return text
+    labels = {"source": "מקור", "assignment": "מטלה"}
+    return re.sub(r"([\[(])(Source|Assignment)(?=\s+\d)",
+                  lambda m: m.group(1) + labels[m.group(2).casefold()], text, flags=re.I)
 
 class EvidenceError(ValueError):
     """The answer cites absent evidence or provides no verifiable source IDs."""
@@ -83,7 +109,7 @@ class EvidenceError(ValueError):
 
 def validate_citations(answer: str, source_count: int, assignment_count: int = 0) -> None:
     """Check citation IDs, not factual entailment (which needs separate evaluation)."""
-    citations = _CITATION_RE.findall(answer)
+    citations = _CITATION_RE.findall(split_grouped_citations(answer))
     if not citations:
         if len(answer) < 250 and re.match(r"(?:which |could you |can you clarify |please clarify )", answer, re.I):
             return
@@ -443,7 +469,7 @@ def generate_scoped_answer(llm, messages: list, retriever, week: int,
     from langchain_core.messages import AIMessage, HumanMessage
 
     def checked(candidate_messages):
-        reply = _generate(llm, candidate_messages)
+        reply = split_grouped_citations(_generate(llm, candidate_messages))
         return reply, retriever.scope_check(reply, week)
 
     answer, (is_future, tutorial) = checked(messages)
@@ -462,8 +488,7 @@ def generate_scoped_answer(llm, messages: list, retriever, week: int,
         try:
             validate_citations(answer, source_count, assignment_count)
         except EvidenceError:
-            if _CITATION_RE.search(answer):
-                raise
+            # Missing and out-of-range IDs both get one corrective regeneration.
             if retry_citations or assignment_count:
                 allowed = []
                 if assignment_count:
@@ -474,7 +499,8 @@ def generate_scoped_answer(llm, messages: list, retriever, week: int,
                 revised, (is_future, tutorial) = checked(messages + [AIMessage(answer), HumanMessage(
                     "Revise your reply using only the supplied evidence. Start the first "
                     f"substantive sentence with a valid citation, for example ({example}). "
-                    f"Allowed IDs: {'; '.join(allowed)}. Explain the task or give a grounded next step; "
+                    f"Allowed IDs: {'; '.join(allowed)}; cite no other IDs. "
+                    "Explain the task or give a grounded next step; "
                     "do not invent a solution. Preserve the PDF problem numbers: "
                     "subquestions are not separate problems."
                 )])
@@ -843,10 +869,14 @@ def build_index(embed_model: str = EMBED_MODEL, index_dir: Path = INDEX_DIR,
 # LLM factory — swap providers with env vars, no code changes
 # ─────────────────────────────────────────────────────────────────────────────
 
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+OPENROUTER_DEFAULT_MODEL = "anthropic/claude-haiku-5.5"
+
+
 def get_llm(streaming: bool = True, provider: str | None = None, model: str | None = None,
             api_key: str | None = None, max_tokens: int | None = None,
             timeout: float | None = None):
-    """LLM_PROVIDER: ollama (default) | github | openai | compatible.
+    """LLM_PROVIDER: ollama (default) | github | openai | openrouter | compatible.
 
     Every call is bounded: an output-token cap stops runaway generations and the
     request timeout stops a stalled server from hanging the UI.
@@ -882,6 +912,14 @@ def get_llm(streaming: bool = True, provider: str | None = None, model: str | No
             api_key=api_key or os.getenv("LLM_API_KEY", "not-needed"),
             base_url=os.getenv("LLM_BASE_URL", "http://localhost:1234/v1"), **common,
         )
+    if provider == "openrouter":
+        api_key = api_key or os.getenv("OPENROUTER_API_KEY", "")
+        if not api_key:
+            raise ValueError("OpenRouter requires OPENROUTER_API_KEY")
+        return ChatOpenAI(
+            model=model or os.getenv("OPENROUTER_MODEL", OPENROUTER_DEFAULT_MODEL),
+            api_key=api_key, base_url=OPENROUTER_BASE_URL, **common,
+        )
     return ChatOpenAI(  # provider == "openai"
         model=model or os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
         **({"api_key": api_key} if api_key else {}), **common,
@@ -894,6 +932,7 @@ def llm_label(provider: str | None = None, model: str | None = None) -> str:
         "ollama": ("Ollama", os.getenv("OLLAMA_LLM_MODEL", "llama3.2:3b")),
         "github": ("GitHub Models", os.getenv("GITHUB_MODEL", "openai/gpt-4o-mini")),
         "openai": ("OpenAI", os.getenv("OPENAI_MODEL", "gpt-4o-mini")),
+        "openrouter": ("OpenRouter", os.getenv("OPENROUTER_MODEL", OPENROUTER_DEFAULT_MODEL)),
         "compatible": ("Custom", os.getenv("LLM_MODEL", "?")),
     }
     if provider not in defaults:
@@ -934,12 +973,21 @@ def is_hebrew(text: str) -> bool:
 
 def get_translation_llm(provider: str | None = None, model: str | None = None,
                         base_url: str | None = None, api_key: str | None = None):
-    """Independent translator: auto | ollama | openai | tutor.
+    """Independent translator: auto | ollama | openai | openrouter | tutor.
 
     Auto preserves the previous OpenAI-if-configured behavior. Explicit local
     selection never uses a paid provider. None means use the tutoring model.
     """
     provider = (provider or os.getenv("TRANSLATION_PROVIDER", "auto")).lower()
+    if provider == "openrouter":
+        api_key = api_key or os.getenv("OPENROUTER_API_KEY", "")
+        if not api_key:
+            raise ValueError("OpenRouter translation requires OPENROUTER_API_KEY")
+        from langchain_openai import ChatOpenAI
+        return ChatOpenAI(model=model or os.getenv("TRANSLATION_OPENROUTER_MODEL",
+                                                   os.getenv("OPENROUTER_MODEL", OPENROUTER_DEFAULT_MODEL)),
+                          temperature=0, api_key=api_key, base_url=OPENROUTER_BASE_URL,
+                          timeout=float(os.getenv("TRANSLATION_TIMEOUT_SECONDS", "45")))
     api_key = api_key or os.getenv("OPENAI_API_KEY", "")
     if provider == "tutor":
         return None
@@ -1225,7 +1273,9 @@ def translate(text: str, target: str, llm, progress=None) -> str:
     Local models use bounded blocks with checked markers. Nonlocal translators may
     retry prose segments when they drop protected placeholders.
     """
-    local = getattr(llm, 'format', None) is not None and getattr(llm, 'model', None) is not None
+    # Any Ollama model is local, including the tutor reused as translator (format unset).
+    local = type(llm).__name__ == 'ChatOllama' or (
+        getattr(llm, 'format', None) is not None and getattr(llm, 'model', None) is not None)
     if target not in {'en', 'he'}:
         raise ValueError("target must be 'en' or 'he'")
     if target == 'en':
@@ -1248,11 +1298,23 @@ def translate(text: str, target: str, llm, progress=None) -> str:
             validate_translation(text, english, 'en', allow_source_script=True)
         return english
     try:
-        return _translate_once(text, target, llm, progress)
+        hebrew = _translate_once(text, target, llm, progress)
     except ValueError as error:
         # Local models handle bounded blocks and their own validation above.
         if local or target != 'he' or 'dropped protected' not in str(error):
             raise
+    else:
+        # Same visible-corruption checks as local output, with one corrective retry.
+        from translation_support import validate_translation
+        def check(candidate):
+            validate_translation(_CITATION_RE.sub('', text), _CITATION_RE.sub('', candidate), 'he')
+        try:
+            check(hebrew)
+        except ValueError as error:
+            hebrew = _translate_once(text, target, llm, progress,
+                                     feedback=f"A previous attempt was rejected: {error}.")
+            check(hebrew)
+        return hebrew
     from langchain_core.messages import HumanMessage, SystemMessage
 
     protected = re.compile('|'.join('(?:' + pattern.pattern + ')' for pattern in (

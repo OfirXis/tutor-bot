@@ -193,6 +193,22 @@ def test_homework_retry_cannot_introduce_future_material():
         rag.generate_scoped_answer(LLM(), [], NoLectureEvidence(), 3, 0, 1)
 
 
+def test_out_of_range_citation_gets_one_corrective_retry():
+    from types import SimpleNamespace
+    class LLM:
+        calls = 0
+        def stream(self, messages):
+            self.calls += 1
+            if self.calls == 2:
+                assert 'Source 1 through 2' in messages[-1].content
+            yield SimpleNamespace(content='Merge sort splits the array. (Source 5)' if self.calls == 1
+                                  else 'Merge sort splits the array. (Source 2)')
+    llm = LLM()
+    answer = rag.generate_scoped_answer(llm, [], NoLectureEvidence(), 3, 2, 0, retry_citations=True)
+    assert answer.endswith('(Source 2)')
+    assert llm.calls == 2
+
+
 def test_failed_homework_citation_retry_is_still_withheld():
     from types import SimpleNamespace
     class LLM:
@@ -214,7 +230,7 @@ def test_weak_homework_retrieval_fetches_mapped_prerequisites():
             if 'Selected problem concepts' in query:
                 return []
             assert max_tutorial == 3
-            return [rag.Hit(rag.Chunk('prerequisite', 'Algorithm analysis and divide and conquer.',
+            return [rag.Hit(rag.Chunk('prerequisite', 'Running time complexity, asymptotic notation and correctness proofs.',
                                      2, 'tutorial_2', 'Divide and conquer'), 0.9, 0.9)]
     retriever = Retriever()
     decision = rag.prepare_retrieval('Guide me through problem 1', 3, retriever, rag.load_homework()['hw_1'])

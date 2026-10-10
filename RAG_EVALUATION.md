@@ -7,90 +7,74 @@ A supporting hit means a reviewed passage ID was retrieved, not merely the corre
 
 | Check | Result |
 | --- | --- |
-| Correct answer/refusal/clarification decision | 96/96 |
-| Supporting passage among supplied evidence | 67/72 |
-| Supporting-passage MRR | 0.809 |
-| Unnecessary abstentions on answerable cases | 0/72 |
+| Correct answer/refusal/clarification decision | 90/96 |
+| Supporting passage among supplied evidence | 19/72 |
+| Supporting-passage MRR | 0.207 |
+| Unnecessary abstentions on answerable cases | 6/72 |
 | Missed future-topic refusals | 0/10 |
 | Future-week passages supplied | 0 |
-| Median decision time (includes retrieval) | 45.8 ms |
+| Median decision time (includes retrieval) | 76.9 ms |
 
 ## Remaining misses
 
-- `course_30`: What's the fastest way to find shortest paths in a graph with no cycles? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_8::000, tutorial_8::006, tutorial_8::003, tutorial_8::013.
-- `hw_1_p1`: Give me a hint for problem 1 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_1::009, tutorial_1::010, tutorial_1::014, tutorial_1::005.
-- `hw_1_p4`: Give me a hint for problem 4 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_3::013, tutorial_3::010, tutorial_3::011, tutorial_3::012.
-- `hw_2_p3`: Give me a hint for problem 3 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_4::003, tutorial_4::005, tutorial_3::004, tutorial_4::007.
-- `hw_4_p1`: Give me a hint for problem 1 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_7::009, tutorial_7::008, tutorial_7::005, tutorial_7::006.
+- `course_01`: What is the formal definition of Big-O notation? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_1::006, tutorial_1::007.
+- `course_02`: How do I figure out how fast a function grows compared to another one? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_1::017.
+- `course_03`: What's the difference between decision and optimization algorithms? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_1::001.
+- `course_04`: How many operations do nested loops cost? — expected answer, got insufficient; supporting passage found: False; retrieved: none.
+- `course_05`: State the Master Theorem cases. — expected answer, got insufficient; supporting passage found: False; retrieved: none.
+- `course_06`: How does merge sort split and combine the array? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_2::005, tutorial_2::009, tutorial_1::020, tutorial_1::012.
+- `course_07`: What's a faster way to multiply two big numbers than the school method? — expected answer, got insufficient; supporting passage found: False; retrieved: none.
+- `course_08`: Why does searching a sorted array only take logarithmic time? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_2::017, tutorial_1::011.
+- `course_09`: What is the exchange argument used for in greedy proofs? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_3::003, tutorial_3::002.
+- `course_11`: When can I take fractions of items to maximize value in a knapsack? — expected answer, got insufficient; supporting passage found: False; retrieved: none.
+- `course_12`: How are Huffman codes built from character frequencies? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_2::007, tutorial_2::008, tutorial_2::023, tutorial_2::021.
+- `course_13`: What are overlapping subproblems and optimal substructure? — expected answer, got insufficient; supporting passage found: False; retrieved: none.
+- `course_15`: How do I compute the longest common subsequence of two strings? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_4::009, tutorial_4::003, tutorial_4::016.
+- `course_16`: What's the DP recurrence for cutting a rod into pieces for max revenue? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_3::016.
+- `course_17`: How do I count the minimum number of coins to make an amount? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_3::012, tutorial_3::006.
+- `course_18`: What order should I multiply a chain of matrices to minimize work? — expected answer, got insufficient; supporting passage found: False; retrieved: none.
+- `course_19`: How many single-letter changes turn one word into another? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_5::018, tutorial_5::013, tutorial_5::003, tutorial_5::007.
+- `course_20`: How do I find the longest increasing subsequence? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_4::003, tutorial_4::009, tutorial_4::010, tutorial_4::016.
+- `course_21`: Can a set of numbers be split into two halves with equal sums? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::001, tutorial_2::001.
+- `course_22`: How many ways can I reach the bottom-right cell of a grid moving only right and down? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_4::015, tutorial_4::008.
+- `course_25`: How does Kruskal's algorithm avoid creating cycles? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_7::006, tutorial_7::014, tutorial_7::003.
+- `course_26`: What data structure quickly tells me if two nodes are already connected? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::017, tutorial_6::015.
+- `course_27`: Why can't Dijkstra handle negative edge weights? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_8::006, tutorial_8::009, tutorial_8::016, tutorial_8::005.
+- `course_28`: Which algorithm finds shortest paths between every pair of vertices? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_8::003, tutorial_6::039, tutorial_6::008.
+- `course_29`: How can I detect a negative cycle in a graph? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_7::008, tutorial_7::003, tutorial_8::005.
+- `course_30`: What's the fastest way to find shortest paths in a graph with no cycles? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_8::001, tutorial_8::014, tutorial_8::012.
+- `hw_1_p1`: Give me a hint for problem 1 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_1::006, tutorial_1::007, tutorial_1::009, tutorial_1::017.
+- `hw_1_p2`: Give me a hint for problem 2 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_1::017, tutorial_1::006, tutorial_1::007, tutorial_1::018.
+- `hw_1_p3`: Give me a hint for problem 3 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_1::020, tutorial_2::009, tutorial_1::012, tutorial_2::017.
+- `hw_1_p4`: Give me a hint for problem 4 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_3::016, tutorial_3::001.
+- `hw_2_p1`: Give me a hint for problem 1 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_4::001, tutorial_4::007.
+- `hw_2_p2`: Give me a hint for problem 2 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_4::018, tutorial_4::011, tutorial_4::012.
+- `hw_2_p3`: Give me a hint for problem 3 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_2::017, tutorial_2::018, tutorial_4::003, tutorial_4::010.
+- `hw_2_p4`: Give me a hint for problem 4 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_3::008, tutorial_3::014, tutorial_2::012.
+- `hw_2_p5`: Give me a hint for problem 5 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_5::013, tutorial_5::018, tutorial_5::007.
+- `hw_3_p1`: Give me a hint for problem 1 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::005, tutorial_6::039, tutorial_5::016, tutorial_6::040.
+- `hw_3_p2`: Give me a hint for problem 2 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::024, tutorial_6::039, tutorial_6::005, tutorial_6::023.
+- `hw_3_p3`: Give me a hint for problem 3 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::005, tutorial_6::040, tutorial_6::039, tutorial_6::023.
+- `hw_3_p4`: Give me a hint for problem 4 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_5::002, tutorial_1::010, tutorial_6::041, tutorial_6::039.
+- `hw_3_p5`: Give me a hint for problem 5 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::039, tutorial_6::040, tutorial_6::022, tutorial_5::012.
+- `hw_3_p6`: Give me a hint for problem 6 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::022, tutorial_5::002, tutorial_5::012, tutorial_1::010.
+- `hw_4_p1`: Give me a hint for problem 1 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_7::011, tutorial_7::014, tutorial_7::002, tutorial_7::003.
+- `hw_4_p2`: Give me a hint for problem 2 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_8::001, tutorial_8::014, tutorial_8::008.
+- `hw_4_p4`: Give me a hint for problem 4 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_8::013, tutorial_8::005, tutorial_8::001.
+- `hw_4_p5`: Give me a hint for problem 5 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_5::012, tutorial_5::002, tutorial_8::005, tutorial_5::006.
+- `hw_5_p2`: Give me a hint for problem 2 — expected answer, got answer; supporting passage found: False; retrieved: tutorial_1::010, tutorial_1::014, tutorial_6::005, tutorial_6::039.
+- `exclusion_1`: Find a shortest path in an unweighted graph without Dijkstra — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::040, tutorial_6::037, tutorial_6::008, tutorial_4::018.
+- `exclusion_2`: Do not use Dijkstra. Explain BFS. — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::011, tutorial_6::005, tutorial_6::024, tutorial_6::023.
+- `exclusion_3`: Explain BFS without using Dijkstra or Bellman-Ford — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::011, tutorial_6::005, tutorial_6::024, tutorial_6::040.
+- `hebrew_2`: הסבר חיפוש לרוחב בלי להשתמש בדייקסטרה — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::011, tutorial_6::005, tutorial_6::024, tutorial_6::039.
+- `hebrew_5`: אפשר רמז לשאלה 1? — expected answer, got answer; supporting passage found: False; retrieved: tutorial_4::001, tutorial_4::007.
+- `hw_natural_2`: I'm stuck on problem 1. Please give me a little guidance, not a complete answer. — expected answer, got answer; supporting passage found: False; retrieved: tutorial_4::001, tutorial_4::007.
+- `hw_natural_3`: Can you help me understand problem 2? Just a small hint please. — expected answer, got answer; supporting passage found: False; retrieved: tutorial_6::024, tutorial_6::005, tutorial_6::039, tutorial_6::023.
 
 ## Limits and answer review
 
-This offline run does not invoke the optional model-assisted term normalization used
-by the app. Spelling and abbreviation cleanup has separate regression tests; the
-retrieval figures above do not measure its live model quality.
+This offline run does not invoke the optional model-assisted term normalization used by the app. Spelling and abbreviation cleanup has separate regression tests; the retrieval figures above do not measure its live model quality.
 
 This run does not generate answers and cannot establish mathematical correctness, factual entailment, or whether a live tutor gives away homework solutions. Source-ID validation is checked separately by tests; valid citation IDs alone do not prove the associated claims.
 Before a model change, review generated answers for: the exact original request, supported claims and citations, correct formulas, allowed concepts, and hints rather than full homework solutions. The homework cases include this rubric.
 Similarity plus content overlap is a conservative heuristic and can reject unfamiliar paraphrases. The report records such abstentions rather than counting them as successes.
-
-
-### Week 9 and Hebrew regression check
-
-The shared retrieval path now expands context-appropriate DP/DC shorthand before
-homework clarification and scope checks, without requiring LLM approval. Example
-requests include a worked example from a relevant source when one is available.
-Regression tests cover the reported flow, DP and DC requests in both tutorial and
-Homework 5 modes, as well as the earlier-week refusal boundaries.
-
-`eval/week9_translation_smoke.json` records seven local Ollama checks using
-`llama3.2:3b`: three English tutorial questions and four Hebrew Homework 5
-questions (flow, DP, a DC example, and guidance on problem 4). All retrieved
-supporting material and returned answers. On the final translation check, all
-four Hebrew answers needed the installed DictaLM 12B fallback after the 1.7B
-model failed validation. Final translation times including fallback were about
-2.5–5.8 seconds on this environment; these are warm local measurements, not a
-hardware-independent latency guarantee.
-
-The Hebrew answers were reviewed for the requested topic, worked-example values,
-and the homework task. Some wording remains awkward. These smoke checks establish
-that the reported paths return usable responses, not general translation fidelity
-or mathematical correctness across the course. The 1.7B translator remains
-experimental; the app exposes its installed-12B fallback as a visible checkbox.
-
-
-### TranslateGemma 4B local comparison
-
-`eval/translategemma_4b_smoke.json` compares six translation inputs using
-TranslateGemma 4B Q4_K_M and DictaLM 12B Q4_K_M on local Ollama. The dedicated
-4B adapter uses its native single-user prompt with explicit language direction
-and plain-text output. All six final cases passed language, protected-content,
-and citation validation without fallback. The four Hebrew answer translations
-measured 0.779, 1.447, 2.264 and 1.760 seconds for 4B, versus 1.740, 2.940, 4.587
-and 3.615 seconds for 12B. These are warm measurements; model loading and CPU
-spillover can change latency substantially. Short questions and repeated prompts
-may also benefit from prompt caching.
-
-Manual review found understandable translations of the tested questions and
-answers, with awkward Hebrew wording still present. Known literal variants of
-“divide and conquer”, “merge sort”, “recurrence relation” and “check-in question”
-are normalized only when the corresponding source phrase is present. These
-samples do not establish general mathematical translation accuracy.
-
-
-### Week 7 divide-and-conquer translation regression
-
-The question `ספר לי על הפרד ומשול`, with tutorial 7 and TranslateGemma 4B,
-exposed two output-validation problems: valid Hebrew wording outside the short
-alias list and dropped formula placeholders. The app's error panel was also
-lost on the immediate chat rerun. Regression coverage now exercises persistent
-error details for both translation directions, unchanged-equation recovery, and
-rejection of altered equations. The locally generated explanation was translated
-with the app's dollar-delimited math formatting and passed source-ID and week
-checks; the output is recorded in `eval/week7_translation_failure.json`.
-This is one reproduced explanation, not a guarantee across model generations.
-
-The same reproduction also found inconsistent citation parsing: translation
-preserved `(Source 1 — Tutorial 2 — ... )`, but final validation accepted only
-`(Source 1)`. Both now use the same parser, and nonexistent IDs are still
-rejected. The final formatted explanation translated in about 2.3 seconds in
-this local warm check.

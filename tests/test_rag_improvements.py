@@ -40,8 +40,8 @@ def test_json_is_the_shared_curriculum_source():
     for week in data['weeks']:
         assert metadata[f"tutorial_{week['week']}"]['topics']==rag.covered_topics(week['week'])
         assert (rag.HERE / week['source_pdf']).is_file()
-    assert 'Dijkstra' not in rag.covered_topics(6)
-    assert 'Dijkstra' in rag.covered_topics(8)
+    assert "Dijkstra's algorithm" not in rag.covered_topics(6)
+    assert "Dijkstra's algorithm" in rag.covered_topics(8)
     for hw in rag.load_homework().values():
         for ids in hw['problem_topics'].values():
             assert all(data['topics_by_id'][key]['week'] <= hw['week'] for key in ids)
@@ -82,6 +82,30 @@ def test_unrelated_technical_vocabulary_is_not_supporting_evidence():
 def test_missing_or_fabricated_citations_are_rejected(answer):
     with pytest.raises(rag.EvidenceError):
         rag.validate_citations(answer,source_count=2,assignment_count=1)
+
+
+@pytest.mark.parametrize(('grouped', 'single'), [
+    ('Trees (Source 2, Source 3).', 'Trees (Source 2) (Source 3).'),
+    ('Trees (Sources 1 and 2).', 'Trees (Source 1) (Source 2).'),
+    ('Mixed (Source 1; Assignment 1).', 'Mixed (Source 1) (Assignment 1).'),
+    ('עצים (מקור 2, מקור 3).', 'עצים (מקור 2) (מקור 3).'),
+    ('Single (Source 1) stays.', 'Single (Source 1) stays.'),
+])
+def test_grouped_citations_are_split_into_single_ids(grouped, single):
+    assert rag.split_grouped_citations(grouped) == single
+
+
+def test_every_id_in_a_grouped_citation_is_validated():
+    rag.validate_citations('Trees (Source 2, Source 3).', 3)
+    with pytest.raises(rag.EvidenceError):
+        rag.validate_citations('Trees (Source 2, Source 9).', 3)
+
+
+def test_hebrew_answers_show_hebrew_citation_labels():
+    text = 'BFS (Source 1 — Tutorial 6) ותרגיל (Assignment 2).'
+    assert rag.localize_citations(text, 'he') == 'BFS (מקור 1 — Tutorial 6) ותרגיל (מטלה 2).'
+    assert rag.localize_citations(text, 'en') == text
+    rag.validate_citations(rag.localize_citations(text, 'he'), 1, 2)
 
 
 def test_valid_citations_do_not_claim_entailment():
