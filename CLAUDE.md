@@ -5,6 +5,18 @@ Chroma retrieval, Ollama/OpenAI/GitHub LLM backends, Hebrew support). This
 file is maintained by Claude across sessions/machines — read it first, keep
 it current when you make a meaningful change.
 
+## Current UI state
+
+**Homework mode is hidden from the UI** (`app.py`'s `SHOW_HOMEWORK_MODE = False`,
+near the top of the file) — not needed for the current use case. The sidebar
+only shows Learn mode; the mode radio itself doesn't render. Underlying
+homework logic/data/tests are untouched — flip the flag back to `True` to
+restore it. Tests that drive Homework mode through the UI (`AppTest` clicking
+the "Mode" radio in `tests/test_scope.py`) go through a `_set_mode()` helper
+that skips (not fails) when the radio isn't present — don't revert that to a
+direct `app.radio` lookup or those tests will break again while the flag is
+off.
+
 ## Repo / remote layout
 
 - `origin` → `github.com/steinergad/tutor-bot` — original upstream repo

@@ -90,6 +90,19 @@ def app_env(monkeypatch, tmp_path):
     st.cache_data.clear()
 
 
+def _set_mode(app, mode):
+    """Switch modes via the sidebar radio if it's present. Homework mode can
+    be hidden from the UI (see app.py's SHOW_HOMEWORK_MODE) — tests that
+    specifically need it then skip rather than fail; Learn needs no click
+    since it's the only mode left when the radio is hidden."""
+    radios = [r for r in app.radio if r.label == 'Mode']
+    if not radios:
+        if mode == 'homework':
+            pytest.skip('Homework mode is hidden from the UI (SHOW_HOMEWORK_MODE=False)')
+        return
+    radios[0].set_value(mode).run()
+
+
 @pytest.mark.parametrize('question', [
     'Explain Dijkstra',
     'Explain Big-O and then Dijkstra',
@@ -99,7 +112,7 @@ def app_env(monkeypatch, tmp_path):
 @pytest.mark.parametrize('mode', ['learn', 'homework'])
 def test_future_questions_never_reach_generation(app_env, question, mode):
     app, llm, _ = app_env
-    next(r for r in app.radio if r.label == 'Mode').set_value(mode).run()
+    _set_mode(app, mode)
     app.chat_input[0].set_value(question).run()
     assert not app.exception
     assert llm.calls <= 1  # One regeneration attempt allowed before refusal
@@ -208,7 +221,7 @@ def test_missing_material_does_not_generate(app_env, monkeypatch):
 ])
 def test_selected_homework_supplies_pdf_context_and_week(app_env, assignment, week):
     app, llm, retriever = app_env
-    next(r for r in app.radio if r.label == 'Mode').set_value('homework').run()
+    _set_mode(app, 'homework')
     next(s for s in app.selectbox if s.label == 'Assignment').set_value(assignment).run()
     app.chat_input[0].set_value('Give me a hint for problem 1').run()
     assert not app.exception
@@ -227,7 +240,7 @@ def test_selected_homework_supplies_pdf_context_and_week(app_env, assignment, we
 @pytest.mark.parametrize(('assignment', 'allowed'), [('hw_4', False), ('hw_5', True)])
 def test_max_flow_unlocks_only_for_homework_five(app_env, assignment, allowed):
     app, llm, _ = app_env
-    next(r for r in app.radio if r.label == 'Mode').set_value('homework').run()
+    _set_mode(app, 'homework')
     next(s for s in app.selectbox if s.label == 'Assignment').set_value(assignment).run()
     app.chat_input[0].set_value('Can I use maximum flow?').run()
     assert not app.exception
@@ -329,7 +342,7 @@ def test_homework_chat_uses_assignment_without_lecture_hits(app_env, monkeypatch
     app, llm, retriever = app_env
     monkeypatch.setattr(retriever, 'retrieve', lambda *a, **kw: [])
     llm.answer = 'Let us identify the input and what the problem asks you to find. (Assignment 1)'
-    next(r for r in app.radio if r.label == 'Mode').set_value('homework').run()
+    _set_mode(app, 'homework')
     app.chat_input[0].set_value(question).run()
     assert not app.exception
     from homework_material import homework_content_request, selected_statements
@@ -351,7 +364,7 @@ def test_homework_followup_keeps_selected_problem_and_resets_on_assignment_chang
     app, llm, retriever = app_env
     monkeypatch.setattr(retriever, 'retrieve', lambda *a, **kw: [])
     llm.answer = 'First identify the goal of this problem. (Assignment 1)'
-    next(r for r in app.radio if r.label == 'Mode').set_value('homework').run()
+    _set_mode(app, 'homework')
     app.chat_input[0].set_value('Help me with problem 3').run()
     app.chat_input[0].set_value('What should I do next?').run()
     assert not app.exception
@@ -366,7 +379,7 @@ def test_homework_followup_keeps_selected_problem_and_resets_on_assignment_chang
 def test_hw5_can_teach_dijkstra_from_week8_without_selecting_problem(app_env):
     app, llm, retriever = app_env
     llm.answer = 'Dijkstra finds shortest paths with nonnegative edge weights. (Source 1)'
-    next(r for r in app.radio if r.label == 'Mode').set_value('homework').run()
+    _set_mode(app, 'homework')
     next(s for s in app.selectbox if s.label == 'Assignment').set_value('hw_5').run()
     app.chat_input[0].set_value('Explain Dijkstra').run()
     assert not app.exception

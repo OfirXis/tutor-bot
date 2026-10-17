@@ -9,9 +9,12 @@ http://localhost:8501
 
 ### 2. Select Your Settings
 - **Language**: English or עברית (Hebrew)
-- **Mode**: 📖 Learn (course material) or 💪 Homework (problem help)
 - **Week**: Choose which week/tutorial
 - **Model**: Pick Ollama (local) or OpenAI/GitHub (cloud)
+
+> Homework mode (📖 Learn / 💪 Homework picker) is currently hidden from the
+> UI — only Learn mode is shown. The feature still works underneath; see the
+> note at the top of README.md to re-enable it.
 
 ### 3. Ask Questions
 Four ways to interact:
@@ -26,7 +29,7 @@ Four ways to interact:
 - \"Can you show me an example of recursion?\"
 - \"Quiz me\" (automatic quiz mode)
 
-**C) Homework Mode**
+**C) Homework Mode** (currently hidden from the UI — see note above)
 - Select \"💪 Homework\" mode
 - Choose which assignment
 - Ask about specific problem numbers
@@ -332,7 +335,7 @@ Include:
 - ✅ Curriculum-gated (prevents jumping ahead)
 - ✅ Multi-language (English + Hebrew)
 - ✅ Quiz mode (practice with course material)
-- ✅ Homework mode (guided help, never solutions)
+- ✅ Homework mode (guided help, never solutions) — built-in, currently hidden from the UI
 - ✅ Local or cloud models (Ollama, OpenAI, GitHub)
 - ✅ Citation system (shows source passages)
 - ✅ Scope verification (respects learning order)

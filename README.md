@@ -9,6 +9,12 @@ of handing out solutions.
 It runs fully offline with a free local model (Ollama), or with a cloud model
 through OpenRouter or OpenAI.
 
+> **Note:** Homework mode is currently **hidden from the UI** (not needed for
+> the present use case) — the sidebar only shows Learn mode. The underlying
+> homework logic, data, and tests are untouched and fully working; it's a
+> one-line flip (`SHOW_HOMEWORK_MODE = True` in `app.py`) to bring the mode
+> picker and assignment UI back.
+
 ## What it does
 
 - **Answers from the course material.** Every question retrieves passages from the
@@ -185,9 +191,10 @@ guide: [docs/HEBREW.md](docs/HEBREW.md).
 
 - **Learn mode:** pick the week you have reached, then ask about any topic up to it.
   Later topics get a 🔒 message saying which week covers them.
-- **Homework mode:** pick an assignment. Ask "what does problem 2 say?", "give me a
-  hint for problem 3", or "check my reasoning". The assignment PDF can be downloaded
-  from the sidebar. Each assignment opens the material up to its course week:
+- **Homework mode** (currently hidden from the UI — see note at the top): pick an
+  assignment. Ask "what does problem 2 say?", "give me a hint for problem 3", or
+  "check my reasoning". The assignment PDF can be downloaded from the sidebar.
+  Each assignment opens the material up to its course week:
 
   | Assignment | Material through week |
   |---|---|
@@ -290,7 +297,7 @@ cases need relabeling before those figures can be trusted again.
 ## Project layout
 
 ```
-app.py                  Streamlit chat UI (Learn and Homework modes)
+app.py                  Streamlit chat UI (Learn mode; Homework mode built-in but UI-hidden)
 rag_engine.py           Chunking, retrieval, week gate, answer checks, LLM and translator factories
 curriculum.py           Course schedule, topic matching, later-week detection
 translation_support.py  Translation validation helpers

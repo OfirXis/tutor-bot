@@ -27,6 +27,11 @@ from curriculum import CURRICULUM_FILE, course_name
 
 os.chdir(Path(__file__).parent)
 
+# Homework mode is hidden from the UI for now (not relevant to the current
+# use case) — the underlying homework logic, data, and tests are untouched,
+# so flip this back to True to restore the mode picker + assignment UI.
+SHOW_HOMEWORK_MODE = False
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Page + theme
 # ─────────────────────────────────────────────────────────────────────────────
@@ -38,22 +43,33 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Read before the widget renders (st.toggle below shares this session_state key),
+# so the first paint already uses the chosen palette instead of flashing dark.
+_light_mode = st.session_state.get("light_mode", False)
+_palette = {
+    "--bg":        "#ffffff" if _light_mode else "#212121",
+    "--bg-sidebar":"#f7f7f8" if _light_mode else "#171717",
+    "--surface":   "#f0f0f1" if _light_mode else "#2f2f2f",
+    "--surface-2": "#e6e6e7" if _light_mode else "#262626",
+    "--border":    "#d9d9d9" if _light_mode else "#3a3a3a",
+    "--text":      "#1f1f1f" if _light_mode else "#ececec",
+    "--text-dim":  "#4d4d4d" if _light_mode else "#b4b4b4",
+    "--text-faint":"#6e6e6e" if _light_mode else "#8e8e8e",
+    "--accent":    "#10a37f",
+}
+_root_vars = "\n    ".join(f"{k}: {v};" for k, v in _palette.items())
+
+# Plain string (not an f-string): the CSS below is full of literal {braces},
+# so the palette is spliced in with .replace() instead of str.format/f-string.
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* Neutral dark palette — modeled on the flat, low-chroma look shared by
-   ChatGPT / Claude / Gemini: no gradients, one restrained accent. */
+/* Neutral palette — modeled on the flat, low-chroma look shared by
+   ChatGPT / Claude / Gemini: no gradients, one restrained accent.
+   Values picked in Python above from the sidebar's light/dark toggle. */
 :root {
-    --bg:        #212121;
-    --bg-sidebar:#171717;
-    --surface:   #2f2f2f;
-    --surface-2: #262626;
-    --border:    #3a3a3a;
-    --text:      #ececec;
-    --text-dim:  #b4b4b4;
-    --text-faint:#8e8e8e;
-    --accent:    #10a37f;
+    __ROOT_VARS__
 }
 
 html, body, .stApp { background: var(--bg) !important; }
@@ -128,8 +144,8 @@ header[data-testid="stHeader"] { background: transparent !important; }
     direction: ltr !important; text-align: left !important;
     unicode-bidi: isolate; color: #e6e6e6 !important; font-size: .85rem !important;
 }
-.main :not(pre) > code {
-    background: rgba(255,255,255,.08) !important;
+:not(pre) > code {
+    background-color: var(--surface-2) !important;
     color: #ffb98a !important;
     padding: 2px 6px; border-radius: 5px; font-size: .84em !important;
     direction: ltr; unicode-bidi: isolate; display: inline-block;
@@ -156,6 +172,9 @@ header[data-testid="stHeader"] { background: transparent !important; }
     border-radius: 26px !important;
     box-shadow: 0 4px 18px rgba(0,0,0,.35) !important;
 }
+/* its direct child carries its own hardcoded-dark background, opaque enough
+   to paint over the pill above — invisible when everything was dark. */
+[data-testid="stChatInput"] > div { background: transparent !important; }
 [data-testid="stChatInput"]:focus-within {
     border-color: #5a5a5a !important;
     box-shadow: 0 4px 18px rgba(0,0,0,.35) !important;
@@ -197,14 +216,21 @@ header[data-testid="stHeader"] { background: transparent !important; }
     margin-bottom: 8px !important;
 }
 
-[data-testid="stSidebar"] [data-baseweb="select"] > div,
+/* This Streamlit build renders selectboxes as a react-aria ComboBox, not
+   BaseWeb — [data-baseweb="select"] matches nothing here. The painted box
+   is the [role="group"] wrapper, which carries Streamlit's own hardcoded
+   dark background regardless of our palette; it only looked right before
+   because dark-on-dark hid the mismatch. */
+[data-testid="stSidebar"] .react-aria-ComboBox [role="group"],
 [data-testid="stSidebar"] .stTextInput input, [data-testid="stSidebar"] .stNumberInput input {
-    background: var(--surface) !important;
+    background-color: var(--surface) !important;
     border-color: var(--border) !important;
     color: var(--text) !important;
     border-radius: 8px !important;
 }
-[data-baseweb="popover"] li, [data-baseweb="menu"] { background: var(--surface) !important; color: var(--text) !important; }
+.react-aria-Popover, .react-aria-ListBox, [role="listbox"], [role="option"] {
+    background-color: var(--surface) !important; color: var(--text) !important;
+}
 
 /* radio → flat segmented control */
 [data-testid="stSidebar"] .stRadio [role="radiogroup"] {
@@ -212,11 +238,14 @@ header[data-testid="stHeader"] { background: transparent !important; }
 }
 [data-testid="stSidebar"] .stRadio label {
     border-radius: 8px; padding: 6px 10px; width: 100%;
-    transition: background .15s;
 }
 [data-testid="stSidebar"] .stRadio label:has(input:checked) { background: var(--surface); }
 
 /* buttons */
+/* transition only transform/border, never background/color — those also
+   fire on the light/dark toggle (a var(--surface) change), and animating
+   them made buttons visibly lag a beat behind the rest of the page, which
+   switches instantly. */
 .stButton > button {
     background: var(--surface) !important;
     color: var(--text) !important;
@@ -225,7 +254,7 @@ header[data-testid="stHeader"] { background: transparent !important; }
     font-weight: 500 !important;
     font-size: .95rem !important;
     padding: 10px 16px !important;
-    transition: all .15s ease !important;
+    transition: transform .15s ease, border-color .15s ease !important;
 }
 .stButton > button:hover {
     background: var(--accent) !important;
@@ -235,17 +264,28 @@ header[data-testid="stHeader"] { background: transparent !important; }
 }
 .stButton > button:active { transform: translateY(0) !important; }
 
+/* Streamlit's own slider track paints the unfilled portion as a translucent
+   light grey (rgba(181,181,181,.25)), tuned for its dark theme — on a light
+   background that's nearly invisible, so the track looks like it stops at
+   the thumb instead of continuing to the max value. A solid color layered
+   underneath (background-color, not background) shows through the
+   translucent part without touching Streamlit's own fill gradient, which
+   is fully opaque over the filled portion. */
+[data-testid="stSlider"] [role="group"] > div > div:first-child {
+    background-color: var(--border) !important;
+}
+
 /* selectbox styling — make more visible and interactive */
-[data-baseweb="select"] {
-    background: var(--surface) !important;
+.react-aria-ComboBox [role="group"] {
+    background-color: var(--surface) !important;
     border: 1px solid var(--border) !important;
     border-radius: 8px !important;
     transition: border-color .15s ease !important;
 }
-[data-baseweb="select"]:hover {
+.react-aria-ComboBox:hover [role="group"] {
     border-color: var(--accent) !important;
 }
-[data-baseweb="select"] [role="button"] {
+.react-aria-ComboBox input, .react-aria-ComboBox button {
     color: var(--text) !important;
     font-weight: 500 !important;
 }
@@ -268,7 +308,7 @@ header[data-testid="stHeader"] { background: transparent !important; }
     padding: 8px 12px !important;
     text-align: center !important;
     cursor: pointer !important;
-    transition: all .15s ease !important;
+    transition: transform .15s ease !important;
     color: var(--text-dim) !important;
     font-weight: 500 !important;
 }
@@ -335,7 +375,7 @@ header[data-testid="stHeader"] { background: transparent !important; }
 ::-webkit-scrollbar-thumb { background: #444; border-radius: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 </style>
-""", unsafe_allow_html=True)
+""".replace("__ROOT_VARS__", _root_vars), unsafe_allow_html=True)
 
 UI_TEXT = {
     "en": {
@@ -360,6 +400,7 @@ UI_TEXT = {
         "passages": "Passages",
         "retrieval_mode": "Mode",
         "show_sources": "Show sources",
+        "light_mode": "☀️ Light background",
         "clear": "🗑  Clear conversation",
         "index_stats": "Embeddings: `{model}` · index: {count} chunks",
         "hero_homework": "Socratic guidance — hints and questions, never the final answer.",
@@ -423,6 +464,7 @@ UI_TEXT = {
         "passages": "מספר קטעים",
         "retrieval_mode": "שיטה",
         "show_sources": "הצגת מקורות",
+        "light_mode": "☀️ רקע בהיר",
         "clear": "🗑  ניקוי השיחה",
         "index_stats": "הטמעות: `{model}` · אינדקס: {count} קטעים",
         "hero_homework": "הכוונה סוקרטית — רמזים ושאלות, בלי למסור את התשובה הסופית.",
@@ -612,6 +654,7 @@ with st.sidebar:
     t = lambda key, **values: ui_text(ui_lang, key, **values)
     ui_is_he = ui_lang == "he"
     sidebar_title.markdown(f"### 🎓 {course_name(ui_lang)}")
+    st.toggle(t("light_mode"), key="light_mode", value=False)
 
     if ui_is_he:
         st.markdown(
@@ -636,12 +679,15 @@ with st.sidebar:
     st.caption(t("tagline"))
     st.divider()
 
-    mode = st.radio(
-        t("mode"),
-        ["learn", "homework"],
-        format_func=lambda value: t(value),
-        label_visibility="collapsed",
-    )
+    if SHOW_HOMEWORK_MODE:
+        mode = st.radio(
+            t("mode"),
+            ["learn", "homework"],
+            format_func=lambda value: t(value),
+            label_visibility="collapsed",
+        )
+    else:
+        mode = "learn"
     is_hw = mode == "homework"
 
     if not is_hw:
@@ -954,7 +1000,10 @@ if question and not (is_hw and homework[sel].get("source_error")):
         active_problems = st.session_state.get("active_homework_problems", []) if is_hw else []
         contextual_question = rag.expand_course_abbreviations(question)
         contextual_question = resolve_homework_followup(contextual_question, active_problems) if is_hw else contextual_question
-        wrong_mode = not is_hw and rag.references_homework(contextual_question)
+        # Only worth detecting "that's a homework question" when Homework mode
+        # is actually reachable — with it hidden there's nowhere to send the
+        # student, so let it fall through to the normal evidence-gate reply.
+        wrong_mode = SHOW_HOMEWORK_MODE and not is_hw and rag.references_homework(contextual_question)
         fut_tut = rag.named_future_topic(contextual_question, week) if not wrong_mode else 0
         is_future = bool(fut_tut)
         scope_error = None
@@ -1045,7 +1094,7 @@ if question and not (is_hw and homework[sel].get("source_error")):
             answer = mt(clarification, numbers=numbers)
             render_md(st, answer, rtl=rag.is_hebrew(answer))
             sources = []
-        elif decision_status == "wrong_mode":
+        elif SHOW_HOMEWORK_MODE and decision_status == "wrong_mode":
             status.update(label=mt("answered", count=0, week=week), state="complete", expanded=False)
             answer = mt("wrong_mode_reply")
             render_md(st, answer, rtl=rag.is_hebrew(answer))
